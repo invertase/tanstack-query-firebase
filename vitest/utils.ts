@@ -69,6 +69,13 @@ function expectFirebaseError(error: unknown, expectedCode: string) {
     expect(error.code).toBeDefined();
     expect(error.code).toBe(expectedCode);
   } else {
+    console.error("Expected a Firebase error, but received a different type.", {
+      receivedType: typeof error,
+      errorDetails:
+        error instanceof Error
+          ? { message: error.message, stack: error.stack }
+          : error,
+    });
     throw new Error(
       "Expected a Firebase error, but received a different type."
     );
@@ -82,5 +89,5 @@ export {
   firebaseTestingOptions,
   auth,
   wipeAuth,
-  expectFirebaseError
+  expectFirebaseError,
 };
