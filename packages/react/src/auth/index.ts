@@ -27,7 +27,7 @@ export { useSignInAnonymouslyMutation } from "./useSignInAnonymouslyMutation";
 // useSignInWithPopupMutation
 // useSignInWithRedirectMutation
 // useSignOutMutation
-// useUpdateCurrentUserMutation
+export { useUpdateCurrentUserMutation } from "./useUpdateCurrentUserMutation";
 // useValidatePasswordMutation
 // useVerifyPasswordResetCodeMutation
 // useDeleteUserMutation
