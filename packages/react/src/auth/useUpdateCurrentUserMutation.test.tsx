@@ -45,13 +45,12 @@ describe("useUpdateCurrentUserMutation", () => {
     );
     const newUser = userCredential.user;
 
-    const { result } = renderHook(
-      () => useUpdateCurrentUserMutation(auth, newUser),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUpdateCurrentUserMutation(auth), {
+      wrapper,
+    });
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate(newUser);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -67,13 +66,12 @@ describe("useUpdateCurrentUserMutation", () => {
     await createUserWithEmailAndPassword(auth, email, password);
     await signInWithEmailAndPassword(auth, email, password);
 
-    const { result } = renderHook(
-      () => useUpdateCurrentUserMutation(auth, null),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUpdateCurrentUserMutation(auth), {
+      wrapper,
+    });
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate(null);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -84,13 +82,12 @@ describe("useUpdateCurrentUserMutation", () => {
   test("handles update error when user is invalid", async () => {
     const invalidUser = { uid: "invalid-uid" } as User;
 
-    const { result } = renderHook(
-      () => useUpdateCurrentUserMutation(auth, invalidUser),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUpdateCurrentUserMutation(auth), {
+      wrapper,
+    });
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate(invalidUser);
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -114,14 +111,14 @@ describe("useUpdateCurrentUserMutation", () => {
 
     const { result } = renderHook(
       () =>
-        useUpdateCurrentUserMutation(auth, newUser, {
+        useUpdateCurrentUserMutation(auth, {
           onSuccess: onSuccessMock,
         }),
       { wrapper }
     );
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate(newUser);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -141,14 +138,14 @@ describe("useUpdateCurrentUserMutation", () => {
 
     const { result } = renderHook(
       () =>
-        useUpdateCurrentUserMutation(auth, null, {
+        useUpdateCurrentUserMutation(auth, {
           onError: onErrorMock,
         }),
       { wrapper }
     );
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate(null);
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -170,15 +167,14 @@ describe("useUpdateCurrentUserMutation", () => {
     );
     const newUser = userCredential.user;
 
-    const { result } = renderHook(
-      () => useUpdateCurrentUserMutation(auth, newUser),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUpdateCurrentUserMutation(auth), {
+      wrapper,
+    });
 
     await act(async () => {
       // Attempt multiple concurrent updates
-      result.current.mutate();
-      result.current.mutate();
+      result.current.mutate(newUser);
+      result.current.mutate(newUser);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));

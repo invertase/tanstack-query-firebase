@@ -1,5 +1,10 @@
 import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
-import { type Auth, updateCurrentUser, type User } from "firebase/auth";
+import {
+  type Auth,
+  AuthError,
+  updateCurrentUser,
+  type User,
+} from "firebase/auth";
 
 type AuthUseMutationOptions<
   TData = unknown,
@@ -9,11 +14,10 @@ type AuthUseMutationOptions<
 
 export function useUpdateCurrentUserMutation(
   auth: Auth,
-  user: User | null,
-  options?: AuthUseMutationOptions
+  options?: AuthUseMutationOptions<void, AuthError, User | null>
 ) {
-  return useMutation<void>({
+  return useMutation<void, AuthError, User | null>({
     ...options,
-    mutationFn: () => updateCurrentUser(auth, user),
+    mutationFn: (user) => updateCurrentUser(auth, user),
   });
 }
