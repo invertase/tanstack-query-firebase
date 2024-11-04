@@ -6,19 +6,27 @@ import {
   type UserCredential,
 } from "firebase/auth";
 
-type SignInWithEmailAndPassword = Omit<
-  UseMutationOptions<UserCredential, AuthError, void>,
-  "mutationFn"
->;
+type AuthUseMutationOptions<
+  TData = unknown,
+  TError = Error,
+  TVariables = void
+> = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;
 
 export function useSignInWithEmailAndPasswordMutation(
   auth: Auth,
-  email: string,
-  password: string,
-  options?: SignInWithEmailAndPassword
+  options?: AuthUseMutationOptions<
+    UserCredential,
+    AuthError,
+    { email: string; password: string }
+  >
 ) {
-  return useMutation<UserCredential, AuthError>({
+  return useMutation<
+    UserCredential,
+    AuthError,
+    { email: string; password: string }
+  >({
     ...options,
-    mutationFn: () => signInWithEmailAndPassword(auth, email, password),
+    mutationFn: ({ email, password }) =>
+      signInWithEmailAndPassword(auth, email, password),
   });
 }

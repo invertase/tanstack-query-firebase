@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  describe,
-  expect,
-  test,
-  beforeEach,
-  afterEach,
-  vi,
-  type MockInstance,
-} from "vitest";
+import { describe, expect, test, beforeEach, afterEach, vi } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useSignInWithEmailAndPasswordMutation } from "./useSignInWithEmailAndPasswordMutation";
@@ -41,11 +33,11 @@ describe("useSignInWithEmailAndPasswordMutation", () => {
     await createUserWithEmailAndPassword(auth, email, password);
 
     const { result } = renderHook(
-      () => useSignInWithEmailAndPasswordMutation(auth, email, password),
+      () => useSignInWithEmailAndPasswordMutation(auth),
       { wrapper }
     );
 
-    await act(async () => result.current.mutate());
+    await act(async () => result.current.mutate({ email, password }));
 
     await waitFor(async () => expect(result.current.isSuccess).toBe(true));
 
@@ -60,12 +52,12 @@ describe("useSignInWithEmailAndPasswordMutation", () => {
     await createUserWithEmailAndPassword(auth, email, password);
 
     const { result } = renderHook(
-      () => useSignInWithEmailAndPasswordMutation(auth, email, wrongPassword),
+      () => useSignInWithEmailAndPasswordMutation(auth),
       { wrapper }
     );
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate({ email, password: wrongPassword });
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -80,12 +72,12 @@ describe("useSignInWithEmailAndPasswordMutation", () => {
     const password = "tanstackQueryFirebase#123";
 
     const { result } = renderHook(
-      () => useSignInWithEmailAndPasswordMutation(auth, email, password),
+      () => useSignInWithEmailAndPasswordMutation(auth),
       { wrapper }
     );
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate({ email, password });
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -100,12 +92,12 @@ describe("useSignInWithEmailAndPasswordMutation", () => {
     const password = "validPassword123";
 
     const { result } = renderHook(
-      () => useSignInWithEmailAndPasswordMutation(auth, email, password),
+      () => useSignInWithEmailAndPasswordMutation(auth),
       { wrapper }
     );
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate({ email, password });
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -120,12 +112,12 @@ describe("useSignInWithEmailAndPasswordMutation", () => {
     const password = "";
 
     const { result } = renderHook(
-      () => useSignInWithEmailAndPasswordMutation(auth, email, password),
+      () => useSignInWithEmailAndPasswordMutation(auth),
       { wrapper }
     );
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate({ email, password });
     });
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -142,14 +134,14 @@ describe("useSignInWithEmailAndPasswordMutation", () => {
     await createUserWithEmailAndPassword(auth, email, password);
 
     const { result } = renderHook(
-      () => useSignInWithEmailAndPasswordMutation(auth, email, password),
+      () => useSignInWithEmailAndPasswordMutation(auth),
       { wrapper }
     );
 
     // Attempt multiple concurrent sign-ins
     await act(async () => {
-      result.current.mutate();
-      result.current.mutate();
+      result.current.mutate({ email, password });
+      result.current.mutate({ email, password });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -167,14 +159,14 @@ describe("useSignInWithEmailAndPasswordMutation", () => {
 
     const { result } = renderHook(
       () =>
-        useSignInWithEmailAndPasswordMutation(auth, email, password, {
+        useSignInWithEmailAndPasswordMutation(auth, {
           onSuccess: onSuccessMock,
         }),
       { wrapper }
     );
 
     await act(async () => {
-      result.current.mutate();
+      result.current.mutate({ email, password });
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
