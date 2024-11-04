@@ -6,18 +6,18 @@ import {
   type UserCredential,
 } from "firebase/auth";
 
-type SignInWithCustomTokenOptions = Omit<
-  UseMutationOptions<UserCredential, AuthError, void>,
-  "mutationFn"
->;
+type AuthUseMutationOptions<
+  TData = unknown,
+  TError = Error,
+  TVariables = void
+> = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;
 
 export function useSignInWithCustomTokenMutation(
   auth: Auth,
-  customToken: string,
-  options?: SignInWithCustomTokenOptions
+  options?: AuthUseMutationOptions<UserCredential, AuthError, string>
 ) {
-  return useMutation<UserCredential, AuthError>({
+  return useMutation<UserCredential, AuthError, string>({
     ...options,
-    mutationFn: () => signInWithCustomToken(auth, customToken),
+    mutationFn: (customToken) => signInWithCustomToken(auth, customToken),
   });
 }
