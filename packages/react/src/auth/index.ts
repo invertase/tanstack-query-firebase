@@ -30,6 +30,7 @@ export { useSignInAnonymouslyMutation } from "./useSignInAnonymouslyMutation";
 // useUpdateCurrentUserMutation
 // useValidatePasswordMutation
 // useVerifyPasswordResetCodeMutation
+export { useVerifyPasswordResetCodeMutation } from "./useVerifyPasswordResetCodeMutation";
 // useDeleteUserMutation
 // useLinkWithCredentialMutation
 // useLinkWithPhoneNumberMutation
