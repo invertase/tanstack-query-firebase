@@ -39,7 +39,7 @@ export { useSignInAnonymouslyMutation } from "./useSignInAnonymouslyMutation";
 // useReauthenticateWithCredentialMutation
 // useReauthenticateWithPopupMutation
 // useReauthenticateWithRedirectMutation
-// useReloadMutation
+export { useReloadMutation } from "./useReloadMutation";
 // useSendEmailVerificationMutation
 // useUnlinkMutation
 // useUpdateEmailMutation
