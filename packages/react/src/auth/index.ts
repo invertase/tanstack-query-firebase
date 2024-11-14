@@ -41,6 +41,7 @@ export { useSignInAnonymouslyMutation } from "./useSignInAnonymouslyMutation";
 // useReauthenticateWithRedirectMutation
 // useReloadMutation
 // useSendEmailVerificationMutation
+export { useSendEmailVerificationMutation } from "./useSendEmailVerificationMutation";
 // useUnlinkMutation
 // useUpdateEmailMutation
 // useUpdatePasswordMutation
