@@ -18,14 +18,14 @@ const firebaseTestingOptions = {
   authDomain: "test-auth-domain",
 };
 
-let app: FirebaseApp | undefined;
+let firebaseApp: FirebaseApp | undefined;
 let firestore: Firestore;
 let auth: Auth;
 
-if (!app) {
-  app = initializeApp(firebaseTestingOptions);
-  firestore = getFirestore(app);
-  auth = getAuth(app);
+if (!firebaseApp) {
+  firebaseApp = initializeApp(firebaseTestingOptions);
+  firestore = getFirestore(firebaseApp);
+  auth = getAuth(firebaseApp);
   const dataConnect = getDataConnect(connectorConfig);
 
   connectFirestoreEmulator(firestore, "localhost", 8080);
@@ -78,4 +78,5 @@ export {
   firebaseTestingOptions,
   auth,
   wipeAuth,
+  firebaseApp,
 };
