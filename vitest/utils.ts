@@ -26,11 +26,14 @@ if (!firebaseApp) {
   firebaseApp = initializeApp(firebaseTestingOptions);
   firestore = getFirestore(firebaseApp);
   auth = getAuth(firebaseApp);
-  const dataConnect = getDataConnect(connectorConfig);
 
   connectFirestoreEmulator(firestore, "localhost", 8080);
   connectAuthEmulator(auth, "http://localhost:9099");
-  connectDataConnectEmulator(dataConnect, "localhost", 9399);
+  connectDataConnectEmulator(
+    getDataConnect(connectorConfig),
+    "localhost",
+    9399
+  );
 }
 
 async function wipeFirestore() {
