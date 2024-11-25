@@ -1,15 +1,15 @@
 # # Example queries for a simple movie app.
 
-# # @auth() directives control who can call each operation.
-# # Anyone should be able to list all movies, so the auth level is set to PUBLIC
-# query ListMovies @auth(level: PUBLIC) {
-#   movies {
-#     id
-#     title
-#     imageUrl
-#     genre
-#   }
-# }
+# @auth() directives control who can call each operation.
+# Anyone should be able to list all movies, so the auth level is set to PUBLIC
+query ListMovies @auth(level: PUBLIC) {
+  movies {
+    id
+    title
+    imageUrl
+    genre
+  }
+}
 
 # # List all users, only admins should be able to list all users, so we use NO_ACCESS
 # query ListUsers @auth(level: NO_ACCESS) {

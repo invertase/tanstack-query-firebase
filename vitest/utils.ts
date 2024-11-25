@@ -6,6 +6,11 @@ import {
   type Firestore,
 } from "firebase/firestore";
 import { expect } from "vitest";
+import {
+  connectDataConnectEmulator,
+  getDataConnect,
+} from "firebase/data-connect";
+import { connectorConfig } from "@/dataconnect/default-connector";
 
 const firebaseTestingOptions = {
   projectId: "test-project",
@@ -21,9 +26,11 @@ if (!app) {
   app = initializeApp(firebaseTestingOptions);
   firestore = getFirestore(app);
   auth = getAuth(app);
+  const dataConnect = getDataConnect(connectorConfig);
 
   connectFirestoreEmulator(firestore, "localhost", 8080);
   connectAuthEmulator(auth, "http://localhost:9099");
+  connectDataConnectEmulator(dataConnect, "localhost", 9399);
 }
 
 async function wipeFirestore() {

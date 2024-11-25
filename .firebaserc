@@ -1,1 +1,7 @@
-{}
+{
+  "projects": {
+    "default": "test"
+  },
+  "targets": {},
+  "etags": {}
+}
