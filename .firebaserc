@@ -1,1 +1,7 @@
-{}
+{
+  "projects": {
+    "default": "tqf-examples"
+  },
+  "targets": {},
+  "etags": {}
+}
