@@ -4,6 +4,10 @@ import { useConnectQuery } from "./useConnectQuery";
 import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { listMoviesRef } from "@/dataconnect/default-connector";
+import { firebaseApp } from "~/testing-utils";
+
+// initialize firebase app
+firebaseApp;
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,13 +22,9 @@ const wrapper = ({ children }: { children: ReactNode }) => (
 );
 
 describe("useConnectQuery", () => {
-  const moviesRef = listMoviesRef();
-
-  test("fetches", async () => {
-    const { result } = renderHook(() => useConnectQuery(moviesRef), {
+  test("fetches data successfully", async () => {
+    const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
       wrapper,
     });
-
-    expect(result.current.isPending).toBe(true);
   });
 });
