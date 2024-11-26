@@ -16,5 +16,5 @@
       "@/dataconnect/*": ["../../dataconnect-sdk/js/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "utils.tsx"]
 }
