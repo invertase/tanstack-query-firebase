@@ -5,7 +5,7 @@ mutation CreateMovie(
   $title: String!
   $genre: String!
   $imageUrl: String!
-) @auth(level: USER_EMAIL_VERIFIED) {
+) @auth(level: PUBLIC) {
   movie_insert(
     data: {
       title: $title
