@@ -1,5 +1,5 @@
 import React, { type ReactNode } from "react";
-import { describe, expect, test, beforeEach } from "vitest";
+import { describe, expect, test } from "vitest";
 import { useConnectQuery } from "./useConnectQuery";
 import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -26,5 +26,14 @@ describe("useConnectQuery", () => {
     const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
       wrapper,
     });
+
+    expect(result.current.isPending).toBe(true);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data).toBeDefined();
+    expect(result.current.data).toHaveProperty("movies");
+    expect(Array.isArray(result.current.data?.movies)).toBe(true);
+    expect(result.current.data?.movies.length).toBeGreaterThanOrEqual(0);
   });
 });
