@@ -57,7 +57,7 @@
           "title": "useConnectQuery"
         },
         {
-          "href": "/react/hooks/auth/useSignInAnonymouslyMutation",
+          "href": "/react/hooks/data-connect/useConnectQuery",
           "title": "useConnectMutation"
         }
       ]
