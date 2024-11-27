@@ -57,7 +57,7 @@
           "title": "useConnectQuery"
         },
         {
-          "href": "/react/hooks/data-connect/useConnectQuery",
+          "href": "/react/hooks/data-connect/useConnectMutation",
           "title": "useConnectMutation"
         }
       ]
