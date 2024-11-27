@@ -50,6 +50,26 @@
     },
     {
       "tab": "react",
+      "group": "Data Connect",
+      "pages": [
+        {
+          "href": "/react/hooks/auth/useSignInAnonymouslyMutation",
+          "title": "useConnectQuery"
+        }
+      ]
+    },
+    {
+      "tab": "react",
+      "group": "Data Connect",
+      "pages": [
+        {
+          "href": "/react/hooks/auth/useSignInAnonymouslyMutation",
+          "title": "useConnectMutation"
+        }
+      ]
+    },
+    {
+      "tab": "react",
       "group": "Firestore",
       "pages": [
         {
