@@ -33,7 +33,7 @@ jobs:
         run: pnpm install
 
       - name: Start Firebase Emulator Suite
-        uses: firebase-emulator-action@v1.0.1
+        uses: invertase/firebase-emulator-action@v1.0.1
 
       # Determine which packages have changed
       - name: Determine changed packages
