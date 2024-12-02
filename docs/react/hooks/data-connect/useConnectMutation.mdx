@@ -17,11 +17,11 @@ The hook manages the mutation process and provides an easy-to-use interface to m
 
 ```jsx
 import { useConnectQuery } from "@tanstack-query-firebase/react";
-import { listMoviesQuery } from "@/your-package-name/your-connector";
+import { createMovieRef } from "@/your-package-name/your-connector";
 
 function Component() {
   const { mutate, isPending, isSuccess, isError, error } =
-    useConnectMutation(createMovieMutation);
+    useConnectMutation(createMovieRef);
 
   const handleSubmit = async (movieData) => {
     try {
