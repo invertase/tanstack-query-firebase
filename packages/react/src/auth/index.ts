@@ -28,7 +28,7 @@ export { useSignInWithCredentialMutation } from "./useSignInWithCredentialMutati
 // useSignInWithRedirectMutation
 // useSignOutMutation
 // useUpdateCurrentUserMutation
-// useValidatePasswordMutation
+export { useValidatePasswordMutation } from "./useValidatePasswordMutation";
 // useVerifyPasswordResetCodeMutation
 // useDeleteUserMutation
 export { useDeleteUserMutation } from "./useDeleteUserMutation";
