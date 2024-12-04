@@ -30,6 +30,7 @@ export { useSignInWithEmailAndPasswordMutation } from "./useSignInWithEmailAndPa
 export { useUpdateCurrentUserMutation } from "./useUpdateCurrentUserMutation";
 // useValidatePasswordMutation
 // useVerifyPasswordResetCodeMutation
+export { useVerifyPasswordResetCodeMutation } from "./useVerifyPasswordResetCodeMutation";
 // useDeleteUserMutation
 export { useDeleteUserMutation } from "./useDeleteUserMutation";
 // useLinkWithCredentialMutation
