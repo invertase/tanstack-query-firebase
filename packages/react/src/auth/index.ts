@@ -31,7 +31,7 @@ export { useSignInWithCredentialMutation } from "./useSignInWithCredentialMutati
 // useValidatePasswordMutation
 // useVerifyPasswordResetCodeMutation
 // useDeleteUserMutation
-// useLinkWithCredentialMutation
+export { useLinkWithCredentialMutation } from "./useLinkWithCredentialMutation";
 // useLinkWithPhoneNumberMutation
 // useLinkWithPopupMutation
 // useLinkWithRedirectMutation
