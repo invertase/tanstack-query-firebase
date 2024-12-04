@@ -26,6 +26,8 @@ export { useSignInWithEmailAndPasswordMutation } from "./useSignInWithEmailAndPa
 // useSignInWithPhoneNumberMutation
 // useSignInWithPopupMutation
 // useSignInWithRedirectMutation
+export { useSignOutMutation } from "./useSignOutMutation";
+// useUpdateCurrentUserMutation
 // useSignOutMutation
 export { useUpdateCurrentUserMutation } from "./useUpdateCurrentUserMutation";
 // useValidatePasswordMutation
