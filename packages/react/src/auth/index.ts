@@ -21,7 +21,7 @@ export { useSendSignInLinkToEmailMutation } from "./useSendSignInLinkToEmailMuta
 export { useSignInAnonymouslyMutation } from "./useSignInAnonymouslyMutation";
 export { useSignInWithCredentialMutation } from "./useSignInWithCredentialMutation";
 // useSignInWithCustomTokenMutation
-// useSignInWithEmailAndPasswordMutation
+export { useSignInWithEmailAndPasswordMutation } from "./useSignInWithEmailAndPasswordMutation";
 // useSignInWithEmailLinkMutation
 // useSignInWithPhoneNumberMutation
 // useSignInWithPopupMutation
