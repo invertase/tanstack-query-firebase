@@ -39,7 +39,7 @@ export { useSignInWithCredentialMutation } from "./useSignInWithCredentialMutati
 // useReauthenticateWithCredentialMutation
 // useReauthenticateWithPopupMutation
 // useReauthenticateWithRedirectMutation
-// useReloadMutation
+export { useReloadMutation } from "./useReloadMutation";
 // useSendEmailVerificationMutation
 // useUnlinkMutation
 // useUpdateEmailMutation
