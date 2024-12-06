@@ -74,6 +74,25 @@ function expectFirestoreError(error: unknown, expectedCode: string) {
   }
 }
 
+function expectFirebaseError(error: unknown, expectedCode: string) {
+  if (error instanceof FirebaseError) {
+    expect(error).toBeDefined();
+    expect(error.code).toBeDefined();
+    expect(error.code).toBe(expectedCode);
+  } else {
+    console.error("Expected a Firebase error, but received a different type.", {
+      receivedType: typeof error,
+      errorDetails:
+        error instanceof Error
+          ? { message: error.message, stack: error.stack }
+          : error,
+    });
+    throw new Error(
+      "Expected a Firebase error, but received a different type."
+    );
+  }
+}
+
 export {
   firestore,
   wipeFirestore,
@@ -82,4 +101,5 @@ export {
   auth,
   wipeAuth,
   firebaseApp,
+  expectFirebaseError,
 };
