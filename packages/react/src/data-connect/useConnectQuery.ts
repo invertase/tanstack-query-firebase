@@ -6,7 +6,7 @@ import {
   executeQuery,
 } from "firebase/data-connect";
 
-type UseConnectQueryOptions<TData = unknown, TError = Error> = Omit<
+type UseConnectQueryOptions<TData = unknown, TError = FirebaseError> = Omit<
   UseQueryOptions<TData, TError>,
   "queryFn"
 >;
