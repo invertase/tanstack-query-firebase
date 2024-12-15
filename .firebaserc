@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "test"
+    "default": "demo-project"
   },
   "targets": {},
   "etags": {}
