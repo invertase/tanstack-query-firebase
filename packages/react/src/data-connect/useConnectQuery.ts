@@ -1,15 +1,16 @@
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 import { type FirebaseError } from "firebase/app";
+import type { PartialBy } from "../../utils";
 import {
   type QueryRef,
   type QueryResult,
   executeQuery,
 } from "firebase/data-connect";
 
-type UseConnectQueryOptions<TData = unknown, TError = FirebaseError> = Omit<
-  UseQueryOptions<TData, TError>,
-  "queryFn"
->;
+type UseConnectQueryOptions<
+  TData = unknown,
+  TError = FirebaseError
+> = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
 
 export function useConnectQuery<
   Data extends Record<string, any>,
