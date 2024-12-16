@@ -6,6 +6,11 @@ import {
   type Firestore,
 } from "firebase/firestore";
 import { expect } from "vitest";
+import {
+  connectDataConnectEmulator,
+  getDataConnect,
+} from "firebase/data-connect";
+import { connectorConfig } from "@/dataconnect/default-connector";
 
 const firebaseTestingOptions = {
   projectId: "test-project",
@@ -13,17 +18,22 @@ const firebaseTestingOptions = {
   authDomain: "test-auth-domain",
 };
 
-let app: FirebaseApp | undefined;
+let firebaseApp: FirebaseApp | undefined;
 let firestore: Firestore;
 let auth: Auth;
 
-if (!app) {
-  app = initializeApp(firebaseTestingOptions);
-  firestore = getFirestore(app);
-  auth = getAuth(app);
+if (!firebaseApp) {
+  firebaseApp = initializeApp(firebaseTestingOptions);
+  firestore = getFirestore(firebaseApp);
+  auth = getAuth(firebaseApp);
 
   connectFirestoreEmulator(firestore, "localhost", 8080);
   connectAuthEmulator(auth, "http://localhost:9099");
+  connectDataConnectEmulator(
+    getDataConnect(connectorConfig),
+    "localhost",
+    9399
+  );
 }
 
 async function wipeFirestore() {
@@ -90,5 +100,6 @@ export {
   firebaseTestingOptions,
   auth,
   wipeAuth,
+  firebaseApp,
   expectFirebaseError,
 };

@@ -18,6 +18,10 @@
     "./firestore": {
       "import": "./dist/firestore.js",
       "types": "./dist/firestore.d.ts"
+    },
+    "./data-connect": {
+      "import": "./dist/dataconnect.js",
+      "types": "./dist/dataconnect.d.ts"
     }
   },
   "author": {
@@ -29,10 +33,11 @@
   "devDependencies": {
     "@testing-library/react": "^16.0.1",
     "react": "^18.3.1",
-    "@types/react": "^18.3.5"
+    "@types/react": "^18.3.5",
+    "@dataconnect/default-connector": "workspace:*"
   },
   "peerDependencies": {
-    "firebase": "^10.13.1",
+    "firebase": "^10.14.0",
     "@tanstack/react-query": "^5.55.4"
   }
 }

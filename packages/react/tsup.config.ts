@@ -5,6 +5,7 @@ export default defineConfig({
     index: "src/index.ts",
     auth: "src/auth/index.ts",
     firestore: "src/firestore/index.ts",
+    dataconnect: "src/data-connect/index.ts",
   },
   format: ["esm"],
   dts: true, // generates .d.ts files
