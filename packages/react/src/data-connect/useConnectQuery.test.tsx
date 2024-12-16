@@ -1,7 +1,11 @@
 import { describe, expect, test, beforeEach } from "vitest";
 import { useConnectQuery } from "./useConnectQuery";
 import { renderHook, waitFor } from "@testing-library/react";
-import { listMoviesRef, createMovie } from "@/dataconnect/default-connector";
+import {
+  listMoviesRef,
+  createMovie,
+  getMovieByIdRef,
+} from "@/dataconnect/default-connector";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 
@@ -102,6 +106,31 @@ describe("useConnectQuery", () => {
       expect(i).toHaveProperty("title");
       expect(i).toHaveProperty("genre");
       expect(i).toHaveProperty("imageUrl");
+    });
+  });
+
+  test("fetches data by unique identifier", async () => {
+    const movieData = {
+      title: "tanstack query firebase",
+      genre: "library",
+      imageUrl: "https://invertase.io/",
+    };
+    const createdMovie = await createMovie(movieData);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+
+    const { result } = renderHook(
+      () => useConnectQuery(getMovieByIdRef({ id: movieId })),
+      {
+        wrapper,
+      }
+    );
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data?.movie?.title).toBe(movieData?.title);
+      expect(result.current.data?.movie?.genre).toBe(movieData?.genre);
+      expect(result.current.data?.movie?.imageUrl).toBe(movieData?.imageUrl);
     });
   });
 });
