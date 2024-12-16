@@ -12,6 +12,11 @@ mutation UpsertMovie($id: UUID!, $title: String!, $imageUrl: String!)
   movie_upsert(data: { id: $id, title: $title, imageUrl: $imageUrl })
 }
 
+# Delete a movie
+mutation DeleteMovie($id: UUID!) @auth(level: PUBLIC) {
+  movie_delete(id: $id)
+}
+
 # # Upsert (update or insert) a user's username based on their auth.uid
 # mutation UpsertUser($username: String!) @auth(level: USER) {
 #   user_upsert(
