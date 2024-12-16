@@ -18,6 +18,10 @@
     "./firestore": {
       "import": "./dist/firestore.js",
       "types": "./dist/firestore.d.ts"
+    },
+    "./data-connect": {
+      "import": "./dist/dataconnect.js",
+      "types": "./dist/dataconnect.d.ts"
     }
   },
   "author": {
