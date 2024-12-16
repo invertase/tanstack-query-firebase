@@ -5,14 +5,14 @@ import {
   type FirestoreError,
 } from "firebase/firestore";
 
-type FirestoreUseMutationOptions<TData = unknown, TError = Error> = Omit<
+type UseFirestoreMutationOptions<TData = unknown, TError = Error> = Omit<
   UseMutationOptions<TData, TError, void>,
   "mutationFn"
 >;
 
 export function useClearIndexedDbPersistenceMutation(
   firestore: Firestore,
-  options?: FirestoreUseMutationOptions<void, FirestoreError>
+  options?: UseFirestoreMutationOptions<void, FirestoreError>
 ) {
   return useMutation<void, FirestoreError>({
     ...options,

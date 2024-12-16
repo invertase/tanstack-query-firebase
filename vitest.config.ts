@@ -3,6 +3,7 @@ import path from "path";
 
 export default defineConfig({
   test: {
+    fileParallelism: false,
     coverage: {
       provider: "istanbul",
     },
