@@ -11,12 +11,22 @@ query ListMovies @auth(level: PUBLIC) {
   }
 }
 
+# Get movie by id
+query GetMovieById($id: UUID!) @auth(level: PUBLIC) {
+  movie(id: $id) {
+    id
+    title
+    imageUrl
+    genre
+  }
+}
+
 # # List all users, only admins should be able to list all users, so we use NO_ACCESS
 # query ListUsers @auth(level: NO_ACCESS) {
 #   users { id, username }
 # }
 
-# # Logged in user can list all their reviews and movie titles associated with the review 
+# # Logged in user can list all their reviews and movie titles associated with the review
 # # Since the query requires the uid of the current authenticated user, the auth level is set to USER
 # query ListUserReviews @auth(level: USER) {
 #   user(key: {id_expr: "auth.uid"}) {
@@ -32,31 +42,6 @@ query ListMovies @auth(level: PUBLIC) {
 #       movie {
 #         id
 #         title
-#       }
-#     }
-#   }
-# }
-
-# # Get movie by id
-# query GetMovieById($id: UUID!) @auth(level: PUBLIC) {
-#   movie(id: $id) {
-#     id
-#     title
-#     imageUrl
-#     genre
-#     metadata: movieMetadata_on_movie {
-#       rating
-#       releaseYear
-#       description
-#     }
-#     reviews: reviews_on_movie {
-#       id
-#       reviewText
-#       reviewDate
-#       rating
-#       user {
-#         id
-#         username
 #       }
 #     }
 #   }

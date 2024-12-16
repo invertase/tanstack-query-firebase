@@ -29,6 +29,19 @@ export interface DeleteMovieVariables {
   id: UUIDString;
 }
 
+export interface GetMovieByIdData {
+  movie?: {
+    id: UUIDString;
+    title: string;
+    imageUrl: string;
+    genre?: string | null;
+  } & Movie_Key;
+}
+
+export interface GetMovieByIdVariables {
+  id: UUIDString;
+}
+
 export interface ListMoviesData {
   movies: ({
     id: UUIDString;
@@ -61,6 +74,23 @@ export interface UpsertMovieVariables {
 
 
 /* Allow users to create refs without passing in DataConnect */
+export function listMoviesRef(): QueryRef<ListMoviesData, undefined>;/* Allow users to pass in custom DataConnect instances */
+export function listMoviesRef(dc: DataConnect): QueryRef<ListMoviesData,undefined>;
+
+export function listMovies(): QueryPromise<ListMoviesData, undefined>;
+export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData,undefined>;
+
+
+/* Allow users to create refs without passing in DataConnect */
+export function getMovieByIdRef(vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function getMovieByIdRef(dc: DataConnect, vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData,GetMovieByIdVariables>;
+
+export function getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
+export function getMovieById(dc: DataConnect, vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData,GetMovieByIdVariables>;
+
+
+/* Allow users to create refs without passing in DataConnect */
 export function createMovieRef(vars: CreateMovieVariables): MutationRef<CreateMovieData, CreateMovieVariables>;
 /* Allow users to pass in custom DataConnect instances */
 export function createMovieRef(dc: DataConnect, vars: CreateMovieVariables): MutationRef<CreateMovieData,CreateMovieVariables>;
@@ -85,13 +115,5 @@ export function deleteMovieRef(dc: DataConnect, vars: DeleteMovieVariables): Mut
 
 export function deleteMovie(vars: DeleteMovieVariables): MutationPromise<DeleteMovieData, DeleteMovieVariables>;
 export function deleteMovie(dc: DataConnect, vars: DeleteMovieVariables): MutationPromise<DeleteMovieData,DeleteMovieVariables>;
-
-
-/* Allow users to create refs without passing in DataConnect */
-export function listMoviesRef(): QueryRef<ListMoviesData, undefined>;/* Allow users to pass in custom DataConnect instances */
-export function listMoviesRef(dc: DataConnect): QueryRef<ListMoviesData,undefined>;
-
-export function listMovies(): QueryPromise<ListMoviesData, undefined>;
-export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData,undefined>;
 
 
