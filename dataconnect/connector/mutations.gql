@@ -1,18 +1,15 @@
 # # Example mutations for a simple movie app
 
 # Create a movie based on user input
-mutation CreateMovie(
-  $title: String!
-  $genre: String!
-  $imageUrl: String!
-) @auth(level: PUBLIC) {
-  movie_insert(
-    data: {
-      title: $title
-      genre: $genre
-      imageUrl: $imageUrl
-    }
-  )
+mutation CreateMovie($title: String!, $genre: String!, $imageUrl: String!)
+@auth(level: PUBLIC) {
+  movie_insert(data: { title: $title, genre: $genre, imageUrl: $imageUrl })
+}
+
+# Upsert a movie
+mutation UpsertMovie($id: UUID!, $title: String!, $imageUrl: String!)
+@auth(level: PUBLIC) {
+  movie_upsert(data: { id: $id, title: $title, imageUrl: $imageUrl })
 }
 
 # # Upsert (update or insert) a user's username based on their auth.uid
