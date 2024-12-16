@@ -575,7 +575,7 @@ describe("useConnectMutation", () => {
     });
   });
 
-  test("executes delete mutation successfully", async () => {
+  test("calls onSuccess callback after successful delete mutation", async () => {
     const { result: createMutationResult } = renderHook(
       () => useConnectMutation(createMovieRef),
       {
