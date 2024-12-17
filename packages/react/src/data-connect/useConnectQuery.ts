@@ -1,6 +1,7 @@
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
-import { type FirebaseError } from "firebase/app";
+import type { FirebaseError } from "firebase/app";
 import type { PartialBy } from "../../utils";
+import type { FlattenedQueryResult } from "./types";
 import {
   type QueryRef,
   type QueryResult,
@@ -12,30 +13,41 @@ type UseConnectQueryOptions<
   TError = FirebaseError
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
 
-export function useConnectQuery<
-  Data extends Record<string, any>,
-  Variables = unknown
->(
+export function useConnectQuery<Data = unknown, Variables = unknown>(
   refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
-  options?: UseConnectQueryOptions<Data, FirebaseError>
+  options?: UseConnectQueryOptions<
+    FlattenedQueryResult<Data, Variables>,
+    FirebaseError
+  >
 ) {
   let queryRef: QueryRef<Data, Variables>;
-  let initialData: Data | undefined;
+  let initialData: FlattenedQueryResult<Data, Variables> | undefined;
 
   if ("ref" in refOrResult) {
     queryRef = refOrResult.ref;
-    initialData = refOrResult.data;
+    initialData = {
+      ...refOrResult.data,
+      ref: refOrResult.ref,
+      source: refOrResult.source,
+      fetchTime: refOrResult.fetchTime,
+    };
   } else {
     queryRef = refOrResult;
   }
 
-  return useQuery<Data, FirebaseError>({
-    initialData,
+  return useQuery<FlattenedQueryResult<Data, Variables>, FirebaseError>({
     ...options,
-    queryKey: options?.queryKey ?? [queryRef.name, queryRef.variables],
+    initialData,
+    queryKey: options?.queryKey ?? [queryRef.name, queryRef.variables || null],
     queryFn: async () => {
-      const { data } = await executeQuery<Data, Variables>(queryRef);
-      return data;
+      const response = await executeQuery<Data, Variables>(queryRef);
+
+      return {
+        ...response.data,
+        ref: response.ref,
+        source: response.source,
+        fetchTime: response.fetchTime,
+      };
     },
   });
 }

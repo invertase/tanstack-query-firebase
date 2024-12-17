@@ -7,5 +7,5 @@ if (getApps().length === 0) {
     projectId: "example",
   });
   const dataConnect = getDataConnect(connectorConfig);
-  connectDataConnectEmulator(dataConnect!, "localhost", 5003);
+  connectDataConnectEmulator(dataConnect!, "localhost", 9399);
 }
