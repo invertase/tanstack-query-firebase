@@ -17,7 +17,9 @@ type UseConnectMutationOptions<
   TError = FirebaseError,
   Variables = unknown
 > = Omit<UseMutationOptions<TData, TError, Variables>, "mutationFn"> & {
-  invalidate?: QueryRef<unknown, unknown>[];
+  invalidate?: Array<
+    QueryRef<unknown, unknown> | (() => QueryRef<unknown, unknown>)
+  >;
 };
 
 export function useConnectMutation<
@@ -42,9 +44,16 @@ export function useConnectMutation<
     onSuccess(...args) {
       if (options?.invalidate && options.invalidate.length) {
         for (const ref of options.invalidate) {
-          queryClient.invalidateQueries({
-            queryKey: [ref.name, ref.variables],
-          });
+          if ("variables" in ref) {
+            queryClient.invalidateQueries({
+              queryKey: [ref.name, ref.variables],
+              exact: true,
+            });
+          } else {
+            queryClient.invalidateQueries({
+              queryKey: [ref().name],
+            });
+          }
         }
       }
 
