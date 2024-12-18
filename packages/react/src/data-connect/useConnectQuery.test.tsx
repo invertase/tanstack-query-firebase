@@ -150,6 +150,33 @@ describe("useConnectQuery", () => {
     expect(result.current.data).toHaveProperty("fetchTime");
   });
 
+  test("returns flattened data including ref, source, and fetchTime for queries with unique identifier", async () => {
+    const movieData = {
+      title: "tanstack query firebase",
+      genre: "library",
+      imageUrl: "https://invertase.io/",
+    };
+    const createdMovie = await createMovie(movieData);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+
+    const { result } = renderHook(
+      () => useConnectQuery(getMovieByIdRef({ id: movieId })),
+      {
+        wrapper,
+      }
+    );
+
+    expect(result.current.isPending).toBe(true);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data).toBeDefined();
+    expect(result.current.data).toHaveProperty("ref");
+    expect(result.current.data).toHaveProperty("source");
+    expect(result.current.data).toHaveProperty("fetchTime");
+  });
+
   test("avails the data immediately when QueryResult is passed", async () => {
     const queryResult = await executeQuery(listMoviesRef());
 
