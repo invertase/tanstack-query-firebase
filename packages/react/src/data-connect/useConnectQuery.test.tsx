@@ -133,4 +133,17 @@ describe("useConnectQuery", () => {
       expect(result.current.data?.movie?.imageUrl).toBe(movieData?.imageUrl);
     });
   });
+
+  test("returns flattened data including ref, source, and fetchTime", async () => {
+    const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
+      wrapper,
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data).toBeDefined();
+    expect(result.current.data).toHaveProperty("ref");
+    expect(result.current.data).toHaveProperty("source");
+    expect(result.current.data).toHaveProperty("fetchTime");
+  });
 });
