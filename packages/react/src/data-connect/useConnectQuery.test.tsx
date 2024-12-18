@@ -159,7 +159,8 @@ describe("useConnectQuery", () => {
 
     // Should not enter a loading state
     expect(result.current.isLoading).toBe(false);
-    
+    expect(result.current.isPending).toBe(false);
+
     expect(result.current.isSuccess).toBe(true);
 
     expect(result.current.data).toBeDefined();
