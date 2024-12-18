@@ -8,6 +8,7 @@ import {
 } from "@/dataconnect/default-connector";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
+import { executeQuery } from "firebase/data-connect";
 
 // initialize firebase app
 firebaseApp;
@@ -139,7 +140,27 @@ describe("useConnectQuery", () => {
       wrapper,
     });
 
+    expect(result.current.isLoading).toBe(true);
+
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(result.current.data).toBeDefined();
+    expect(result.current.data).toHaveProperty("ref");
+    expect(result.current.data).toHaveProperty("source");
+    expect(result.current.data).toHaveProperty("fetchTime");
+  });
+
+  test("avails the data immediately when QueryResult is passed", async () => {
+    const queryResult = await executeQuery(listMoviesRef());
+
+    const { result } = renderHook(() => useConnectQuery(queryResult), {
+      wrapper,
+    });
+
+    // Should not enter a loading state
+    expect(result.current.isLoading).toBe(false);
+    
+    expect(result.current.isSuccess).toBe(true);
 
     expect(result.current.data).toBeDefined();
     expect(result.current.data).toHaveProperty("ref");
