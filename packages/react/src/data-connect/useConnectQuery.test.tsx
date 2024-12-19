@@ -207,4 +207,29 @@ describe("useConnectQuery", () => {
 
     expect(dehydrated.queries[0].queryKey).toEqual(["ListMovies", null]);
   });
+
+  test("a query with variables has valid query keys including the variables", async () => {
+    const movieData = {
+      title: "tanstack query firebase",
+      genre: "library",
+      imageUrl: "https://invertase.io/",
+    };
+
+    const createdMovie = await createMovie(movieData);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+
+    const queryClient = new DataConnectQueryClient();
+
+    await queryClient.prefetchDataConnectQuery(
+      getMovieByIdRef({ id: movieId })
+    );
+
+    const dehydrated = dehydrate(queryClient);
+
+    expect(dehydrated.queries[0].queryKey).toEqual([
+      "GetMovieById",
+      { id: movieId },
+    ]);
+  });
 });
