@@ -9,6 +9,8 @@ import {
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { executeQuery } from "firebase/data-connect";
+import { DataConnectQueryClient } from "./query-client";
+import { dehydrate } from "@tanstack/react-query";
 
 // initialize firebase app
 firebaseApp;
@@ -194,5 +196,15 @@ describe("useConnectQuery", () => {
     expect(result.current.data).toHaveProperty("ref");
     expect(result.current.data).toHaveProperty("source");
     expect(result.current.data).toHaveProperty("fetchTime");
+  });
+
+  test("a query with no variables has null as the second query key argument", async () => {
+    const queryClient = new DataConnectQueryClient();
+
+    await queryClient.prefetchDataConnectQuery(listMoviesRef());
+
+    const dehydrated = dehydrate(queryClient);
+
+    expect(dehydrated.queries[0].queryKey).toEqual(["ListMovies", null]);
   });
 });
