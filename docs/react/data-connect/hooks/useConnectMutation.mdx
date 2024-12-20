@@ -3,14 +3,14 @@ title: useConnectMutation
 ---
 
 `useConnectMutation` is a hook designed to simplify handling mutations (creating, updating, deleting) with Firebase Data Connect.
-This hook integrates with [Firebase Data Connect](https://firebase.google.com/docs/data-connect), which uses GraphQL to interact with a PostgreSQL database (via Cloud SQL) for secure, scalable data operations.
-The hook manages the mutation process and provides an easy-to-use interface to manage loading, success, and error states in your React application.
+
+See [mutations](/react/data-connect/mutations) for more information.
 
 ## Features
 
 - Simplifies mutation handling for <b>create</b>, <b>update</b>, and <b>delete</b> operations using Firebase Data Connect.
 - Provides <b>type-safe</b> handling of mutations based on your Firebase Data Connect schema.
-- Automatically manages <b>loading</b>, <b>success</b>, and <b>error</b> states for mutations.
+- Automatically manages <b>pending</b>, <b>success</b>, and <b>error</b> states for mutations.
 - Supports <b>optimistic updates</b> and <b>caching</b> to improve user experience and performance.
 
 ## Usage
@@ -23,21 +23,29 @@ function Component() {
   const { mutate, isPending, isSuccess, isError, error } =
     useConnectMutation(createMovieRef);
 
-  const handleSubmit = async (movieData) => {
-    try {
-      await mutate(movieData);
-    } catch (err) {
-      console.error("Failed to add movie:", err);
-    }
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const data = new FormData(e.target as HTMLFormElement);
+
+    mutate({
+      title: data.get("title") as string,
+      imageUrl: data.get("imageUrl") as string,
+      genre: data.get("genre") as string,
+    });
   };
 
   if (isPending) return <div>Adding movie...</div>;
+
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
     <div>
       {isSuccess && <div>Movie added successfully!</div>}
-      <form onSubmit={(e) => handleSubmit(e.target)}>
+      <form onSubmit={handleFormSubmit}>
+        <input type="text" name="title" placeholder="Title" />
+        <input type="text" name="genre" placeholder="Genre" />
+        <input type="text" name="imageUrl" placeholder="Image URL" />
+
         {/* Form fields for movie data */}
         <button type="submit" disabled={isPending}>
           Add Movie

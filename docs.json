@@ -53,12 +53,33 @@
       "group": "Data Connect",
       "pages": [
         {
-          "href": "/react/hooks/data-connect/useConnectQuery",
-          "title": "useConnectQuery"
+          "title": "Getting Started",
+          "href": "/react/data-connect"
         },
         {
-          "href": "/react/hooks/data-connect/useConnectMutation",
-          "title": "useConnectMutation"
+          "title": "Querying",
+          "href": "/react/data-connect/querying"
+        },
+        {
+          "title": "Mutations",
+          "href": "/react/data-connect/mutations"
+        },
+        {
+          "title": "Server Side Rendering",
+          "href": "/react/data-connect/server-side-rendering"
+        },
+        {
+          "group": "Hooks",
+          "pages": [
+            {
+              "title": "useConnectQuery",
+              "href": "/react/data-connect/hooks/useConnectQuery"
+            },
+            {
+              "title": "useConnectMutation",
+              "href": "/react/data-connect/hooks/useConnectMutation"
+            }
+          ]
         }
       ]
     },
