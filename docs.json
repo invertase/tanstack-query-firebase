@@ -50,6 +50,20 @@
     },
     {
       "tab": "react",
+      "group": "Data Connect",
+      "pages": [
+        {
+          "href": "/react/hooks/data-connect/useConnectQuery",
+          "title": "useConnectQuery"
+        },
+        {
+          "href": "/react/hooks/data-connect/useConnectMutation",
+          "title": "useConnectMutation"
+        }
+      ]
+    },
+    {
+      "tab": "react",
       "group": "Firestore",
       "pages": [
         {
