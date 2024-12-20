@@ -376,7 +376,6 @@ describe("useConnectMutation", () => {
         wrapper,
       }
     );
-
     const movie = {
       title: "TanStack Query Firebase",
       genre: "invalidate_option_test",
@@ -391,9 +390,11 @@ describe("useConnectMutation", () => {
       expect(result.current.status).toBe("success");
     });
 
-    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-      queryKey: [listMoviesRef().name, undefined],
-    });
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        queryKey: [listMoviesRef().name, null],
+      })
+    );
   });
 
   test("invalidates queries specified in the invalidate option for upsert mutations", async () => {
@@ -445,9 +446,11 @@ describe("useConnectMutation", () => {
       expect(upsertMutationResult.current.data?.movie_upsert.id).toBe(movieId);
     });
 
-    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-      queryKey: [listMoviesRef().name, undefined],
-    });
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        queryKey: [listMoviesRef().name, null],
+      })
+    );
   });
 
   test("invalidates queries specified in the invalidate option for delete mutations", async () => {
@@ -497,9 +500,11 @@ describe("useConnectMutation", () => {
       expect(deleteMutationResult.current.data?.movie_delete?.id).toBe(movieId);
     });
 
-    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
-      queryKey: [listMoviesRef().name, undefined],
-    });
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        queryKey: [listMoviesRef().name, null],
+      })
+    );
   });
 
   test("calls onSuccess callback after successful create mutation", async () => {
