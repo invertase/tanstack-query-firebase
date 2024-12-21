@@ -52,14 +52,14 @@ export function useConnectMutation<
     onSuccess(...args) {
       if (options?.invalidate && options.invalidate.length) {
         for (const ref of options.invalidate) {
-          if ("variables" in ref) {
+          if ("variables" in ref && ref.variables !== undefined) {
             queryClient.invalidateQueries({
-              queryKey: [ref.name, ref.variables || null],
+              queryKey: [ref.name, ref.variables],
               exact: true,
             });
           } else {
             queryClient.invalidateQueries({
-              queryKey: [ref().name],
+              queryKey: [ref.name],
             });
           }
         }
