@@ -3,8 +3,10 @@ import { renderHook, act, waitFor } from "@testing-library/react";
 import { useConnectMutation } from "./useConnectMutation";
 import { queryClient, wrapper } from "../../utils";
 import {
+  createMovie,
   createMovieRef,
   deleteMovieRef,
+  getMovieByIdRef,
   listMoviesRef,
   upsertMovieRef,
 } from "@/dataconnect/default-connector";
@@ -18,6 +20,7 @@ describe("useConnectMutation", () => {
   const onSuccess = vi.fn();
 
   beforeEach(() => {
+    vi.resetAllMocks();
     queryClient.clear();
   });
 
@@ -48,7 +51,7 @@ describe("useConnectMutation", () => {
     expect(result.current.status).toBe("idle");
   });
 
-  test("executes create mutation successfully", async () => {
+  test("executes create mutation successfully thus returning flattened data including ref, source, and fetchTime", async () => {
     const { result } = renderHook(() => useConnectMutation(createMovieRef), {
       wrapper,
     });
@@ -67,11 +70,15 @@ describe("useConnectMutation", () => {
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data).toBeDefined();
+      expect(result.current.data).toHaveProperty("ref");
+      expect(result.current.data).toHaveProperty("source");
+      expect(result.current.data).toHaveProperty("fetchTime");
       expect(result.current.data).toHaveProperty("movie_insert");
     });
   });
 
-  test("executes update mutation successfully", async () => {
+  test("executes update mutation successfully thus returning flattened data including ref, source, and fetchTime", async () => {
     const { result: createMutationResult } = renderHook(
       () => useConnectMutation(createMovieRef),
       {
@@ -115,12 +122,16 @@ describe("useConnectMutation", () => {
 
     await waitFor(() => {
       expect(upsertMutationResult.current.isSuccess).toBe(true);
+      expect(upsertMutationResult.current.data).toBeDefined();
+      expect(upsertMutationResult.current.data).toHaveProperty("ref");
+      expect(upsertMutationResult.current.data).toHaveProperty("source");
+      expect(upsertMutationResult.current.data).toHaveProperty("fetchTime");
       expect(upsertMutationResult.current.data).toHaveProperty("movie_upsert");
       expect(upsertMutationResult.current.data?.movie_upsert.id).toBe(movieId);
     });
   });
 
-  test("executes delete mutation successfully", async () => {
+  test("executes delete mutation successfully thus returning flattened data including ref, source, and fetchTime", async () => {
     const { result: createMutationResult } = renderHook(
       () => useConnectMutation(createMovieRef),
       {
@@ -162,6 +173,10 @@ describe("useConnectMutation", () => {
 
     await waitFor(() => {
       expect(deleteMutationResult.current.isSuccess).toBe(true);
+      expect(deleteMutationResult.current.data).toBeDefined();
+      expect(deleteMutationResult.current.data).toHaveProperty("ref");
+      expect(deleteMutationResult.current.data).toHaveProperty("source");
+      expect(deleteMutationResult.current.data).toHaveProperty("fetchTime");
       expect(deleteMutationResult.current.data).toHaveProperty("movie_delete");
       expect(deleteMutationResult.current.data?.movie_delete?.id).toBe(movieId);
     });
@@ -368,10 +383,12 @@ describe("useConnectMutation", () => {
     });
   });
 
-  test("invalidates queries specified in the invalidate option for create mutations", async () => {
+  test("invalidates queries specified in the invalidate option for create mutations with non-variable refs", async () => {
     const { result } = renderHook(
       () =>
-        useConnectMutation(createMovieRef, { invalidate: [listMoviesRef()] }),
+        useConnectMutation(createMovieRef, {
+          invalidate: [listMoviesRef()],
+        }),
       {
         wrapper,
       }
@@ -390,14 +407,110 @@ describe("useConnectMutation", () => {
       expect(result.current.status).toBe("success");
     });
 
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
     expect(invalidateQueriesSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        queryKey: [listMoviesRef().name, null],
+        queryKey: [listMoviesRef().name],
       })
     );
   });
 
-  test("invalidates queries specified in the invalidate option for upsert mutations", async () => {
+  test("invalidates queries specified in the invalidate option for create mutations with variable refs", async () => {
+    const movieData = {
+      title: "tanstack query firebase",
+      genre: "library",
+      imageUrl: "https://invertase.io/",
+    };
+
+    const createdMovie = await createMovie(movieData);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+
+    const { result } = renderHook(
+      () =>
+        useConnectMutation(createMovieRef, {
+          invalidate: [getMovieByIdRef({ id: movieId })],
+        }),
+      {
+        wrapper,
+      }
+    );
+    const movie = {
+      title: "TanStack Query Firebase",
+      genre: "invalidate_option_test",
+      imageUrl: "https://test-image-url.com/",
+    };
+
+    await act(async () => {
+      await result.current.mutateAsync(movie);
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe("success");
+    });
+
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        queryKey: ["GetMovieById", { id: movieId }],
+        exact: true,
+      })
+    );
+  });
+
+  test("invalidates queries specified in the invalidate option for create mutations with both variable and non-variable refs", async () => {
+    const movieData = {
+      title: "tanstack query firebase",
+      genre: "library",
+      imageUrl: "https://invertase.io/",
+    };
+
+    const createdMovie = await createMovie(movieData);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+
+    const { result } = renderHook(
+      () =>
+        useConnectMutation(createMovieRef, {
+          invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
+        }),
+      {
+        wrapper,
+      }
+    );
+    const movie = {
+      title: "TanStack Query Firebase",
+      genre: "invalidate_option_test",
+      imageUrl: "https://test-image-url.com/",
+    };
+
+    await act(async () => {
+      await result.current.mutateAsync(movie);
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe("success");
+    });
+
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(2);
+    expect(invalidateQueriesSpy.mock.calls).toEqual(
+      expect.arrayContaining([
+        [
+          expect.objectContaining({
+            queryKey: ["GetMovieById", { id: movieId }],
+            exact: true,
+          }),
+        ],
+        [
+          expect.objectContaining({
+            queryKey: ["ListMovies"],
+          }),
+        ],
+      ])
+    );
+  });
+
+  test("invalidates queries specified in the invalidate option for upsert mutations with non-variable refs", async () => {
     const { result: createMutationResult } = renderHook(
       () => useConnectMutation(createMovieRef),
       {
@@ -446,14 +559,144 @@ describe("useConnectMutation", () => {
       expect(upsertMutationResult.current.data?.movie_upsert.id).toBe(movieId);
     });
 
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
     expect(invalidateQueriesSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        queryKey: [listMoviesRef().name, null],
+        queryKey: [listMoviesRef().name],
       })
     );
   });
 
-  test("invalidates queries specified in the invalidate option for delete mutations", async () => {
+  test("invalidates queries specified in the invalidate option for upsert mutations with variable refs", async () => {
+    const { result: createMutationResult } = renderHook(
+      () => useConnectMutation(createMovieRef),
+      {
+        wrapper,
+      }
+    );
+
+    expect(createMutationResult.current.isIdle).toBe(true);
+
+    const movie = {
+      title: "TanStack Query Firebase",
+      genre: "library",
+      imageUrl: "https://test-image-url.com/",
+    };
+
+    await act(async () => {
+      await createMutationResult.current.mutateAsync(movie);
+    });
+
+    await waitFor(() => {
+      expect(createMutationResult.current.isSuccess).toBe(true);
+      expect(createMutationResult.current.data).toHaveProperty("movie_insert");
+    });
+
+    const movieId = createMutationResult.current.data?.movie_insert.id!;
+
+    const { result: upsertMutationResult } = renderHook(
+      () =>
+        useConnectMutation(upsertMovieRef, {
+          invalidate: [getMovieByIdRef({ id: movieId })],
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    await act(async () => {
+      await upsertMutationResult.current.mutateAsync({
+        id: movieId,
+        imageUrl: "https://updated-image-url.com/",
+        title: "TanStack Query Firebase - updated",
+      });
+    });
+
+    await waitFor(() => {
+      expect(upsertMutationResult.current.isSuccess).toBe(true);
+      expect(upsertMutationResult.current.data).toHaveProperty("movie_upsert");
+      expect(upsertMutationResult.current.data?.movie_upsert.id).toBe(movieId);
+    });
+
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        queryKey: ["GetMovieById", { id: movieId }],
+        exact: true,
+      })
+    );
+  });
+
+  test("invalidates queries specified in the invalidate option for upsert mutations with both variable and non-variable refs", async () => {
+    const { result: createMutationResult } = renderHook(
+      () => useConnectMutation(createMovieRef),
+      {
+        wrapper,
+      }
+    );
+
+    expect(createMutationResult.current.isIdle).toBe(true);
+
+    const movie = {
+      title: "TanStack Query Firebase",
+      genre: "library",
+      imageUrl: "https://test-image-url.com/",
+    };
+
+    await act(async () => {
+      await createMutationResult.current.mutateAsync(movie);
+    });
+
+    await waitFor(() => {
+      expect(createMutationResult.current.isSuccess).toBe(true);
+      expect(createMutationResult.current.data).toHaveProperty("movie_insert");
+    });
+
+    const movieId = createMutationResult.current.data?.movie_insert.id!;
+
+    const { result: upsertMutationResult } = renderHook(
+      () =>
+        useConnectMutation(upsertMovieRef, {
+          invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    await act(async () => {
+      await upsertMutationResult.current.mutateAsync({
+        id: movieId,
+        imageUrl: "https://updated-image-url.com/",
+        title: "TanStack Query Firebase - updated",
+      });
+    });
+
+    await waitFor(() => {
+      expect(upsertMutationResult.current.isSuccess).toBe(true);
+      expect(upsertMutationResult.current.data).toHaveProperty("movie_upsert");
+      expect(upsertMutationResult.current.data?.movie_upsert.id).toBe(movieId);
+    });
+
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(2);
+    expect(invalidateQueriesSpy.mock.calls).toEqual(
+      expect.arrayContaining([
+        [
+          expect.objectContaining({
+            queryKey: ["GetMovieById", { id: movieId }],
+            exact: true,
+          }),
+        ],
+        [
+          expect.objectContaining({
+            queryKey: ["ListMovies"],
+          }),
+        ],
+      ])
+    );
+  });
+
+  test("invalidates queries specified in the invalidate option for delete mutations with non-variable refs", async () => {
     const { result: createMutationResult } = renderHook(
       () => useConnectMutation(createMovieRef),
       {
@@ -500,10 +743,136 @@ describe("useConnectMutation", () => {
       expect(deleteMutationResult.current.data?.movie_delete?.id).toBe(movieId);
     });
 
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
     expect(invalidateQueriesSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        queryKey: [listMoviesRef().name, null],
+        queryKey: [listMoviesRef().name],
       })
+    );
+  });
+
+  test("invalidates queries specified in the invalidate option for delete mutations with variable refs", async () => {
+    const { result: createMutationResult } = renderHook(
+      () => useConnectMutation(createMovieRef),
+      {
+        wrapper,
+      }
+    );
+
+    expect(createMutationResult.current.isIdle).toBe(true);
+
+    const movie = {
+      title: "TanStack Query Firebase",
+      genre: "library",
+      imageUrl: "https://test-image-url.com/",
+    };
+
+    await act(async () => {
+      await createMutationResult.current.mutateAsync(movie);
+    });
+
+    await waitFor(() => {
+      expect(createMutationResult.current.isSuccess).toBe(true);
+      expect(createMutationResult.current.data).toHaveProperty("movie_insert");
+    });
+
+    const movieId = createMutationResult.current.data?.movie_insert.id!;
+
+    const { result: deleteMutationResult } = renderHook(
+      () =>
+        useConnectMutation(deleteMovieRef, {
+          invalidate: [getMovieByIdRef({ id: movieId })],
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    await act(async () => {
+      await deleteMutationResult.current.mutateAsync({
+        id: movieId,
+      });
+    });
+
+    await waitFor(() => {
+      expect(deleteMutationResult.current.isSuccess).toBe(true);
+      expect(deleteMutationResult.current.data).toHaveProperty("movie_delete");
+      expect(deleteMutationResult.current.data?.movie_delete?.id).toBe(movieId);
+    });
+
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        queryKey: ["GetMovieById", { id: movieId }],
+        exact: true,
+      })
+    );
+  });
+
+  test("invalidates queries specified in the invalidate option for delete mutations with both variable and non-variable refs", async () => {
+    const { result: createMutationResult } = renderHook(
+      () => useConnectMutation(createMovieRef),
+      {
+        wrapper,
+      }
+    );
+
+    expect(createMutationResult.current.isIdle).toBe(true);
+
+    const movie = {
+      title: "TanStack Query Firebase",
+      genre: "library",
+      imageUrl: "https://test-image-url.com/",
+    };
+
+    await act(async () => {
+      await createMutationResult.current.mutateAsync(movie);
+    });
+
+    await waitFor(() => {
+      expect(createMutationResult.current.isSuccess).toBe(true);
+      expect(createMutationResult.current.data).toHaveProperty("movie_insert");
+    });
+
+    const movieId = createMutationResult.current.data?.movie_insert.id!;
+
+    const { result: deleteMutationResult } = renderHook(
+      () =>
+        useConnectMutation(deleteMovieRef, {
+          invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
+        }),
+      {
+        wrapper,
+      }
+    );
+
+    await act(async () => {
+      await deleteMutationResult.current.mutateAsync({
+        id: movieId,
+      });
+    });
+
+    await waitFor(() => {
+      expect(deleteMutationResult.current.isSuccess).toBe(true);
+      expect(deleteMutationResult.current.data).toHaveProperty("movie_delete");
+      expect(deleteMutationResult.current.data?.movie_delete?.id).toBe(movieId);
+    });
+
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(2);
+    expect(invalidateQueriesSpy.mock.calls).toEqual(
+      expect.arrayContaining([
+        [
+          expect.objectContaining({
+            queryKey: ["GetMovieById", { id: movieId }],
+            exact: true,
+          }),
+        ],
+        [
+          expect.objectContaining({
+            queryKey: ["ListMovies"],
+          }),
+        ],
+      ])
     );
   });
 
