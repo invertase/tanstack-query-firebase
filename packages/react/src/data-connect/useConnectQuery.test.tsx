@@ -1,6 +1,6 @@
 import { describe, expect, test, beforeEach } from "vitest";
 import { useConnectQuery } from "./useConnectQuery";
-import { renderHook, waitFor } from "@testing-library/react";
+import { renderHook, waitFor, act } from "@testing-library/react";
 import {
   listMoviesRef,
   createMovie,
@@ -53,16 +53,34 @@ describe("useConnectQuery", () => {
       wrapper,
     });
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data).toBeDefined();
+      expect(result.current.data).toHaveProperty("ref");
+      expect(result.current.data).toHaveProperty("source");
+      expect(result.current.data).toHaveProperty("fetchTime");
+    });
 
-    result.current.refetch();
+    const initialFetchTime = result.current.data?.fetchTime;
 
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay before refetching
 
-    expect(result.current.data).toBeDefined();
-    expect(result.current.data).toHaveProperty("movies");
-    expect(Array.isArray(result.current.data?.movies)).toBe(true);
-    expect(result.current.data?.movies.length).toBeGreaterThanOrEqual(0);
+    await act(async () => {
+      result.current.refetch();
+    });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data).toBeDefined();
+      expect(result.current.data).toHaveProperty("ref");
+      expect(result.current.data).toHaveProperty("source");
+      expect(result.current.data).toHaveProperty("fetchTime");
+      expect(result.current.data).toHaveProperty("movies");
+      expect(Array.isArray(result.current.data?.movies)).toBe(true);
+      expect(result.current.data?.movies.length).toBeGreaterThanOrEqual(0);
+    });
+
+    const refetchTime = result.current.data?.fetchTime;
   });
 
   test("returns correct data", async () => {
