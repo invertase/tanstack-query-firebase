@@ -1,0 +1,106 @@
+---
+title: Server Side Rendering  
+description: Learn how to use Tanstack Query Firebase hooks for server side rendering.
+---
+
+## Server Side Rendering
+
+The Data Connect package provides a `DataConnectQueryClient` class that extends the `QueryClient` class. This class provides an additional method called `prefetchDataConnectQuery` that allows you to prefetch data for server side rendering.
+
+## Server Side Rendering (with Next.js)
+
+Using [traditional server side rendering](https://tanstack.com/query/latest/docs/framework/react/guides/ssr), the query client instance can be passed to the client "dehydrated", and then rehydrated on the client side.
+
+The following example demonstrates how to do this with the `DataConnectQueryClient` class and a Next.js application. The data will be immediately available to the client, and the query client will be hydrated on the client side.
+
+> Ensure you have followed the [initial setup](https://tanstack.com/query/latest/docs/framework/react/guides/ssr#initial-setup) steps first!
+
+```tsx
+import type { InferGetStaticPropsType } from "next";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { listMoviesRef } from "@dataconnect/default-connector";
+import { DataConnectQueryClient } from "@tanstack-query-firebase/react/data-connect";
+
+export async function getStaticProps() {
+  const queryClient = new DataConnectQueryClient();
+
+  // Prefetch the list of movies
+  await queryClient.prefetchDataConnectQuery(listMoviesRef());
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
+
+export default function MoviesRoute({
+  dehydratedState,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <Movies />
+    </HydrationBoundary>
+  );
+}
+
+function Movies() {
+  const movies = useConnectQuery(listMoviesRef());
+
+  if (movies.isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (movies.isError) {
+    return <div>Error: {movies.error.message}</div>;
+  }
+
+  return (
+    <div>
+      <h1>Movies</h1>
+      <ul>
+        {movies.data!.movies.map((movie) => (
+          <li key={movie.id}>{movie.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+```
+
+### React Server Components (RSC)
+
+If you are oping into using React Server Components, you can similarly use the `DataConnectQueryClient` class to prefetch data within your server component:
+
+```tsx
+import { Movies } from "@/examples/data-connect";
+import { listMoviesRef } from "@dataconnect/default-connector";
+import { DataConnectQueryClient } from "@tanstack-query-firebase/react";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+
+import "@/firebase";
+
+export default async function PostsPage() {
+  const queryClient = new DataConnectQueryClient();
+
+  // Prefetch the list of movies
+  await queryClient.prefetchDataConnectQuery(listMoviesRef());
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Movies />
+    </HydrationBoundary>
+  );
+}
+
+function Movies() {
+  const movies = useConnectQuery(listMoviesRef());
+  
+  // ... 
+}
+```
+
+### Gotchas
+
+- If you opt-in to providing a custom `queryKey` to either the prefetched data or the `useConnectQuery` hook, you must ensure that the `queryKey` is the same for both.
+- By default, the client will always refetch data in the background. If this behaviour is not desired, you can set the `staleTime` option in your Query Client or hook options.

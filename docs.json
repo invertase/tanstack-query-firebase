@@ -50,6 +50,41 @@
     },
     {
       "tab": "react",
+      "group": "Data Connect",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/react/data-connect"
+        },
+        {
+          "title": "Querying",
+          "href": "/react/data-connect/querying"
+        },
+        {
+          "title": "Mutations",
+          "href": "/react/data-connect/mutations"
+        },
+        {
+          "title": "Server Side Rendering",
+          "href": "/react/data-connect/server-side-rendering"
+        },
+        {
+          "group": "Hooks",
+          "pages": [
+            {
+              "title": "useConnectQuery",
+              "href": "/react/data-connect/hooks/useConnectQuery"
+            },
+            {
+              "title": "useConnectMutation",
+              "href": "/react/data-connect/hooks/useConnectMutation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tab": "react",
       "group": "Firestore",
       "pages": [
         {
