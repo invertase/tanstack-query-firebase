@@ -35,10 +35,12 @@ jobs:
 
       - name: Start Firebase Emulator Suite
         uses: invertase/firebase-emulator-action@v1.0.1
+        with:
+          emulators: 'auth,firestore,functions,storage,database,dataconnect'
 
-      # Start DataConnect Emulator
-      - name: Start DataConnect Emulator
-        run: firebase emulators:start --only dataconnect --project test &
+      # # Start DataConnect Emulator
+      # - name: Start DataConnect Emulator
+      #   run: firebase emulators:start --only dataconnect --project test &
 
       - name: Verify Running Emulators
         run: |
