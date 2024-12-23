@@ -8,14 +8,14 @@ import {
 import type { PartialBy } from "../../utils";
 import type { FlattenedQueryResult } from "./types";
 
-export type UseConnectQueryOptions<
+export type useDataConnectQueryOptions<
 	TData = unknown,
 	TError = FirebaseError,
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
 
-export function useConnectQuery<Data = unknown, Variables = unknown>(
+export function useDataConnectQuery<Data = unknown, Variables = unknown>(
 	refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
-	options?: UseConnectQueryOptions<
+	options?: useDataConnectQueryOptions<
 		FlattenedQueryResult<Data, Variables>,
 		FirebaseError
 	>,

@@ -5,14 +5,14 @@ description: Learn how to query data from Firebase Data Connect using the Tansta
 
 ## Querying Data
 
-To query data from Firebase Data Connect, you can use the `useConnectQuery` hook. This hook will automatically infer the data type from the connector and the query and automtically create a [query key](https://tanstack.com/query/latest/docs/framework/react/guides/query-keys) for the query.
+To query data from Firebase Data Connect, you can use the `useDataConnectQuery` hook. This hook will automatically infer the data type from the connector and the query and automtically create a [query key](https://tanstack.com/query/latest/docs/framework/react/guides/query-keys) for the query.
 
 ```tsx
-import { useConnectQuery } from "@tanstack-query-firebase/react/data-connect";
+import { useDataConnectQuery } from "@tanstack-query-firebase/react/data-connect";
 import { listMoviesRef } from "@dataconnect/default-connector";
 
 function Component() {
-  const { data, isPending, isSuccess, isError, error } = useConnectQuery(
+  const { data, isPending, isSuccess, isError, error } = useDataConnectQuery(
     listMoviesRef()
   );
 }
@@ -20,10 +20,10 @@ function Component() {
 
 ### Query options
 
-To leverage the full power of Tanstack Query, you can pass in query options to the `useConnectQuery` hook, for example to refetch the query on a interval:
+To leverage the full power of Tanstack Query, you can pass in query options to the `useDataConnectQuery` hook, for example to refetch the query on a interval:
 
 ```tsx
-const { data, isPending, isSuccess, isError, error } = useConnectQuery(
+const { data, isPending, isSuccess, isError, error } = useDataConnectQuery(
   listMoviesRef(),
   {
     refetchInterval: 1000,
@@ -35,10 +35,10 @@ The hook extends the [`useQuery`](https://tanstack.com/query/latest/docs/framewo
 
 ### Overriding the query key
 
-To override the query key, you can pass in a custom query key to the `useConnectQuery` hook:
+To override the query key, you can pass in a custom query key to the `useDataConnectQuery` hook:
 
 ```tsx
-const { data, isPending, isSuccess, isError, error } = useConnectQuery(
+const { data, isPending, isSuccess, isError, error } = useDataConnectQuery(
   getMovieRef({ id: "1" }),
   {
     queryKey: ["movies", "1"],
@@ -59,7 +59,7 @@ const movies = await executeQuery(listMoviesRef());
 // ...
 
 function Component(props: { movies: QueryResult<ListMoviesData, unknown> }) {
-  const { data, isPending, isSuccess, isError, error } = useConnectQuery(
+  const { data, isPending, isSuccess, isError, error } = useDataConnectQuery(
     props.movies
   );
 }
@@ -72,7 +72,7 @@ The hook will immediately have data available, and immediately refetch the data 
 Along with the data, the hook will also return the `ref`, `source`, and `fetchTime` metadata from the query.
 
 ```tsx
-const { data } = useConnectQuery(listMoviesRef());
+const { data } = useDataConnectQuery(listMoviesRef());
 
 console.log(data?.ref);
 console.log(data?.source);

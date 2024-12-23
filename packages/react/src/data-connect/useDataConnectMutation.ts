@@ -12,7 +12,7 @@ import {
 } from "firebase/data-connect";
 import type { FlattenedMutationResult } from "./types";
 
-export type UseConnectMutationOptions<
+export type useDataConnectMutationOptions<
 	TData = unknown,
 	TError = FirebaseError,
 	Variables = unknown,
@@ -22,7 +22,7 @@ export type UseConnectMutationOptions<
 	>;
 };
 
-export function useConnectMutation<
+export function useDataConnectMutation<
 	Fn extends (...args: any[]) => MutationRef<any, any>,
 	Data = ReturnType<Fn> extends MutationRef<infer D, any> ? D : never,
 	Variables = Fn extends (
@@ -35,7 +35,7 @@ export function useConnectMutation<
 			: never,
 >(
 	ref: Fn,
-	options?: UseConnectMutationOptions<
+	options?: useDataConnectMutationOptions<
 		FlattenedMutationResult<Data, Variables>,
 		FirebaseError,
 		Variables

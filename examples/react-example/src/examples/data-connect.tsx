@@ -2,16 +2,16 @@
 
 import { createMovieRef, listMoviesRef } from "@dataconnect/default-connector";
 import {
-	useConnectMutation,
-	useConnectQuery,
+	useDataConnectMutation,
+	useDataConnectQuery,
 } from "@tanstack-query-firebase/react/data-connect";
 
 import "@/firebase";
 
 export function Movies() {
-	const movies = useConnectQuery(listMoviesRef());
+	const movies = useDataConnectQuery(listMoviesRef());
 
-	const addMovie = useConnectMutation(createMovieRef, {
+	const addMovie = useDataConnectMutation(createMovieRef, {
 		invalidate: [listMoviesRef],
 	});
 
