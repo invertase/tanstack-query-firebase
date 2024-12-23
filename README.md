@@ -1,6 +1,3 @@
-> [!IMPORTANT]  
-> This project is currently a work in progress. Please check back soon for updates!
-
 <h1 align="center">TanStack Query Firebase</h1>
 <p align="center">
   <span>A set of <a href="https://tanstack.com/query/latest">TanStack Query</a> hooks integrating with <a href="https://firebase.google.com/">Firebase</a>.</span>
@@ -13,6 +10,9 @@
 <br />
 
 TanStack Query Firebase provides a set of hooks for handling asynchronous tasks with Firebase in your applications.
+
+> [!IMPORTANT]  
+> This project is currently a work in progress.
 
 > Looking for React Query Firebase? Check out the [old branch](https://github.com/invertase/tanstack-query-firebase/tree/react-query-firebase).
 
@@ -56,21 +56,21 @@ The status of the following Firebase services and frameworks are as follows:
 - 🟠 Work in progress
 - () Not yet started
 
-| Module         | React | Vue   | Solid | Angular | Svelte |
-|----------------|--:-:--|--:-:--|--:-:--|--:-:----|--:-:---|
-| analytics      |       |       |       |         |        |
-| app-check      |       |       |       |         |        |
-| auth           | 🟠    |       |       |         |        |
-| database       |       |       |       |         |        |
-| data-connect   | ✅    |       |       |         |        |
-| firestore      | 🟠    |       |       |         |        |
-| firestore/lite |       |       |       |         |        |
-| functions      |       |       |       |         |        |
-| installations  |       |       |       |         |        |
-| messaging      |       |       |       |         |        |
-| performance    |       |       |       |         |        |
-| remote-config  |       |       |       |         |        |
-| vertexai       |       |       |       |         |        |
+| Module         | React  | Vue   | Solid | Angular | Svelte |
+|----------------|:------:|:-----:|:-----:|:-------:|:------:|
+| analytics      |        |       |       |         |        |
+| app-check      |        |       |       |         |        |
+| auth           | 🟠     |       |       |         |        |
+| database       |        |       |       |         |        |
+| data-connect   | ✅     |       |       |         |        |
+| firestore      | 🟠     |       |       |         |        |
+| firestore/lite |        |       |       |         |        |
+| functions      |        |       |       |         |        |
+| installations  |        |       |       |         |        |
+| messaging      |        |       |       |         |        |
+| performance    |        |       |       |         |        |
+| remote-config  |        |       |       |         |        |
+| vertexai       |        |       |       |         |        |
 
 ## License
 
