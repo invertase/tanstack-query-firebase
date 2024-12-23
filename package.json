@@ -8,11 +8,12 @@
     "emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@tanstack/react-query": "^5.55.4",
+    "@types/jsonwebtoken": "^9.0.7",
     "@vitest/coverage-istanbul": "^2.0.5",
     "firebase": "^10.14.1",
     "happy-dom": "^15.7.3",
-    "@types/jsonwebtoken": "^9.0.7",
     "jsonwebtoken": "^9.0.2",
     "react": "^19.0.0",
     "tsup": "^8.2.4",
