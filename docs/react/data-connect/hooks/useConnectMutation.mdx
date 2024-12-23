@@ -1,0 +1,57 @@
+---
+title: useConnectMutation
+---
+
+`useConnectMutation` is a hook designed to simplify handling mutations (creating, updating, deleting) with Firebase Data Connect.
+
+See [mutations](/react/data-connect/mutations) for more information.
+
+## Features
+
+- Simplifies mutation handling for <b>create</b>, <b>update</b>, and <b>delete</b> operations using Firebase Data Connect.
+- Provides <b>type-safe</b> handling of mutations based on your Firebase Data Connect schema.
+- Automatically manages <b>pending</b>, <b>success</b>, and <b>error</b> states for mutations.
+- Supports <b>optimistic updates</b> and <b>caching</b> to improve user experience and performance.
+
+## Usage
+
+```jsx
+import { useConnectQuery } from "@tanstack-query-firebase/react/data-connect";
+import { createMovieRef } from "@your-package-name/your-connector";
+
+function Component() {
+  const { mutate, isPending, isSuccess, isError, error } =
+    useConnectMutation(createMovieRef);
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const data = new FormData(e.target as HTMLFormElement);
+
+    mutate({
+      title: data.get("title") as string,
+      imageUrl: data.get("imageUrl") as string,
+      genre: data.get("genre") as string,
+    });
+  };
+
+  if (isPending) return <div>Adding movie...</div>;
+
+  if (isError) return <div>Error: {error.message}</div>;
+
+  return (
+    <div>
+      {isSuccess && <div>Movie added successfully!</div>}
+      <form onSubmit={handleFormSubmit}>
+        <input type="text" name="title" placeholder="Title" />
+        <input type="text" name="genre" placeholder="Genre" />
+        <input type="text" name="imageUrl" placeholder="Image URL" />
+
+        {/* Form fields for movie data */}
+        <button type="submit" disabled={isPending}>
+          Add Movie
+        </button>
+      </form>
+    </div>
+  );
+}
+```

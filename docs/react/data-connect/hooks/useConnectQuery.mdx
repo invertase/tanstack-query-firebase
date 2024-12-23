@@ -1,0 +1,42 @@
+---
+title: useConnectQuery
+---
+
+`useConnectQuery` is a hook designed to simplify data fetching and state management with Firebase Data Connect.
+
+See [querying](/react/data-connect/querying) for more information.
+
+## Features
+
+- Provides <b>type-safe</b> handling of queries based on the Firebase Data Connect schema.
+- Simplifies data fetching using Firebase Data Connect.
+- Automatically manages <b>loading</b>, <b>success</b>, and <b>error</b> states.
+- Supports <b>refetching data</b> with integrated <b>caching</b>.
+
+## Usage
+
+```jsx
+import { useConnectQuery } from "@tanstack-query-firebase/react/data-connect";
+import { listMoviesQuery } from "@your-package-name/your-connector";
+
+function Component() {
+  const { data, isPending, isSuccess, isError, error } = useConnectQuery(
+    listMoviesQuery()
+  );
+
+  if (isPending) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+
+  return (
+    <div>
+      {isSuccess && (
+        <ul>
+          {data.movies.map((movie) => (
+            <li key={movie.id}>{movie.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+```

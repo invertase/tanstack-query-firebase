@@ -1,0 +1,27 @@
+---
+title: Firebase Authentication
+---
+
+## Setup
+
+Before using the Tanstack Query Firebase hooks for Authentication, ensure you have configured your Firebase application
+to setup an Auth instance:
+
+```ts
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
+// Initialize your Firebase app
+initializeApp({ ... });
+
+// Get the Auth instance
+const auth = getAuth(app);
+```
+
+## Importing
+
+The package exports are available via the `@tanstack-query-firebase/react` package under the `auth` namespace:
+
+```ts
+import { useSignOutMutation } from "@tanstack-query-firebase/react/auth";
+```

@@ -1,0 +1,67 @@
+---
+title: Firebase Data Connect
+---
+
+Firebase Data Connect is a relational database service for mobile and web apps that lets you build and scale using a fully-managed PostgreSQL database powered by Cloud SQL. It provides secure schema, query and mutation management using GraphQL technology that integrates well with Firebase Authentication.
+
+To get started, ensure you have setup your Firebase project and have the Data Connect setup in your project. To learn more, 
+follow the [Firebase Data Connect documentation](https://firebase.google.com/docs/data-connect/quickstart).
+
+## Setup
+
+Before using the Tanstack Query Firebase hooks for Data Connect, ensure you have configured your application using your chosen connector:
+
+```ts
+import { connectorConfig } from "../../dataconnect/default-connector";
+import { initializeApp } from "firebase/app";
+import { getDataConnect } from "firebase/data-connect";
+
+// Initialize your Firebase app
+initializeApp({ ... });
+
+// Get the Data Connect instance
+const dataConnect = getDataConnect(connectorConfig);
+
+// Optionally, connect to the Data Connect Emulator
+connectDataConnectEmulator(dataConnect, "localhost", 9399);
+```
+
+## Importing
+
+The package exports are available via the `@tanstack-query-firebase/react` package under the `data-connect` namespace:
+
+```ts
+import { useConnectQuery } from "@tanstack-query-firebase/react/data-connect";
+```
+
+## Basic Usage
+
+To use the Tanstack Query Firebase hooks for Data Connect, you can use the `useConnectQuery` hook to fetch data from the database:
+
+```tsx
+import { useConnectQuery } from "@tanstack-query-firebase/react";
+import { listMoviesRef } from "../../dataconnect/default-connector";
+
+function Component() {
+  const { data, isPending, isSuccess, isError, error } = useConnectQuery(
+    listMoviesRef()
+  );
+
+  if (isPending) return <div>Loading...</div>;
+  
+  if (isError) return <div>Error: {error.message}</div>;
+
+  return <div>{isSuccess && <ul>{data.movies.map((movie) => <li key={movie.id}>{movie.title}</li>)}</ul>}</div>;
+}
+```
+
+The hooks will automatically infer the data type from the connector and the query and automtically create a [query key](https://tanstack.com/query/latest/docs/framework/react/guides/query-keys) for the query.
+
+## Learning more
+
+To learn more about the Data Connect hooks, check out the following pages:
+
+- [Querying](/react/data-connect/querying)
+- [Mutations](/react/data-connect/mutations)
+- [Server Side Rendering](/react/data-connect/server-side-rendering)
+

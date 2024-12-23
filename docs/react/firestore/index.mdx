@@ -1,0 +1,27 @@
+---
+title: Firebase Firestore
+---
+
+## Setup
+
+Before using the Tanstack Query Firebase hooks for Firestore, ensure you have configured your Firebase application
+to setup an Firestore instance:
+
+```ts
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+
+// Initialize your Firebase app
+initializeApp({ ... });
+
+// Get the Firestore instance
+const firestore = getFirestore(app);
+```
+
+## Importing
+
+The package exports are available via the `@tanstack-query-firebase/react` package under the `firestore` namespace:
+
+```ts
+import { useDocumentQuery } from "@tanstack-query-firebase/react/firestore";
+```

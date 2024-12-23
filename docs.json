@@ -1,66 +1,183 @@
 {
-  "name": "React Query Firebase",
-  "twitter": "invertaseio",
-  "theme": "#FF4154",
-  "docsearch": {
-    "apiKey": "8838b79166d4839463db6aeafbbaa383",
-    "indexName": "react-query-firebase"
+  "$schema": "https://docs.page/schema.json",
+  "name": "TanStack Query Firebase",
+  "description": "TanStack Query Firebase provides a set of hooks for handling asynchronous tasks with Firebase in your applications.",
+  "theme": {
+    "primary": "#FF4154"
   },
+  "tabs": [
+    {
+      "id": "root",
+      "title": "Documentation",
+      "href": "/"
+    },
+    {
+      "id": "react",
+      "title": "React",
+      "href": "/react"
+    }
+  ],
   "sidebar": [
-    ["Getting Started", "/"],
-    [
-      "Analytics",
-      [
-        ["Getting Started", "/analytics"],
-        ["Logging Events", "/analytics/logging-events"],
-        ["Actions", "/analytics/actions"],
-        ["TypeScript", "/analytics/typescript"]
+    {
+      "tab": "root",
+      "group": "Getting Started",
+      "pages": [
+        {
+          "href": "/",
+          "title": "Introduction"
+        },
+        {
+          "href": "/react-query-firebase",
+          "title": "Migration Guide"
+        }
       ]
-    ],
-    [
-      "Authentication",
-      [
-        ["Getting Started", "/auth"],
-        ["Authentication State", "/auth/auth-state"],
-        ["ID Token", "/auth/id-token"],
-        ["Auth Actions", "/auth/actions"]
+    },
+    {
+      "tab": "react",
+      "group": "Getting Started",
+      "pages": [
+        {
+          "href": "/react",
+          "title": "Introduction"
+        }
       ]
-    ],
-    [
-      "Database",
-      [
-        ["Getting Started", "/database"],
-        ["Querying Data", "/database/querying"],
-        ["Data Mutation", "/database/data-mutation"],
-        ["TypeScript", "/database/typescript"]
+    },
+    {
+      "tab": "react",
+      "group": "Authentication",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/react/auth"
+        },
+        {
+          "group": "Hooks",
+          "pages": [
+            {
+              "title": "useDeleteUserMutation",
+              "href": "/react/auth/hooks/useDeleteUserMutation"
+            },
+            {
+              "title": "useReloadMutation",
+              "href": "/react/auth/hooks/useReloadMutation"
+            },
+            {
+              "title": "useSendSignInLinkToEmailMutation",
+              "href": "/react/auth/hooks/useSendSignInLinkToEmailMutation"
+            },
+            {
+              "title": "useSignInAnonymouslyMutation",
+              "href": "/react/auth/hooks/useSignInAnonymouslyMutation"
+            },
+            {
+              "title": "useSignInWithCredentialMutation",
+              "href": "/react/auth/hooks/useSignInWithCredentialMutation"
+            },
+            {
+              "title": "useSignInWithEmailAndPasswordMutation",
+              "href": "/react/auth/hooks/useSignInWithEmailAndPasswordMutation"
+            },
+            {
+              "title": "useSignOutMutation",
+              "href": "/react/auth/hooks/useSignOutMutation"
+            },
+            {
+              "title": "useUpdateCurrentUserMutation",
+              "href": "/react/auth/hooks/useUpdateCurrentUserMutation"
+            },
+            {
+              "title": "useVerifyPasswordResetCodeMutation",
+              "href": "/react/auth/hooks/useVerifyPasswordResetCodeMutation"
+            }
+          ]
+        }
       ]
-    ],
-    [
-      "Firestore",
-      [
-        ["Getting Started", "/firestore"],
-        ["Querying Collections", "/firestore/querying-collections"],
-        ["Querying Documents", "/firestore/querying-documents"],
-        ["Data Mutation", "/firestore/data-mutation"],
-        ["Prefetching", "/firestore/prefetching"],
-        ["TypeScript", "/firestore/typescript"]
+    },
+    {
+      "tab": "react",
+      "group": "Data Connect",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/react/data-connect"
+        },
+        {
+          "title": "Querying",
+          "href": "/react/data-connect/querying"
+        },
+        {
+          "title": "Mutations",
+          "href": "/react/data-connect/mutations"
+        },
+        {
+          "title": "Server Side Rendering",
+          "href": "/react/data-connect/server-side-rendering"
+        },
+        {
+          "group": "Hooks",
+          "pages": [
+            {
+              "title": "useConnectQuery",
+              "href": "/react/data-connect/hooks/useConnectQuery"
+            },
+            {
+              "title": "useConnectMutation",
+              "href": "/react/data-connect/hooks/useConnectMutation"
+            }
+          ]
+        }
       ]
-    ],
-    [
-      "Functions",
-      [
-        ["Getting Started", "/functions"],
-        ["Querying Functions", "/functions/querying"],
-        ["Calling Functions", "/functions/calling"],
-        ["TypeScript", "/functions/typescript"]
+    },
+    {
+      "tab": "react",
+      "group": "Firestore",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/react/firestore"
+        },
+        {
+          "group": "Hooks",
+          "pages": [
+            {
+              "href": "/react/firestore/hooks/useClearIndexedDbPersistenceMutation",
+              "title": "useClearIndexedDbPersistenceMutation"
+            },
+            {
+              "href": "/react/firestore/hooks/useCollectionQuery",
+              "title": "useCollectionQuery"
+            },
+            {
+              "href": "/react/firestore/hooks/useDisableNetworkMutation",
+              "title": "useDisableNetworkMutation"
+            },
+            {
+              "href": "/react/firestore/hooks/useEnableNetworkMutation",
+              "title": "useEnableNetworkMutation"
+            },
+            {
+              "href": "/react/firestore/hooks/useDocumentQuery",
+              "title": "useDocumentQuery"
+            },
+            {
+              "href": "/react/firestore/hooks/useGetAggregateFromServerQuery",
+              "title": "useGetAggregateFromServerQuery"
+            },
+            {
+              "href": "/react/firestore/hooks/useGetCountFromServerQuery",
+              "title": "useGetCountFromServerQuery"
+            },
+            {
+              "href": "/react/firestore/hooks/useRunTransactionMutation",
+              "title": "useRunTransactionMutation"
+            },
+            {
+              "href": "/react/firestore/hooks/useWaitForPendingWritesQuery",
+              "title": "useWaitForPendingWritesQuery"
+            }
+          ]
+        }
       ]
-    ],
-    [
-      "Examples",
-      [
-        ["Auth: Basic Sign-in/out", "/examples/auth-basic"],
-        ["Functions: Query & Mutate", "/examples/functions-basic"]
-      ]
-    ]
+    }
   ]
 }
