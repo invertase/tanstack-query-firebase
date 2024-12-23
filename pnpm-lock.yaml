@@ -21,7 +21,7 @@ importers:
         specifier: ^2.0.5
         version: 2.1.1(vitest@2.1.1(@types/node@22.5.5)(happy-dom@15.7.4))
       firebase:
-        specifier: ^11.1.0
+        specifier: ^11.0.0
         version: 11.1.0
       happy-dom:
         specifier: ^15.7.3
@@ -45,7 +45,7 @@ importers:
   dataconnect-sdk/js/default-connector:
     dependencies:
       firebase:
-        specifier: ^11.1.0
+        specifier: ^10.14.0 || ^11.0.0
         version: 11.1.0
 
   examples/react-example:
@@ -60,7 +60,7 @@ importers:
         specifier: ^5.55.4
         version: 5.56.2(react@19.0.0)
       firebase:
-        specifier: ^11.1.0
+        specifier: ^11.0.0
         version: 11.1.0
       next:
         specifier: 15.1.0
