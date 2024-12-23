@@ -35,6 +35,8 @@ jobs:
 
       - name: Start Firebase Emulator Suite
         uses: invertase/firebase-emulator-action@v1.0.1
+        with:
+          emulators: 'auth,firestore,functions,storage,database,dataconnect'
 
       - name: Verify Running Emulators
         run: |
