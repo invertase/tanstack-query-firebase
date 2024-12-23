@@ -8,7 +8,7 @@ import {
   executeQuery,
 } from "firebase/data-connect";
 
-type UseConnectQueryOptions<
+export type UseConnectQueryOptions<
   TData = unknown,
   TError = FirebaseError
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;

@@ -7,7 +7,7 @@ import type { FirebaseError } from "firebase/app";
 import type { FlattenedQueryResult } from "./types";
 import { executeQuery, QueryRef, QueryResult } from "firebase/data-connect";
 
-type DataConnectQueryOptions<Data, Variables> = Omit<
+export type DataConnectQueryOptions<Data, Variables> = Omit<
   FetchQueryOptions<
     FlattenedQueryResult<Data, Variables>,
     FirebaseError,

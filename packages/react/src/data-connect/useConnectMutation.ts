@@ -12,7 +12,7 @@ import {
 } from "firebase/data-connect";
 import { FlattenedMutationResult } from "./types";
 
-type UseConnectMutationOptions<
+export type UseConnectMutationOptions<
   TData = unknown,
   TError = FirebaseError,
   Variables = unknown
