@@ -20,6 +20,6 @@
     "./package.json": "./package.json"
   },
   "peerDependencies": {
-    "firebase": "^10.14.0"
+    "firebase": "^11.1.0"
   }
 }
