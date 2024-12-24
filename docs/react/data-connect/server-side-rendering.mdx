@@ -45,7 +45,7 @@ export default function MoviesRoute({
 }
 
 function Movies() {
-  const movies = useConnectQuery(listMoviesRef());
+  const movies = useDataConnectQuery(listMoviesRef());
 
   if (movies.isLoading) {
     return <div>Loading...</div>;
@@ -94,7 +94,7 @@ export default async function PostsPage() {
 }
 
 function Movies() {
-  const movies = useConnectQuery(listMoviesRef());
+  const movies = useDataConnectQuery(listMoviesRef());
   
   // ... 
 }
@@ -102,5 +102,5 @@ function Movies() {
 
 ### Gotchas
 
-- If you opt-in to providing a custom `queryKey` to either the prefetched data or the `useConnectQuery` hook, you must ensure that the `queryKey` is the same for both.
+- If you opt-in to providing a custom `queryKey` to either the prefetched data or the `useDataConnectQuery` hook, you must ensure that the `queryKey` is the same for both.
 - By default, the client will always refetch data in the background. If this behaviour is not desired, you can set the `staleTime` option in your Query Client or hook options.

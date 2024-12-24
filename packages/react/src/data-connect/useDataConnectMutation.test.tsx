@@ -10,12 +10,12 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
-import { useConnectMutation } from "./useConnectMutation";
+import { useDataConnectMutation } from "./useDataConnectMutation";
 
 // initialize firebase app
 firebaseApp;
 
-describe("useConnectMutation", () => {
+describe("useDataConnectMutation", () => {
 	const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
 	const onSuccess = vi.fn();
 
@@ -25,7 +25,7 @@ describe("useConnectMutation", () => {
 	});
 
 	test("returns initial state correctly for create mutation", () => {
-		const { result } = renderHook(() => useConnectMutation(createMovieRef), {
+		const { result } = renderHook(() => useDataConnectMutation(createMovieRef), {
 			wrapper,
 		});
 
@@ -34,7 +34,7 @@ describe("useConnectMutation", () => {
 	});
 
 	test("returns initial state correctly for update mutation", () => {
-		const { result } = renderHook(() => useConnectMutation(upsertMovieRef), {
+		const { result } = renderHook(() => useDataConnectMutation(upsertMovieRef), {
 			wrapper,
 		});
 
@@ -43,7 +43,7 @@ describe("useConnectMutation", () => {
 	});
 
 	test("returns initial state correctly for delete mutation", () => {
-		const { result } = renderHook(() => useConnectMutation(deleteMovieRef), {
+		const { result } = renderHook(() => useDataConnectMutation(deleteMovieRef), {
 			wrapper,
 		});
 
@@ -52,7 +52,7 @@ describe("useConnectMutation", () => {
 	});
 
 	test("executes create mutation successfully thus returning flattened data including ref, source, and fetchTime", async () => {
-		const { result } = renderHook(() => useConnectMutation(createMovieRef), {
+		const { result } = renderHook(() => useDataConnectMutation(createMovieRef), {
 			wrapper,
 		});
 
@@ -80,7 +80,7 @@ describe("useConnectMutation", () => {
 
 	test("executes update mutation successfully thus returning flattened data including ref, source, and fetchTime", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -106,7 +106,7 @@ describe("useConnectMutation", () => {
 		const movieId = createMutationResult.current.data?.movie_insert.id!;
 
 		const { result: upsertMutationResult } = renderHook(
-			() => useConnectMutation(upsertMovieRef),
+			() => useDataConnectMutation(upsertMovieRef),
 			{
 				wrapper,
 			},
@@ -133,7 +133,7 @@ describe("useConnectMutation", () => {
 
 	test("executes delete mutation successfully thus returning flattened data including ref, source, and fetchTime", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -159,7 +159,7 @@ describe("useConnectMutation", () => {
 		const movieId = createMutationResult.current.data?.movie_insert.id!;
 
 		const { result: deleteMutationResult } = renderHook(
-			() => useConnectMutation(deleteMovieRef),
+			() => useDataConnectMutation(deleteMovieRef),
 			{
 				wrapper,
 			},
@@ -183,7 +183,7 @@ describe("useConnectMutation", () => {
 	});
 
 	test("handles concurrent create mutations", async () => {
-		const { result } = renderHook(() => useConnectMutation(createMovieRef), {
+		const { result } = renderHook(() => useDataConnectMutation(createMovieRef), {
 			wrapper,
 		});
 
@@ -233,7 +233,7 @@ describe("useConnectMutation", () => {
 
 	test("handles concurrent upsert mutations", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -273,7 +273,7 @@ describe("useConnectMutation", () => {
 		});
 
 		const { result: upsertMutationResult } = renderHook(
-			() => useConnectMutation(upsertMovieRef),
+			() => useDataConnectMutation(upsertMovieRef),
 			{
 				wrapper,
 			},
@@ -310,7 +310,7 @@ describe("useConnectMutation", () => {
 
 	test("handles concurrent delete mutations", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -350,7 +350,7 @@ describe("useConnectMutation", () => {
 		});
 
 		const { result: deleteMutationResult } = renderHook(
-			() => useConnectMutation(deleteMovieRef),
+			() => useDataConnectMutation(deleteMovieRef),
 			{
 				wrapper,
 			},
@@ -386,7 +386,7 @@ describe("useConnectMutation", () => {
 	test("invalidates queries specified in the invalidate option for create mutations with non-variable refs", async () => {
 		const { result } = renderHook(
 			() =>
-				useConnectMutation(createMovieRef, {
+				useDataConnectMutation(createMovieRef, {
 					invalidate: [listMoviesRef()],
 				}),
 			{
@@ -428,7 +428,7 @@ describe("useConnectMutation", () => {
 
 		const { result } = renderHook(
 			() =>
-				useConnectMutation(createMovieRef, {
+				useDataConnectMutation(createMovieRef, {
 					invalidate: [getMovieByIdRef({ id: movieId })],
 				}),
 			{
@@ -471,7 +471,7 @@ describe("useConnectMutation", () => {
 
 		const { result } = renderHook(
 			() =>
-				useConnectMutation(createMovieRef, {
+				useDataConnectMutation(createMovieRef, {
 					invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
 				}),
 			{
@@ -512,7 +512,7 @@ describe("useConnectMutation", () => {
 
 	test("invalidates queries specified in the invalidate option for upsert mutations with non-variable refs", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -539,7 +539,7 @@ describe("useConnectMutation", () => {
 
 		const { result: upsertMutationResult } = renderHook(
 			() =>
-				useConnectMutation(upsertMovieRef, { invalidate: [listMoviesRef()] }),
+				useDataConnectMutation(upsertMovieRef, { invalidate: [listMoviesRef()] }),
 			{
 				wrapper,
 			},
@@ -569,7 +569,7 @@ describe("useConnectMutation", () => {
 
 	test("invalidates queries specified in the invalidate option for upsert mutations with variable refs", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -596,7 +596,7 @@ describe("useConnectMutation", () => {
 
 		const { result: upsertMutationResult } = renderHook(
 			() =>
-				useConnectMutation(upsertMovieRef, {
+				useDataConnectMutation(upsertMovieRef, {
 					invalidate: [getMovieByIdRef({ id: movieId })],
 				}),
 			{
@@ -629,7 +629,7 @@ describe("useConnectMutation", () => {
 
 	test("invalidates queries specified in the invalidate option for upsert mutations with both variable and non-variable refs", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -656,7 +656,7 @@ describe("useConnectMutation", () => {
 
 		const { result: upsertMutationResult } = renderHook(
 			() =>
-				useConnectMutation(upsertMovieRef, {
+				useDataConnectMutation(upsertMovieRef, {
 					invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
 				}),
 			{
@@ -698,7 +698,7 @@ describe("useConnectMutation", () => {
 
 	test("invalidates queries specified in the invalidate option for delete mutations with non-variable refs", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -725,7 +725,7 @@ describe("useConnectMutation", () => {
 
 		const { result: deleteMutationResult } = renderHook(
 			() =>
-				useConnectMutation(deleteMovieRef, { invalidate: [listMoviesRef()] }),
+				useDataConnectMutation(deleteMovieRef, { invalidate: [listMoviesRef()] }),
 			{
 				wrapper,
 			},
@@ -753,7 +753,7 @@ describe("useConnectMutation", () => {
 
 	test("invalidates queries specified in the invalidate option for delete mutations with variable refs", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -780,7 +780,7 @@ describe("useConnectMutation", () => {
 
 		const { result: deleteMutationResult } = renderHook(
 			() =>
-				useConnectMutation(deleteMovieRef, {
+				useDataConnectMutation(deleteMovieRef, {
 					invalidate: [getMovieByIdRef({ id: movieId })],
 				}),
 			{
@@ -811,7 +811,7 @@ describe("useConnectMutation", () => {
 
 	test("invalidates queries specified in the invalidate option for delete mutations with both variable and non-variable refs", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -838,7 +838,7 @@ describe("useConnectMutation", () => {
 
 		const { result: deleteMutationResult } = renderHook(
 			() =>
-				useConnectMutation(deleteMovieRef, {
+				useDataConnectMutation(deleteMovieRef, {
 					invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
 				}),
 			{
@@ -878,7 +878,7 @@ describe("useConnectMutation", () => {
 
 	test("calls onSuccess callback after successful create mutation", async () => {
 		const { result } = renderHook(
-			() => useConnectMutation(createMovieRef, { onSuccess }),
+			() => useDataConnectMutation(createMovieRef, { onSuccess }),
 			{ wrapper },
 		);
 
@@ -901,7 +901,7 @@ describe("useConnectMutation", () => {
 
 	test("calls onSuccess callback after successful upsert mutation", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -927,7 +927,7 @@ describe("useConnectMutation", () => {
 		const movieId = createMutationResult.current.data?.movie_insert.id!;
 
 		const { result: upsertMutationResult } = renderHook(
-			() => useConnectMutation(upsertMovieRef, { onSuccess }),
+			() => useDataConnectMutation(upsertMovieRef, { onSuccess }),
 			{
 				wrapper,
 			},
@@ -951,7 +951,7 @@ describe("useConnectMutation", () => {
 
 	test("calls onSuccess callback after successful delete mutation", async () => {
 		const { result: createMutationResult } = renderHook(
-			() => useConnectMutation(createMovieRef),
+			() => useDataConnectMutation(createMovieRef),
 			{
 				wrapper,
 			},
@@ -977,7 +977,7 @@ describe("useConnectMutation", () => {
 		const movieId = createMutationResult.current.data?.movie_insert.id!;
 
 		const { result: deleteMutationResult } = renderHook(
-			() => useConnectMutation(deleteMovieRef, { onSuccess }),
+			() => useDataConnectMutation(deleteMovieRef, { onSuccess }),
 			{
 				wrapper,
 			},

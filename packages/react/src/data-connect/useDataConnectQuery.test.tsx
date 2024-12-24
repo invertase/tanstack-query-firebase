@@ -10,18 +10,18 @@ import { beforeEach, describe, expect, test } from "vitest";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { DataConnectQueryClient } from "./query-client";
-import { useConnectQuery } from "./useConnectQuery";
+import { useDataConnectQuery } from "./useDataConnectQuery";
 
 // initialize firebase app
 firebaseApp;
 
-describe("useConnectQuery", () => {
+describe("useDataConnectQuery", () => {
 	beforeEach(async () => {
 		queryClient.clear();
 	});
 
 	test("returns pending state initially", async () => {
-		const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
+		const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
 			wrapper,
 		});
 
@@ -34,7 +34,7 @@ describe("useConnectQuery", () => {
 	});
 
 	test("fetches data successfully", async () => {
-		const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
+		const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
 			wrapper,
 		});
 
@@ -49,7 +49,7 @@ describe("useConnectQuery", () => {
 	});
 
 	test("refetches data successfully", async () => {
-		const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
+		const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
 			wrapper,
 		});
 
@@ -84,7 +84,7 @@ describe("useConnectQuery", () => {
 	});
 
 	test("returns correct data", async () => {
-		const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
+		const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
 			wrapper,
 		});
 
@@ -111,7 +111,7 @@ describe("useConnectQuery", () => {
 	});
 
 	test("returns the correct data properties", async () => {
-		const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
+		const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
 			wrapper,
 		});
 
@@ -141,7 +141,7 @@ describe("useConnectQuery", () => {
 		const movieId = createdMovie?.data?.movie_insert?.id;
 
 		const { result } = renderHook(
-			() => useConnectQuery(getMovieByIdRef({ id: movieId })),
+			() => useDataConnectQuery(getMovieByIdRef({ id: movieId })),
 			{
 				wrapper,
 			},
@@ -156,7 +156,7 @@ describe("useConnectQuery", () => {
 	});
 
 	test("returns flattened data including ref, source, and fetchTime", async () => {
-		const { result } = renderHook(() => useConnectQuery(listMoviesRef()), {
+		const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
 			wrapper,
 		});
 
@@ -181,7 +181,7 @@ describe("useConnectQuery", () => {
 		const movieId = createdMovie?.data?.movie_insert?.id;
 
 		const { result } = renderHook(
-			() => useConnectQuery(getMovieByIdRef({ id: movieId })),
+			() => useDataConnectQuery(getMovieByIdRef({ id: movieId })),
 			{
 				wrapper,
 			},
@@ -200,7 +200,7 @@ describe("useConnectQuery", () => {
 	test("avails the data immediately when QueryResult is passed", async () => {
 		const queryResult = await executeQuery(listMoviesRef());
 
-		const { result } = renderHook(() => useConnectQuery(queryResult), {
+		const { result } = renderHook(() => useDataConnectQuery(queryResult), {
 			wrapper,
 		});
 

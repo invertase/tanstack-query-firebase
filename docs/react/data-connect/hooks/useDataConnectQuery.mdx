@@ -1,8 +1,8 @@
 ---
-title: useConnectQuery
+title: useDataConnectQuery
 ---
 
-`useConnectQuery` is a hook designed to simplify data fetching and state management with Firebase Data Connect.
+`useDataConnectQuery` is a hook designed to simplify data fetching and state management with Firebase Data Connect.
 
 See [querying](/react/data-connect/querying) for more information.
 
@@ -16,11 +16,11 @@ See [querying](/react/data-connect/querying) for more information.
 ## Usage
 
 ```jsx
-import { useConnectQuery } from "@tanstack-query-firebase/react/data-connect";
+import { useDataConnectQuery } from "@tanstack-query-firebase/react/data-connect";
 import { listMoviesQuery } from "@your-package-name/your-connector";
 
 function Component() {
-  const { data, isPending, isSuccess, isError, error } = useConnectQuery(
+  const { data, isPending, isSuccess, isError, error } = useDataConnectQuery(
     listMoviesQuery()
   );
 

@@ -117,12 +117,12 @@
           "group": "Hooks",
           "pages": [
             {
-              "title": "useConnectQuery",
-              "href": "/react/data-connect/hooks/useConnectQuery"
+              "title": "useDataConnectQuery",
+              "href": "/react/data-connect/hooks/useDataConnectQuery"
             },
             {
-              "title": "useConnectMutation",
-              "href": "/react/data-connect/hooks/useConnectMutation"
+              "title": "useDataConnectMutation",
+              "href": "/react/data-connect/hooks/useDataConnectMutation"
             }
           ]
         }
