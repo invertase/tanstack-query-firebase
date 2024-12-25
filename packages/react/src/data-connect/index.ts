@@ -1,12 +1,12 @@
 export {
-	DataConnectQueryClient,
-	type DataConnectQueryOptions,
+  DataConnectQueryClient,
+  type DataConnectQueryOptions,
 } from "./query-client";
 export {
-	useConnectQuery,
-	type UseConnectQueryOptions,
-} from "./useConnectQuery";
+  useDataConnectQuery,
+  type useDataConnectQueryOptions,
+} from "./useDataConnectQuery";
 export {
-	useConnectMutation,
-	type UseConnectMutationOptions,
-} from "./useConnectMutation";
+  useDataConnectMutation,
+  type useDataConnectMutationOptions,
+} from "./useDataConnectMutation";

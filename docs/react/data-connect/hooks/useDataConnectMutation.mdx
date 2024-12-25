@@ -1,8 +1,8 @@
 ---
-title: useConnectMutation
+title: useDataConnectMutation
 ---
 
-`useConnectMutation` is a hook designed to simplify handling mutations (creating, updating, deleting) with Firebase Data Connect.
+`useDataConnectMutation` is a hook designed to simplify handling mutations (creating, updating, deleting) with Firebase Data Connect.
 
 See [mutations](/react/data-connect/mutations) for more information.
 
@@ -16,12 +16,12 @@ See [mutations](/react/data-connect/mutations) for more information.
 ## Usage
 
 ```jsx
-import { useConnectQuery } from "@tanstack-query-firebase/react/data-connect";
+import { useDataConnectQuery } from "@tanstack-query-firebase/react/data-connect";
 import { createMovieRef } from "@your-package-name/your-connector";
 
 function Component() {
   const { mutate, isPending, isSuccess, isError, error } =
-    useConnectMutation(createMovieRef);
+    useDataConnectMutation(createMovieRef);
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();

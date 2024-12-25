@@ -5,14 +5,14 @@ description: Learn how to mutate data in Firebase Data Connect using the Tanstac
 
 ## Mutating Data
 
-To mutate data in Firebase Data Connect, you can use the `useConnectMutation` hook. 
+To mutate data in Firebase Data Connect, you can use the `useDataConnectMutation` hook. 
 
 ```tsx
-import { useConnectMutation } from "@tanstack-query-firebase/react/data-connect";
+import { useDataConnectMutation } from "@tanstack-query-firebase/react/data-connect";
 import { createMovieRef } from "@dataconnect/default-connector";
 
 function Component() {
-  const createMovie = useConnectMutation(
+  const createMovie = useDataConnectMutation(
     createMovieRef
   );
 
@@ -38,7 +38,7 @@ function Component() {
 The hook provides an additional [mutation option](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) called `invalidate`. This option accepts a list of query references which will be automatically invalidated when the mutation is successful.
 
 ```tsx
-const createMovie = useConnectMutation(createMovieRef, {
+const createMovie = useDataConnectMutation(createMovieRef, {
   invalidate: [getMovieRef],
 });
 ```
@@ -57,7 +57,7 @@ getMovieRef({ id: "2"});
 You can also provide explicit references to the invalidate array, for example:
 
 ```tsx
-const createMovie = useConnectMutation(createMovieRef, {
+const createMovie = useDataConnectMutation(createMovieRef, {
   invalidate: [getMovieRef({ id: "1" })],
 });
 ```
@@ -71,7 +71,7 @@ In this case only the query reference `getMovieRef({ id: "1" })` will be invalid
 Along with the data, the hook will also return the `ref`, `source`, and `fetchTime` metadata from the mutation.
 
 ```tsx
-const createMovie = useConnectMutation(createMovieRef);
+const createMovie = useDataConnectMutation(createMovieRef);
 
 const data = await createMovie.mutateAsync({
   title: 'John Wick',

@@ -31,19 +31,19 @@ connectDataConnectEmulator(dataConnect, "localhost", 9399);
 The package exports are available via the `@tanstack-query-firebase/react` package under the `data-connect` namespace:
 
 ```ts
-import { useConnectQuery } from "@tanstack-query-firebase/react/data-connect";
+import { useDataConnectQuery } from "@tanstack-query-firebase/react/data-connect";
 ```
 
 ## Basic Usage
 
-To use the Tanstack Query Firebase hooks for Data Connect, you can use the `useConnectQuery` hook to fetch data from the database:
+To use the Tanstack Query Firebase hooks for Data Connect, you can use the `useDataConnectQuery` hook to fetch data from the database:
 
 ```tsx
-import { useConnectQuery } from "@tanstack-query-firebase/react/data-connect";
+import { useDataConnectQuery } from "@tanstack-query-firebase/react/data-connect";
 import { listMoviesRef } from "../../dataconnect/default-connector";
 
 function Component() {
-  const { data, isPending, isSuccess, isError, error } = useConnectQuery(
+  const { data, isPending, isSuccess, isError, error } = useDataConnectQuery(
     listMoviesRef()
   );
 
