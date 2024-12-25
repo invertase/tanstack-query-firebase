@@ -103,10 +103,10 @@ importers:
   packages/react:
     dependencies:
       '@tanstack/react-query':
-        specifier: ^5.55.4
+        specifier: ^5
         version: 5.56.2(react@19.0.0)
       firebase:
-        specifier: ^11.1.0
+        specifier: ^11
         version: 11.1.0
     devDependencies:
       '@dataconnect/default-connector':

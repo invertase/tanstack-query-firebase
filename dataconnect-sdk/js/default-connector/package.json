@@ -20,6 +20,6 @@
     "./package.json": "./package.json"
   },
   "peerDependencies": {
-    "firebase": "workspace:*"
+    "firebase": "^11.1.0"
   }
 }
