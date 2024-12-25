@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { GoogleAuthProvider } from "firebase/auth";
 import jwt from "jsonwebtoken";
-import type React from "react";
+import React, { type ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, expectFirebaseError, wipeAuth } from "~/testing-utils";
 import { useSignInWithCredentialMutation } from "./useSignInWithCredentialMutation";

@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { type Transaction, doc, getDoc, setDoc } from "firebase/firestore";
-import type React from "react";
+import React, { type ReactNode } from "react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { firestore, wipeFirestore } from "~/testing-utils";
 import { useRunTransactionMutation } from "./useRunTransactionMutation";
@@ -13,7 +13,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
