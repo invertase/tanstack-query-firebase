@@ -1,35 +1,35 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
-	type AggregateQuerySnapshot,
-	type AggregateSpec,
-	type DocumentData,
-	type FirestoreError,
-	type Query,
-	getAggregateFromServer,
+  type AggregateQuerySnapshot,
+  type AggregateSpec,
+  type DocumentData,
+  type FirestoreError,
+  type Query,
+  getAggregateFromServer,
 } from "firebase/firestore";
 
 type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
-	UseQueryOptions<TData, TError>,
-	"queryFn"
+  UseQueryOptions<TData, TError>,
+  "queryFn"
 >;
 
 export function useGetAggregateFromServerQuery<
-	T extends AggregateSpec,
-	AppModelType = DocumentData,
-	DbModelType extends DocumentData = DocumentData,
+  T extends AggregateSpec,
+  AppModelType = DocumentData,
+  DbModelType extends DocumentData = DocumentData,
 >(
-	query: Query<AppModelType, DbModelType>,
-	aggregateSpec: T,
-	options: FirestoreUseQueryOptions<
-		AggregateQuerySnapshot<T, AppModelType, DbModelType>,
-		FirestoreError
-	>,
+  query: Query<AppModelType, DbModelType>,
+  aggregateSpec: T,
+  options: FirestoreUseQueryOptions<
+    AggregateQuerySnapshot<T, AppModelType, DbModelType>,
+    FirestoreError
+  >,
 ) {
-	return useQuery<
-		AggregateQuerySnapshot<T, AppModelType, DbModelType>,
-		FirestoreError
-	>({
-		...options,
-		queryFn: () => getAggregateFromServer(query, aggregateSpec),
-	});
+  return useQuery<
+    AggregateQuerySnapshot<T, AppModelType, DbModelType>,
+    FirestoreError
+  >({
+    ...options,
+    queryFn: () => getAggregateFromServer(query, aggregateSpec),
+  });
 }
