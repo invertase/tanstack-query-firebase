@@ -10,3 +10,6 @@ dist
 
 functions/lib/**/*.js
 functions/lib/**/*.js.map
+
+# Firebase cache
+.firebase/

@@ -1,14 +1,14 @@
-import React, { type ReactNode } from "react";
-import { describe, expect, test, beforeEach } from "vitest";
-import { useGetCountFromServerQuery } from "./useGetCountFromServerQuery";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { collection, addDoc, query, where } from "firebase/firestore";
+import { renderHook, waitFor } from "@testing-library/react";
+import { addDoc, collection, query, where } from "firebase/firestore";
+import React, { type ReactNode } from "react";
+import { beforeEach, describe, expect, test } from "vitest";
 import {
   expectFirestoreError,
   firestore,
   wipeFirestore,
 } from "~/testing-utils";
+import { useGetCountFromServerQuery } from "./useGetCountFromServerQuery";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +33,7 @@ describe("useGetCountFromServerQuery", () => {
         useGetCountFromServerQuery(collectionRef, {
           queryKey: ["count", "empty"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -53,7 +53,7 @@ describe("useGetCountFromServerQuery", () => {
         useGetCountFromServerQuery(collectionRef, {
           queryKey: ["count", "non-empty"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -76,7 +76,7 @@ describe("useGetCountFromServerQuery", () => {
         useGetCountFromServerQuery(complexQuery, {
           queryKey: ["count", "complex"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -91,7 +91,7 @@ describe("useGetCountFromServerQuery", () => {
         useGetCountFromServerQuery(collectionRef, {
           queryKey: ["count", "restricted"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -109,7 +109,7 @@ describe("useGetCountFromServerQuery", () => {
         useGetCountFromServerQuery(collectionRef, {
           queryKey: ["count", "pending"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // Initially isPending should be true

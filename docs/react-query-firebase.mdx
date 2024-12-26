@@ -1,0 +1,85 @@
+---
+title: Migrating to TanStack Query Firebase
+description: Migrating from the old React Query Firebase to the new TanStack Query Firebase.
+---
+
+The initial version of this project was called `React Query Firebase`, and built upon the
+older versions of *React Query*. Over the past couple of years, there's been many changes
+to the React Query library. 
+
+The most substantial change was renaming the libray from *React Query* to *TanStack Query*.
+
+The change brought about support for a wide array of framework support beyond React, including
+Vue, Solid, Angular, and Svelte. The API has also evolved during this time, with many improvements
+and new features.
+
+The Firebase API also evolved during this time, with new services such as Data Connect and the migration 
+from the compat API to the modular API.
+
+## react-query-firebase
+
+The `react-query-firebase` package was built to support React only, and was tightly coupled to
+the older versions of React Query. For example, the `react-query-firebase` NPN namespace allowed you
+to install a package per Firebase service, such as `@react-query-firebase/firestore`.
+
+Additionally, the API was designed to work with the older React Query API of supporting positional args 
+vs the newer object-based API:
+
+```tsx
+useFirestoreQuery(["products"]);
+// vs
+useFirestoreQuery({ queryKey: ["products"] });
+```
+
+## tanstack-query-firebase
+
+The `tanstack-query-firebase` package is built to support all frameworks which TanStack Query supports,
+although initially only React is supported.
+
+Altough still in development, the API is designed to work with the newer object-based API of TanStack Query,
+and also supports newer Firebase services such as Data Connect.
+
+### Realtime Subscription Issues
+
+Firebase supports realtime event subscriptions for many of its services, such as Firestore, Realtime Database and
+Authentication.
+
+The `react-query-firebase` package had a [limitation](https://github.com/invertase/tanstack-query-firebase/issues/25) whereby the hooks
+would not resubscribe whenever a component re-mounted.
+
+The initial version of `tanstack-query-firebase` currently opts-out of any realtime subscription hooks. This issue will be re-addressed
+once the core API is stable supporting all Firebase services.
+
+## Migration Steps
+
+Follow the steps below to migrate your application from `react-query-firebase` to `tanstack-query-firebase`:
+
+### 1. Install the new packages
+
+Due to the restructure of the package namespace, you will need to install the new packages:
+
+```bash
+npm i --save firebase @tanstack/react-query @tanstack-query-firebase/react
+```
+
+Remove any existing `@react-query-firebase/*` packages from your `package.json`.
+
+### 2. Update your imports
+
+Update any imports for your `react-query-firebase` hooks to the new `tanstack-query-firebase` hooks, for example for Firestore:
+
+```diff
+- import { useFirestoreDocument } from '@react-query-firebase/firestore';
++ import { useDocumentQuery } from '@tanstack-query-firebase/react/firestore';
+```
+
+### 3. Update your usage
+
+The older API followed the positional args pattern, whereas the new API follows the object-based pattern. Update your hooks to use the new pattern:
+
+```diff
+- useFirestoreDocument(["products"], ref);
++ useDocumentQuery(ref, {
++   queryKey: ["products"],
++ });
+```

@@ -1,4 +1,4 @@
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
   type Firestore,
   type FirestoreError,
@@ -12,7 +12,7 @@ type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
 
 export function useWaitForPendingWritesQuery(
   firestore: Firestore,
-  options: FirestoreUseQueryOptions<void, FirestoreError>
+  options: FirestoreUseQueryOptions<void, FirestoreError>,
 ) {
   return useQuery<void, FirestoreError, void>({
     ...options,

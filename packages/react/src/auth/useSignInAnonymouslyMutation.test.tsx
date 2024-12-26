@@ -1,17 +1,17 @@
-import React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import type React from "react";
 import {
+  type MockInstance,
+  afterEach,
+  beforeEach,
   describe,
   expect,
   test,
-  beforeEach,
-  afterEach,
   vi,
-  type MockInstance,
 } from "vitest";
-import { renderHook, act, waitFor } from "@testing-library/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useSignInAnonymouslyMutation } from "./useSignInAnonymouslyMutation";
 import { auth, wipeAuth } from "~/testing-utils";
+import { useSignInAnonymouslyMutation } from "./useSignInAnonymouslyMutation";
 
 const queryClient = new QueryClient({
   defaultOptions: {

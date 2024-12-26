@@ -1,8 +1,8 @@
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
   type DocumentData,
-  type DocumentSnapshot,
   type DocumentReference,
+  type DocumentSnapshot,
   type FirestoreError,
   getDoc,
   getDocFromCache,
@@ -20,13 +20,13 @@ type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
 
 export function useDocumentQuery<
   FromFirestore extends DocumentData = DocumentData,
-  ToFirestore extends DocumentData = DocumentData
+  ToFirestore extends DocumentData = DocumentData,
 >(
   documentRef: DocumentReference<FromFirestore, ToFirestore>,
   options: FirestoreUseQueryOptions<
     DocumentSnapshot<FromFirestore, ToFirestore>,
     FirestoreError
-  >
+  >,
 ) {
   const { firestore, ...queryOptions } = options;
 
@@ -36,12 +36,14 @@ export function useDocumentQuery<
       queryFn: async () => {
         if (firestore?.source === "server") {
           return await getDocFromServer(documentRef);
-        } else if (firestore?.source === "cache") {
-          return await getDocFromCache(documentRef);
-        } else {
-          return await getDoc(documentRef);
         }
+
+        if (firestore?.source === "cache") {
+          return await getDocFromCache(documentRef);
+        }
+
+        return await getDoc(documentRef);
       },
-    }
+    },
   );
 }

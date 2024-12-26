@@ -1,14 +1,14 @@
-import React from "react";
-import { describe, expect, test, beforeEach, vi } from "vitest";
-import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { doc, setDoc } from "firebase/firestore";
+import type React from "react";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import {
   expectFirestoreError,
   firestore,
   wipeFirestore,
 } from "~/testing-utils";
 import { useWaitForPendingWritesQuery } from "./useWaitForPendingWritesQuery";
-import { doc, setDoc } from "firebase/firestore";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,7 +35,7 @@ describe("useWaitForPendingWritesQuery", () => {
         useWaitForPendingWritesQuery(firestore, {
           queryKey: ["pending", "write", "loading"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // Initiate a write without an await

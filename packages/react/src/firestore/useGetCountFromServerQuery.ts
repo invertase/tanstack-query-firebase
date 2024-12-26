@@ -1,11 +1,11 @@
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
   type AggregateField,
   type AggregateQuerySnapshot,
-  getCountFromServer,
+  type DocumentData,
   type FirestoreError,
   type Query,
-  type DocumentData,
+  getCountFromServer,
 } from "firebase/firestore";
 
 type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
@@ -15,7 +15,7 @@ type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
 
 export function useGetCountFromServerQuery<
   AppModelType = DocumentData,
-  DbModelType extends DocumentData = DocumentData
+  DbModelType extends DocumentData = DocumentData,
 >(
   query: Query<AppModelType, DbModelType>,
   options: FirestoreUseQueryOptions<
@@ -25,7 +25,7 @@ export function useGetCountFromServerQuery<
       DbModelType
     >,
     FirestoreError
-  >
+  >,
 ) {
   return useQuery<
     AggregateQuerySnapshot<

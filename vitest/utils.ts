@@ -6,29 +6,39 @@ import {
   type Firestore,
 } from "firebase/firestore";
 import { expect } from "vitest";
+import {
+  connectDataConnectEmulator,
+  getDataConnect,
+} from "firebase/data-connect";
+import { connectorConfig } from "@/dataconnect/default-connector";
 
 const firebaseTestingOptions = {
-  projectId: "test-project",
+  projectId: "demo-project",
   apiKey: "test-api-key",
   authDomain: "test-auth-domain",
 };
 
-let app: FirebaseApp | undefined;
+let firebaseApp: FirebaseApp | undefined;
 let firestore: Firestore;
 let auth: Auth;
 
-if (!app) {
-  app = initializeApp(firebaseTestingOptions);
-  firestore = getFirestore(app);
-  auth = getAuth(app);
+if (!firebaseApp) {
+  firebaseApp = initializeApp(firebaseTestingOptions);
+  firestore = getFirestore(firebaseApp);
+  auth = getAuth(firebaseApp);
 
   connectFirestoreEmulator(firestore, "localhost", 8080);
   connectAuthEmulator(auth, "http://localhost:9099");
+  connectDataConnectEmulator(
+    getDataConnect(connectorConfig),
+    "localhost",
+    9399
+  );
 }
 
 async function wipeFirestore() {
   const response = await fetch(
-    "http://localhost:8080/emulator/v1/projects/test-project/databases/(default)/documents",
+    "http://localhost:8080/emulator/v1/projects/demo-project/databases/(default)/documents",
     {
       method: "DELETE",
     }
@@ -41,7 +51,7 @@ async function wipeFirestore() {
 
 async function wipeAuth() {
   const response = await fetch(
-    "http://localhost:9099/emulator/v1/projects/test-project/accounts",
+    "http://localhost:9099/emulator/v1/projects/demo-project/accounts",
     {
       method: "DELETE",
     }
@@ -64,6 +74,25 @@ function expectFirestoreError(error: unknown, expectedCode: string) {
   }
 }
 
+function expectFirebaseError(error: unknown, expectedCode: string) {
+  if (error instanceof FirebaseError) {
+    expect(error).toBeDefined();
+    expect(error.code).toBeDefined();
+    expect(error.code).toBe(expectedCode);
+  } else {
+    console.error("Expected a Firebase error, but received a different type.", {
+      receivedType: typeof error,
+      errorDetails:
+        error instanceof Error
+          ? { message: error.message, stack: error.stack }
+          : error,
+    });
+    throw new Error(
+      "Expected a Firebase error, but received a different type."
+    );
+  }
+}
+
 export {
   firestore,
   wipeFirestore,
@@ -71,4 +100,6 @@ export {
   firebaseTestingOptions,
   auth,
   wipeAuth,
+  firebaseApp,
+  expectFirebaseError,
 };

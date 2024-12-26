@@ -19,19 +19,22 @@
 // useSendPasswordResetEmailMutation
 export { useSendSignInLinkToEmailMutation } from "./useSendSignInLinkToEmailMutation";
 export { useSignInAnonymouslyMutation } from "./useSignInAnonymouslyMutation";
-// useSignInWithCredentialMutation
+export { useSignInWithCredentialMutation } from "./useSignInWithCredentialMutation";
 // useSignInWithCustomTokenMutation
-// useSignInWithEmailAndPasswordMutation
+export { useSignInWithEmailAndPasswordMutation } from "./useSignInWithEmailAndPasswordMutation";
 // useSignInWithEmailLinkMutation
 // useSignInWithPhoneNumberMutation
 // useSignInWithPopupMutation
 // useSignInWithRedirectMutation
-// useSignOutMutation
+export { useSignOutMutation } from "./useSignOutMutation";
 // useUpdateCurrentUserMutation
+// useSignOutMutation
+export { useUpdateCurrentUserMutation } from "./useUpdateCurrentUserMutation";
 // useValidatePasswordMutation
 // useVerifyPasswordResetCodeMutation
-// useDeleteUserMutation
+export { useVerifyPasswordResetCodeMutation } from "./useVerifyPasswordResetCodeMutation";
 export { useLinkWithCredentialMutation } from "./useLinkWithCredentialMutation";
+export { useDeleteUserMutation } from "./useDeleteUserMutation";
 // useLinkWithPhoneNumberMutation
 // useLinkWithPopupMutation
 // useLinkWithRedirectMutation
@@ -39,7 +42,7 @@ export { useLinkWithCredentialMutation } from "./useLinkWithCredentialMutation";
 // useReauthenticateWithCredentialMutation
 // useReauthenticateWithPopupMutation
 // useReauthenticateWithRedirectMutation
-// useReloadMutation
+export { useReloadMutation } from "./useReloadMutation";
 // useSendEmailVerificationMutation
 // useUnlinkMutation
 // useUpdateEmailMutation

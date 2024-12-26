@@ -1,11 +1,11 @@
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
-  type Query,
-  type FirestoreError,
-  getAggregateFromServer,
+  type AggregateQuerySnapshot,
   type AggregateSpec,
   type DocumentData,
-  type AggregateQuerySnapshot,
+  type FirestoreError,
+  type Query,
+  getAggregateFromServer,
 } from "firebase/firestore";
 
 type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
@@ -16,14 +16,14 @@ type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
 export function useGetAggregateFromServerQuery<
   T extends AggregateSpec,
   AppModelType = DocumentData,
-  DbModelType extends DocumentData = DocumentData
+  DbModelType extends DocumentData = DocumentData,
 >(
   query: Query<AppModelType, DbModelType>,
   aggregateSpec: T,
   options: FirestoreUseQueryOptions<
     AggregateQuerySnapshot<T, AppModelType, DbModelType>,
     FirestoreError
-  >
+  >,
 ) {
   return useQuery<
     AggregateQuerySnapshot<T, AppModelType, DbModelType>,

@@ -4,17 +4,21 @@
   "scripts": {
     "test": "vitest --dom --coverage",
     "serve:coverage": "npx serve coverage",
-    "emulator": "firebase emulators:start --project test-project",
-    "emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9"
+    "emulator": "firebase emulators:start --project demo-projectc",
+    "emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9",
+    "check": "pnpm biome check --write ./packages/react/src"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@tanstack/react-query": "^5.55.4",
-    "firebase": "^10.13.1",
-    "react": "^18.3.1",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@vitest/coverage-istanbul": "^2.0.5",
+    "firebase": "^11.1.0",
+    "happy-dom": "^15.7.3",
+    "jsonwebtoken": "^9.0.2",
+    "react": "^19.0.0",
     "tsup": "^8.2.4",
     "typescript": "^5.6.2",
-    "vitest": "^2.0.5",
-    "happy-dom": "^15.7.3",
-    "@vitest/coverage-istanbul": "^2.0.5"
+    "vitest": "^2.0.5"
   }
 }
