@@ -8,9 +8,17 @@ It provides built-in state management for handling the mutation lifecycle (e.g.,
 ## Features
 
 - `Easy Firebase Auth Integration`: Leverages Firebase's `deleteUser` functionality.
-- `Built-in State Management`: Handles idle, loading, success, and error states.
-- `Customizable Callbacks`: Supports onSuccess, onError, and other React Query mutation options.
-- `Optimized for TanStack Query`: Seamlessly integrates with TanStack Query for `caching` and `refetching`.
+- `Built-in State Management`: Automatically manages `idle`, `loading`, `success`, and `error` states.
+- `Customizable Callbacks`: Supports `onSuccess`, `onError`, and other TanStack Query mutation options.
+- `Optimized for TanStack Query`: Seamlessly integrates with TanStack Query for caching and refetching strategies.
+
+## Installation
+
+Ensure you have the necessary Firebase, TanStack Query and TanStack Query Firebase packages installed:
+
+```bash
+npm install firebase @tanstack/react-query @tanstack-query-firebase/react
+```
 
 ## Usage
 
@@ -19,7 +27,7 @@ import { useDeleteUserMutation } from "@tanstack-query-firebase/react/auth";
 
 function Component() {
   const { mutate, isPending, isSuccess, isError, error } =
-    useDeleteUserMutation(auth);
+    useDeleteUserMutation();
 
   const handleDeleteUser = () => {
     const user = auth.currentUser;
@@ -41,3 +49,45 @@ function Component() {
   );
 }
 ```
+
+## API Reference
+
+`useDeleteUserMutation(options?)`
+
+### Parameters
+
+- `options` (optional):  
+  Object for customizing mutation behavior. Accepts all options supported by TanStack Query's `useMutation`, such as:
+  - `onSuccess`: Callback fired when the mutation succeeds.
+  - `onError`: Callback fired when the mutation fails.
+  - `onSettled`: Callback fired after the mutation finishes, regardless of success or failure.
+
+See [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation) for more information on mutation options and behavior.
+
+### Returns
+
+An object containing the following properties, provided by TanStack Query's [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation):
+
+- `mutate`:
+  Function to trigger the mutation. In this case, it deletes the user.
+
+```ts
+mutate(user: User): void;
+```
+
+- `isPending`:
+  Boolean indicating if the mutation is in progress (alias for `isLoading`).
+
+- `isSuccess`:
+  Boolean indicating if the mutation has successfully completed.
+
+- `isError`:
+  Boolean indicating if the mutation has failed.
+
+- `error`:
+  The error object, if the mutation failed.
+
+- `data`:
+  The result of the mutation (typically `undefined` for delete operations).
+
+For a complete list of returned properties, see the official TanStack Query [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation) documentation.

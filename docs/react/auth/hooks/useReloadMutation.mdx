@@ -2,4 +2,91 @@
 title: useReloadMutation
 ---
 
-This hook is implemented, but the documentation is a work in progress, check back soon.
+The `useReloadMutation` hook provides a simple way to reload user data in Firebase Authentication.
+This hook enables re-authenticating users and ensures the latest user state is fetched from Firebase.
+
+## Features
+
+- `Seamless Firebase Integration`: Reloads the current Firebase user to fetch updated user state.
+- `Built-in State Management`: Tracks the mutation lifecycle (`idle`, `loading`, `success`, `error`).
+- `Customizable Callbacks`: Supports `onSuccess`, `onError`, and other TanStack Query mutation options.
+- `Type-Safe Handling`: Ensures that only valid Firebase user objects can be passed.
+
+## Installation
+
+Ensure you have the necessary Firebase, TanStack Query and TanStack Query Firebase packages installed:
+
+```bash
+npm install firebase @tanstack/react-query @tanstack-query-firebase/react
+```
+
+## Usage
+
+```jsx
+import { useReloadMutation } from "@tanstack-query-firebase/react/auth";
+
+function Component() {
+  const { mutate, isPending, isSuccess, isError, error } = useReloadMutation();
+
+  const handleReloadUser = () => {
+    const user = auth.currentUser;
+    if (user) {
+      mutate(user);
+    }
+  };
+
+  return (
+    <div>
+      {isPending && <p>Reloading user data...</p>}
+      {isSuccess && <p>User data reloaded successfully!</p>}
+      {isError && <p>Error: {error.message}</p>}
+
+      <button onClick={handleReloadUser} disabled={isPending}>
+        Reload User Data
+      </button>
+    </div>
+  );
+}
+```
+
+## API Reference
+
+`useReloadMutation(options?)`
+
+### Parameters
+
+- `options` (optional):  
+  An object for customizing the mutation behavior. Accepts all options supported by TanStack Query's `useMutation`, such as:
+  - `onSuccess`: Callback fired when the mutation succeeds.
+  - `onError`: Callback fired when the mutation fails.
+  - `onSettled`: Callback fired after the mutation finishes, regardless of success or failure.
+
+For a full list of supported options, see the TanStack Query [useMutation documentation](https://tanstack.com/query/latest/docs/react/reference/useMutation)
+
+### Returns
+
+The hook returns the following properties, provided by TanStack Query's [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation):
+
+- `mutate`:
+  Function to trigger the mutation. In this case, it reloads the user data.
+
+```ts
+mutate(user: User): void;
+```
+
+- `isPending`:
+  Boolean indicating if the mutation is in progress (alias for `isLoading`).
+
+- `isSuccess`:
+  Boolean indicating if the mutation has successfully completed.
+
+- `isError`:
+  Boolean indicating if the mutation has failed.
+
+- `error`:
+  The error object, if the mutation failed.
+
+- `data`:
+  The result of the mutation (typically `undefined` for delete operations).
+
+For a complete list of returned properties, see the official TanStack Query [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation) documentation.
