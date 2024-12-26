@@ -3,8 +3,10 @@ name: Tests
 on:
   push:
     branches:
-      - next
+      - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   test:
@@ -32,7 +34,13 @@ jobs:
         run: pnpm install
 
       - name: Start Firebase Emulator Suite
-        uses: firebase-emulator-action@v1
+        uses: invertase/firebase-emulator-action@v1.0.1
+        with:
+          emulators: 'auth,firestore,functions,storage,database,dataconnect'
+
+      - name: Verify Running Emulators
+        run: |
+          curl --silent http://localhost:4400/emulators | jq 'keys[]'
 
       # Determine which packages have changed
       - name: Determine changed packages

@@ -1,0 +1,85 @@
+---
+title: Mutations
+description: Learn how to mutate data in Firebase Data Connect using the Tanstack Query Firebase hooks.
+---
+
+## Mutating Data
+
+To mutate data in Firebase Data Connect, you can use the `useDataConnectMutation` hook. 
+
+```tsx
+import { useDataConnectMutation } from "@tanstack-query-firebase/react/data-connect";
+import { createMovieRef } from "@dataconnect/default-connector";
+
+function Component() {
+  const createMovie = useDataConnectMutation(
+    createMovieRef
+  );
+
+  return (
+    <button
+      disabled={createMovie.isPending}
+      onClick={() => {
+        createMovie.mutate({
+          title: 'John Wick',
+          genre: "Action",
+          imageUrl: "https://example.com/image.jpg",
+        });
+      }}
+    >
+      {createMovie.isPending ? "Creating..." : "Create Movie"}
+    </button>
+  );
+}
+```
+
+## Invalidating Queries
+
+The hook provides an additional [mutation option](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) called `invalidate`. This option accepts a list of query references which will be automatically invalidated when the mutation is successful.
+
+```tsx
+const createMovie = useDataConnectMutation(createMovieRef, {
+  invalidate: [getMovieRef],
+});
+```
+
+### Implicit references
+
+The above example provides a `getMovieRef` instance to the invalidate array. By default this will invalidate all queries that cached via the `getMovieRef` reference, for example the following query references will be invalidated:
+
+```tsx
+getMovieRef({ id: "1"});
+getMovieRef({ id: "2"});
+```
+
+### Explicit references
+
+You can also provide explicit references to the invalidate array, for example:
+
+```tsx
+const createMovie = useDataConnectMutation(createMovieRef, {
+  invalidate: [getMovieRef({ id: "1" })],
+});
+```
+
+In this case only the query reference `getMovieRef({ id: "1" })` will be invalidated.
+
+## Overriding the mutation key
+
+### Metadata
+
+Along with the data, the hook will also return the `ref`, `source`, and `fetchTime` metadata from the mutation.
+
+```tsx
+const createMovie = useDataConnectMutation(createMovieRef);
+
+const data = await createMovie.mutateAsync({
+  title: 'John Wick',
+  genre: "Action",
+  imageUrl: "https://example.com/image.jpg",
+});
+
+console.log(data.ref);
+console.log(data.source);
+console.log(data.fetchTime);
+```

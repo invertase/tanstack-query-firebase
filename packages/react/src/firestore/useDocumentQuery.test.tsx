@@ -1,9 +1,9 @@
-import React, { type ReactNode } from "react";
-import { describe, expect, test, beforeEach } from "vitest";
-import { useDocumentQuery } from "./useDocumentQuery";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
 import { doc, setDoc } from "firebase/firestore";
+import React, { type ReactNode } from "react";
+import { beforeEach, describe, expect, test } from "vitest";
+import { useDocumentQuery } from "./useDocumentQuery";
 
 import {
   expectFirestoreError,
@@ -40,7 +40,7 @@ describe("useDocumentQuery", () => {
         useDocumentQuery(ref, {
           queryKey: ["some", "doc"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // Wait for the query to finish
@@ -69,7 +69,7 @@ describe("useDocumentQuery", () => {
           queryKey: ["server", "doc"],
           firestore: { source: "server" },
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // await the query
@@ -91,7 +91,7 @@ describe("useDocumentQuery", () => {
         useDocumentQuery(ref, {
           queryKey: ["restricted", "doc"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {
@@ -111,7 +111,7 @@ describe("useDocumentQuery", () => {
         useDocumentQuery(ref, {
           queryKey: ["pending", "state"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // initially isPending should be true
@@ -137,7 +137,7 @@ describe("useDocumentQuery", () => {
         useDocumentQuery(ref, {
           queryKey: ["typed", "doc"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {

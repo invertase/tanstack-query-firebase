@@ -1,9 +1,9 @@
-import React, { type ReactNode } from "react";
-import { describe, expect, test, beforeEach } from "vitest";
-import { useCollectionQuery } from "./useCollectionQuery";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { collection, addDoc, query, where } from "firebase/firestore";
+import { renderHook, waitFor } from "@testing-library/react";
+import { addDoc, collection, query, where } from "firebase/firestore";
+import React, { type ReactNode } from "react";
+import { beforeEach, describe, expect, test } from "vitest";
+import { useCollectionQuery } from "./useCollectionQuery";
 
 import {
   expectFirestoreError,
@@ -39,7 +39,7 @@ describe("useCollectionQuery", () => {
         useCollectionQuery(collectionRef, {
           queryKey: ["some", "collection"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // in pending state before resolving
@@ -71,7 +71,7 @@ describe("useCollectionQuery", () => {
           queryKey: ["server", "collection"],
           firestore: { source: "server" },
         }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isPending).toBe(true);
@@ -90,7 +90,7 @@ describe("useCollectionQuery", () => {
   test("handles restricted collections appropriately", async () => {
     const restrictedCollectionRef = collection(
       firestore,
-      "restrictedCollection"
+      "restrictedCollection",
     );
 
     const { result } = renderHook(
@@ -98,7 +98,7 @@ describe("useCollectionQuery", () => {
         useCollectionQuery(restrictedCollectionRef, {
           queryKey: ["restricted", "collection"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isPending).toBe(true);
@@ -120,7 +120,7 @@ describe("useCollectionQuery", () => {
         useCollectionQuery(collectionRef, {
           queryKey: ["pending", "state"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // Initially isPending should be true
@@ -147,7 +147,7 @@ describe("useCollectionQuery", () => {
         useCollectionQuery(collectionRef, {
           queryKey: ["typed", "collection"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isPending).toBe(true);
@@ -178,7 +178,7 @@ describe("useCollectionQuery", () => {
         useCollectionQuery(complexQuery, {
           queryKey: ["complex", "query"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isPending).toBe(true);

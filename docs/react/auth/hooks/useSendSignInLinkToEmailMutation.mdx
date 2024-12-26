@@ -1,0 +1,29 @@
+---
+title: useSendSignInLinkToEmailMutation
+---
+
+Send a sign-in link to a user's email address.
+
+## Usage
+
+```jsx
+import { useSendSignInLinkToEmailMutation } from "@tanstack-query-firebase/react/auth";
+import { auth } from "../firebase";
+
+function Component() {
+  const mutation = useSendSignInLinkToEmailMutation(auth, {
+    onSuccess: () => {
+      console.log("Sign-in link sent successfully!");
+    },
+  });
+
+  return (
+    <button
+      disabled={mutation.isPending}
+      onClick={() => mutation.mutate({ email: '...', actionCodeSettings: { ... } })}
+    >
+      Send Sign In Link
+    </button>
+  );
+}
+```

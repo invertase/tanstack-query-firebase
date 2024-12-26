@@ -1,10 +1,10 @@
-import React from "react";
-import { describe, expect, test, beforeEach, vi } from "vitest";
-import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { type Transaction, doc, getDoc, setDoc } from "firebase/firestore";
+import type React from "react";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { firestore, wipeFirestore } from "~/testing-utils";
 import { useRunTransactionMutation } from "./useRunTransactionMutation";
-import { doc, getDoc, setDoc, type Transaction } from "firebase/firestore";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +33,7 @@ describe("useRunTransactionMutation", () => {
 
     const { result } = renderHook(
       () => useRunTransactionMutation(firestore, updateFunction),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());
@@ -60,7 +60,7 @@ describe("useRunTransactionMutation", () => {
         useRunTransactionMutation(firestore, updateFunction, {
           firestore: { maxAttempts: 1 },
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());
@@ -79,7 +79,7 @@ describe("useRunTransactionMutation", () => {
 
     const { result } = renderHook(
       () => useRunTransactionMutation(firestore, updateFunction),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());
@@ -104,7 +104,7 @@ describe("useRunTransactionMutation", () => {
         useRunTransactionMutation(firestore, updateFunction, {
           onSuccess: onSuccessMock,
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());
@@ -126,7 +126,7 @@ describe("useRunTransactionMutation", () => {
         useRunTransactionMutation(firestore, updateFunction, {
           onError: onErrorMock,
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());

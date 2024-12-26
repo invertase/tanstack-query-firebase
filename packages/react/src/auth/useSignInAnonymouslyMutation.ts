@@ -1,10 +1,10 @@
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
   type Auth,
-  type UserCredential,
   type AuthError,
+  type UserCredential,
   signInAnonymously,
 } from "firebase/auth";
-import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 
 type SignInAnonymouslyOptions = Omit<
   UseMutationOptions<UserCredential, AuthError, void>,
@@ -13,7 +13,7 @@ type SignInAnonymouslyOptions = Omit<
 
 export function useSignInAnonymouslyMutation(
   auth: Auth,
-  options?: SignInAnonymouslyOptions
+  options?: SignInAnonymouslyOptions,
 ) {
   return useMutation<UserCredential, AuthError, void>({
     ...options,

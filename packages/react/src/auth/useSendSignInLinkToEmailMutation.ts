@@ -1,8 +1,8 @@
-import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
   type ActionCodeSettings,
   type Auth,
-  AuthError,
+  type AuthError,
   sendSignInLinkToEmail,
 } from "firebase/auth";
 
@@ -14,12 +14,12 @@ type SendSignInLinkParams = {
 type AuthUseMutationOptions<
   TData = unknown,
   TError = Error,
-  TVariables = void
+  TVariables = void,
 > = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;
 
 export function useSendSignInLinkToEmailMutation(
   auth: Auth,
-  options?: AuthUseMutationOptions<void, AuthError, SendSignInLinkParams>
+  options?: AuthUseMutationOptions<void, AuthError, SendSignInLinkParams>,
 ) {
   return useMutation<void, AuthError, SendSignInLinkParams>({
     ...options,

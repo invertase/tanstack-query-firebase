@@ -1,18 +1,18 @@
-import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
-  clearIndexedDbPersistence,
   type Firestore,
   type FirestoreError,
+  clearIndexedDbPersistence,
 } from "firebase/firestore";
 
-type FirestoreUseMutationOptions<TData = unknown, TError = Error> = Omit<
+type UseFirestoreMutationOptions<TData = unknown, TError = Error> = Omit<
   UseMutationOptions<TData, TError, void>,
   "mutationFn"
 >;
 
 export function useClearIndexedDbPersistenceMutation(
   firestore: Firestore,
-  options?: FirestoreUseMutationOptions<void, FirestoreError>
+  options?: UseFirestoreMutationOptions<void, FirestoreError>,
 ) {
   return useMutation<void, FirestoreError>({
     ...options,

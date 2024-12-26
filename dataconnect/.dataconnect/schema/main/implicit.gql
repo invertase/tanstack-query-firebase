@@ -1,0 +1,10 @@
+extend type MovieMetadata {
+  """
+  ✨ Implicit primary key field. It's a UUID column default to a generated new value. See `@table` for how to customize it.
+  """
+  id: UUID! @default(expr: "uuidV4()") @fdc_generated(from: "MovieMetadata", purpose: IMPLICIT_KEY_FIELD)
+  """
+  ✨ Implicit foreign key field based on `MovieMetadata`.`movie`. It must match the value of `Movie`.`id`. See `@ref` for how to customize it.
+  """
+  movieId: UUID! @fdc_generated(from: "MovieMetadata.movie", purpose: IMPLICIT_REF_FIELD)
+}

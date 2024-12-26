@@ -1,9 +1,9 @@
-import React from "react";
-import { describe, expect, test, beforeEach } from "vitest";
-import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import type React from "react";
+import { beforeEach, describe, expect, test } from "vitest";
+import { auth, wipeAuth } from "~/testing-utils";
 import { useSendSignInLinkToEmailMutation } from "./useSendSignInLinkToEmailMutation";
-import { wipeAuth, auth } from "~/testing-utils";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,7 +39,7 @@ describe("useSendSignInLinkToEmailMutation", () => {
   test("resets mutation state correctly", async () => {
     const { result } = renderHook(
       () => useSendSignInLinkToEmailMutation(auth),
-      { wrapper }
+      { wrapper },
     );
 
     act(() => {
@@ -64,7 +64,7 @@ describe("useSendSignInLinkToEmailMutation", () => {
   test("successfully sends sign-in link to email", async () => {
     const { result } = renderHook(
       () => useSendSignInLinkToEmailMutation(auth),
-      { wrapper }
+      { wrapper },
     );
 
     act(() => {
@@ -82,7 +82,7 @@ describe("useSendSignInLinkToEmailMutation", () => {
   test("allows multiple sequential send attempts", async () => {
     const { result } = renderHook(
       () => useSendSignInLinkToEmailMutation(auth),
-      { wrapper }
+      { wrapper },
     );
 
     // First attempt

@@ -1,7 +1,7 @@
-import React from "react";
-import { describe, expect, test, beforeEach, vi } from "vitest";
-import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import type React from "react";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { firestore, wipeFirestore } from "~/testing-utils";
 import { useClearIndexedDbPersistenceMutation } from "./useClearIndexedDbPersistenceMutation";
 
@@ -27,7 +27,7 @@ describe("useClearIndexedDbPersistenceMutation", () => {
       () => useClearIndexedDbPersistenceMutation(firestore),
       {
         wrapper,
-      }
+      },
     );
 
     await act(() => result.current.mutate());
@@ -49,7 +49,7 @@ describe("useClearIndexedDbPersistenceMutation", () => {
           onSuccess: onSuccessMock,
           onError: onErrorMock,
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());
@@ -64,7 +64,7 @@ describe("useClearIndexedDbPersistenceMutation", () => {
       () => useClearIndexedDbPersistenceMutation(firestore),
       {
         wrapper,
-      }
+      },
     );
 
     await act(() => result.current.mutate());

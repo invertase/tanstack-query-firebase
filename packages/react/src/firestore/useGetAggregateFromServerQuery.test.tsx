@@ -1,22 +1,22 @@
-import React, { type ReactNode } from "react";
-import { describe, expect, test, beforeEach } from "vitest";
-import { useGetAggregateFromServerQuery } from "./useGetAggregateFromServerQuery";
-import { renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { renderHook, waitFor } from "@testing-library/react";
 import {
-  collection,
   addDoc,
-  query,
-  where,
-  sum,
   average,
+  collection,
   count,
+  query,
+  sum,
+  where,
 } from "firebase/firestore";
+import React, { type ReactNode } from "react";
+import { beforeEach, describe, expect, test } from "vitest";
 import {
   expectFirestoreError,
   firestore,
   wipeFirestore,
 } from "~/testing-utils";
+import { useGetAggregateFromServerQuery } from "./useGetAggregateFromServerQuery";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,9 +41,9 @@ describe("useGetAggregateFromServerQuery", () => {
         useGetAggregateFromServerQuery(
           collectionRef,
           { countOfDocs: count() },
-          { queryKey: ["aggregate", "empty"] }
+          { queryKey: ["aggregate", "empty"] },
         ),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -67,9 +67,9 @@ describe("useGetAggregateFromServerQuery", () => {
             averageValue: average("value"),
             totalValue: sum("value"),
           },
-          { queryKey: ["aggregate", "non-empty"] }
+          { queryKey: ["aggregate", "non-empty"] },
         ),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -98,11 +98,11 @@ describe("useGetAggregateFromServerQuery", () => {
             averageNumberOfBooks: average("books"),
             totalNumberOfBooks: sum("books"),
           },
-          { queryKey: ["aggregate", "complex"] }
+          { queryKey: ["aggregate", "complex"] },
         ),
       {
         wrapper,
-      }
+      },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -120,9 +120,9 @@ describe("useGetAggregateFromServerQuery", () => {
         useGetAggregateFromServerQuery(
           collectionRef,
           { count: count() },
-          { queryKey: ["aggregate", "restricted"] }
+          { queryKey: ["aggregate", "restricted"] },
         ),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isError).toBe(true));
@@ -140,9 +140,9 @@ describe("useGetAggregateFromServerQuery", () => {
         useGetAggregateFromServerQuery(
           collectionRef,
           { count: count() },
-          { queryKey: ["aggregate", "pending"] }
+          { queryKey: ["aggregate", "pending"] },
         ),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isPending).toBe(true);
