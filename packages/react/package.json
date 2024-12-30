@@ -1,10 +1,11 @@
 {
 	"name": "@tanstack-query-firebase/react",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "TanStack Query bindings for Firebase and React",
 	"type": "module",
 	"scripts": {
-		"build": "tsup"
+		"build": "tsup",
+		"prepublishOnly": "pnpm build"
 	},
 	"exports": {
 		".": {
