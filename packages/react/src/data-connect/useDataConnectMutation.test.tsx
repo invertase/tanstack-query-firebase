@@ -473,6 +473,48 @@ describe("useDataConnectMutation", () => {
     );
   });
 
+  test("invalidates queries specified in the invalidate option as a QueryKey", async () => {
+    const movieData = {
+      title: "tanstack query firebase",
+      genre: "library",
+      imageUrl: "https://invertase.io/",
+    };
+
+    const createdMovie = await createMovie(movieData);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+
+    const { result } = renderHook(
+      () =>
+        useDataConnectMutation(createMovieRef, {
+          invalidate: [["GetMovieById", { id: movieId }]],
+        }),
+      {
+        wrapper,
+      },
+    );
+    const movie = {
+      title: "TanStack Query Firebase",
+      genre: "invalidate_option_test",
+      imageUrl: "https://test-image-url.com/",
+    };
+
+    await act(async () => {
+      await result.current.mutateAsync(movie);
+    });
+
+    await waitFor(() => {
+      expect(result.current.status).toBe("success");
+    });
+
+    expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        queryKey: ["GetMovieById", { id: movieId }],
+      }),
+    );
+  });
+
   test("invalidates queries specified in the invalidate option for create mutations with both variable and non-variable refs", async () => {
     const movieData = {
       title: "tanstack query firebase",
@@ -1013,6 +1055,67 @@ describe("useDataConnectMutation", () => {
       expect(onSuccess).toHaveBeenCalled();
       expect(deleteMutationResult.current.data).toHaveProperty("movie_delete");
       expect(deleteMutationResult.current.data?.movie_delete?.id).toBe(movieId);
+    });
+  });
+
+  test("executes mutation successfully with function ref", async () => {
+    const movie = {
+      title: "TanStack Query Firebase",
+      genre: "library",
+      imageUrl: "https://test-image-url.com/",
+    };
+
+    const { result } = renderHook(
+      () => useDataConnectMutation(() => createMovieRef(movie)),
+      {
+        wrapper,
+      },
+    );
+
+    await act(async () => {
+      await result.current.mutateAsync();
+    });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data).toHaveProperty("movie_insert");
+      expect(result.current.data?.movie_insert).toMatchObject({
+        title: movie.title,
+        genre: movie.genre,
+        imageUrl: movie.imageUrl,
+      });
+    });
+  });
+
+  test("executes mutation successfully with function ref that accepts variables", async () => {
+    const { result } = renderHook(
+      () =>
+        useDataConnectMutation((title: string) =>
+          createMovieRef({
+            title,
+            genre: "library",
+            imageUrl: "https://test-image-url.com/",
+          }),
+        ),
+      {
+        wrapper,
+      },
+    );
+
+    const movieTitle = "TanStack Query Firebase";
+
+    await act(async () => {
+      await result.current.mutateAsync(movieTitle);
+    });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data).toHaveProperty("movie_insert");
+      expect(result.current.data?.movie_insert).toMatchObject({
+        title: movieTitle,
+        genre: "library",
+        imageUrl: "https://test-image-url.com/",
+      });
     });
   });
 });

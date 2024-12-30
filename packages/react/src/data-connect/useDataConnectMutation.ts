@@ -24,14 +24,24 @@ export type useDataConnectMutationOptions<
 };
 
 export function useDataConnectMutation<
-  Fn extends (...args: any[]) => MutationRef<any, any>,
-  Data = ReturnType<Fn> extends MutationRef<infer D, any> ? D : never,
-  Variables = Fn extends (
-    dc: DataConnect,
-    vars: infer V
-  ) => MutationRef<any, any>
-    ? V
+  Fn extends
+    | (() => MutationRef<any, any>)
+    | ((vars: any) => MutationRef<any, any>)
+    | ((...args: any[]) => MutationRef<any, any>),
+  Data = ReturnType<
+    Fn extends (() => MutationRef<infer D, any>)
+      ? () => MutationRef<D, any>
+      : Fn extends (vars: any) => MutationRef<infer D, any>
+      ? (vars: any) => MutationRef<D, any>
+      : Fn
+  > extends MutationRef<infer D, any>
+    ? D
+    : never,
+  Variables = Fn extends () => MutationRef<any, any>
+    ? void
     : Fn extends (vars: infer V) => MutationRef<any, any>
+    ? V
+    : Fn extends (dc: DataConnect, vars: infer V) => MutationRef<any, any>
     ? V
     : never
 >(
@@ -73,7 +83,8 @@ export function useDataConnectMutation<
       options?.onSuccess?.(...args);
     },
     mutationFn: async (variables) => {
-      const response = await executeMutation<Data, Variables>(ref(variables));
+      const mutationRef = typeof ref === "function" ? ref(variables) : ref;
+      const response = await executeMutation<Data, Variables>(mutationRef);
 
       return {
         ...response.data,
