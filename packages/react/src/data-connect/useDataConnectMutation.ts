@@ -1,5 +1,6 @@
 import {
   type UseMutationOptions,
+  type QueryKey,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
@@ -10,15 +11,15 @@ import {
   type QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import type { FlattenedMutationResult } from "./types";
+import { isQueryKey, type FlattenedMutationResult } from "./types";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
   TError = FirebaseError,
-  Variables = unknown,
+  Variables = unknown
 > = Omit<UseMutationOptions<TData, TError, Variables>, "mutationFn"> & {
-  invalidate?: Array<
-    QueryRef<unknown, unknown> | (() => QueryRef<unknown, unknown>)
+  invalidate?: ReadonlyArray<
+    QueryRef<unknown, unknown> | (() => QueryRef<unknown, unknown>) | QueryKey
   >;
 };
 
@@ -27,19 +28,19 @@ export function useDataConnectMutation<
   Data = ReturnType<Fn> extends MutationRef<infer D, any> ? D : never,
   Variables = Fn extends (
     dc: DataConnect,
-    vars: infer V,
+    vars: infer V
   ) => MutationRef<any, any>
     ? V
     : Fn extends (vars: infer V) => MutationRef<any, any>
-      ? V
-      : never,
+    ? V
+    : never
 >(
   ref: Fn,
   options?: useDataConnectMutationOptions<
     FlattenedMutationResult<Data, Variables>,
     FirebaseError,
     Variables
-  >,
+  >
 ) {
   const queryClient = useQueryClient();
 
@@ -56,6 +57,10 @@ export function useDataConnectMutation<
             queryClient.invalidateQueries({
               queryKey: [ref.name, ref.variables],
               exact: true,
+            });
+          } else if (isQueryKey(ref)) {
+            queryClient.invalidateQueries({
+              queryKey: ref,
             });
           } else {
             queryClient.invalidateQueries({
