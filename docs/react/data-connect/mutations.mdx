@@ -33,6 +33,14 @@ function Component() {
 }
 ```
 
+Additionally, you can provide a factory function to the mutation, which will be called with the mutation variables:
+
+```tsx
+const createMovie = useDataConnectMutation((title: string) => createMovieRef({ title, reviewDate: Date.now() }));
+// ...
+createMovie.mutate("John Wick");
+```
+
 ## Invalidating Queries
 
 The hook provides an additional [mutation option](https://tanstack.com/query/latest/docs/framework/react/reference/useMutation) called `invalidate`. This option accepts a list of query references which will be automatically invalidated when the mutation is successful.
@@ -63,6 +71,18 @@ const createMovie = useDataConnectMutation(createMovieRef, {
 ```
 
 In this case only the query reference `getMovieRef({ id: "1" })` will be invalidated.
+
+### QueryKey
+
+You can also provide a `QueryKey` to the invalidate array, for example:
+
+```tsx
+const createMovie = useDataConnectMutation(createMovieRef, {
+  invalidate: [
+    ["GetMovieById", { id: "1" }]
+  ],
+});
+```
 
 ## Overriding the mutation key
 
