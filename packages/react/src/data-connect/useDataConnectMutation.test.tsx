@@ -87,6 +87,7 @@ describe("useDataConnectMutation", () => {
       expect(result.current.data).toHaveProperty("source");
       expect(result.current.data).toHaveProperty("fetchTime");
       expect(result.current.data).toHaveProperty("movie_insert");
+      expect(result.current.data?.ref.variables).toMatchObject(movie);
     });
   });
 
