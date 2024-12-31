@@ -29,7 +29,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(result.current.isIdle).toBe(true);
@@ -41,7 +41,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(upsertMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(result.current.isIdle).toBe(true);
@@ -53,7 +53,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(deleteMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(result.current.isIdle).toBe(true);
@@ -65,7 +65,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(result.current.isIdle).toBe(true);
@@ -95,7 +95,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -121,7 +121,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(upsertMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -131,7 +131,6 @@ describe("useDataConnectMutation", () => {
         title: "TanStack Query Firebase - updated",
       });
     });
-
     await waitFor(() => {
       expect(upsertMutationResult.current.isSuccess).toBe(true);
       expect(upsertMutationResult.current.data).toBeDefined();
@@ -148,7 +147,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -174,7 +173,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(deleteMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -199,7 +198,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     const movies = [
@@ -227,7 +226,7 @@ describe("useDataConnectMutation", () => {
         movies.map(async (movie) => {
           const data = await result.current.mutateAsync(movie);
           createdMovies.push(data?.movie_insert);
-        }),
+        })
       );
     });
 
@@ -251,7 +250,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     const movies = [
@@ -279,7 +278,7 @@ describe("useDataConnectMutation", () => {
         movies.map(async (movie) => {
           const data = await createMutationResult.current.mutateAsync(movie);
           createdMovies.push(data?.movie_insert);
-        }),
+        })
       );
     });
 
@@ -291,7 +290,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(upsertMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     const upsertData = createdMovies.map((movie, index) => ({
@@ -307,7 +306,7 @@ describe("useDataConnectMutation", () => {
         upsertData.map(async (update) => {
           const data = await upsertMutationResult.current.mutateAsync(update);
           upsertedMovies.push(data?.movie_upsert);
-        }),
+        })
       );
     });
 
@@ -318,7 +317,7 @@ describe("useDataConnectMutation", () => {
       // Check if all upserted IDs match original IDs
       const upsertedIds = upsertedMovies.map((movie) => movie.id);
       expect(upsertedIds).toEqual(
-        expect.arrayContaining(createdMovies.map((m) => m.id)),
+        expect.arrayContaining(createdMovies.map((m) => m.id))
       );
     });
   });
@@ -328,7 +327,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     const movies = [
@@ -356,7 +355,7 @@ describe("useDataConnectMutation", () => {
         movies.map(async (movie) => {
           const data = await createMutationResult.current.mutateAsync(movie);
           createdMovies.push(data?.movie_insert);
-        }),
+        })
       );
     });
 
@@ -368,7 +367,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(deleteMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     const deleteData = createdMovies.map((movie, index) => ({
@@ -382,7 +381,7 @@ describe("useDataConnectMutation", () => {
         deleteData.map(async (i) => {
           const data = await deleteMutationResult.current.mutateAsync(i);
           deletedMovies.push(data.movie_delete!);
-        }),
+        })
       );
     });
 
@@ -393,7 +392,7 @@ describe("useDataConnectMutation", () => {
       // Check if all deleted IDs match original IDs
       const deletedIds = deletedMovies.map((movie) => movie.id);
       expect(deletedIds).toEqual(
-        expect.arrayContaining(createdMovies.map((m) => m.id)),
+        expect.arrayContaining(createdMovies.map((m) => m.id))
       );
     });
   });
@@ -406,7 +405,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
     const movie = {
       title: "TanStack Query Firebase",
@@ -426,7 +425,7 @@ describe("useDataConnectMutation", () => {
     expect(invalidateQueriesSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         queryKey: [listMoviesRef().name],
-      }),
+      })
     );
   });
 
@@ -448,7 +447,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
     const movie = {
       title: "TanStack Query Firebase",
@@ -469,7 +468,7 @@ describe("useDataConnectMutation", () => {
       expect.objectContaining({
         queryKey: ["GetMovieById", { id: movieId }],
         exact: true,
-      }),
+      })
     );
   });
 
@@ -491,7 +490,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
     const movie = {
       title: "TanStack Query Firebase",
@@ -511,7 +510,7 @@ describe("useDataConnectMutation", () => {
     expect(invalidateQueriesSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         queryKey: ["GetMovieById", { id: movieId }],
-      }),
+      })
     );
   });
 
@@ -533,7 +532,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
     const movie = {
       title: "TanStack Query Firebase",
@@ -563,7 +562,7 @@ describe("useDataConnectMutation", () => {
             queryKey: ["ListMovies"],
           }),
         ],
-      ]),
+      ])
     );
   });
 
@@ -572,7 +571,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -601,7 +600,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -622,7 +621,7 @@ describe("useDataConnectMutation", () => {
     expect(invalidateQueriesSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         queryKey: [listMoviesRef().name],
-      }),
+      })
     );
   });
 
@@ -631,7 +630,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -660,7 +659,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -682,7 +681,7 @@ describe("useDataConnectMutation", () => {
       expect.objectContaining({
         queryKey: ["GetMovieById", { id: movieId }],
         exact: true,
-      }),
+      })
     );
   });
 
@@ -691,7 +690,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -720,7 +719,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -751,7 +750,7 @@ describe("useDataConnectMutation", () => {
             queryKey: ["ListMovies"],
           }),
         ],
-      ]),
+      ])
     );
   });
 
@@ -760,7 +759,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -789,7 +788,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -808,7 +807,7 @@ describe("useDataConnectMutation", () => {
     expect(invalidateQueriesSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         queryKey: [listMoviesRef().name],
-      }),
+      })
     );
   });
 
@@ -817,7 +816,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -846,7 +845,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -866,7 +865,7 @@ describe("useDataConnectMutation", () => {
       expect.objectContaining({
         queryKey: ["GetMovieById", { id: movieId }],
         exact: true,
-      }),
+      })
     );
   });
 
@@ -875,7 +874,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -904,7 +903,7 @@ describe("useDataConnectMutation", () => {
         }),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -933,14 +932,14 @@ describe("useDataConnectMutation", () => {
             queryKey: ["ListMovies"],
           }),
         ],
-      ]),
+      ])
     );
   });
 
   test("calls onSuccess callback after successful create mutation", async () => {
     const { result } = renderHook(
       () => useDataConnectMutation(createMovieRef, { onSuccess }),
-      { wrapper },
+      { wrapper }
     );
 
     const movie = {
@@ -965,7 +964,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -991,7 +990,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(upsertMovieRef, { onSuccess }),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -1015,7 +1014,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(createMovieRef),
       {
         wrapper,
-      },
+      }
     );
 
     expect(createMutationResult.current.isIdle).toBe(true);
@@ -1041,7 +1040,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(deleteMovieRef, { onSuccess }),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -1069,7 +1068,7 @@ describe("useDataConnectMutation", () => {
       () => useDataConnectMutation(() => createMovieRef(movie)),
       {
         wrapper,
-      },
+      }
     );
 
     await act(async () => {
@@ -1079,7 +1078,7 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toHaveProperty("movie_insert");
-      expect(result.current.data?.movie_insert).toMatchObject({
+      expect(result.current.data?.ref.variables).toMatchObject({
         title: movie.title,
         genre: movie.genre,
         imageUrl: movie.imageUrl,
@@ -1095,11 +1094,11 @@ describe("useDataConnectMutation", () => {
             title,
             genre: "library",
             imageUrl: "https://test-image-url.com/",
-          }),
+          })
         ),
       {
         wrapper,
-      },
+      }
     );
 
     const movieTitle = "TanStack Query Firebase";
@@ -1111,7 +1110,7 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toHaveProperty("movie_insert");
-      expect(result.current.data?.movie_insert).toMatchObject({
+      expect(result.current.data?.ref.variables).toMatchObject({
         title: movieTitle,
         genre: "library",
         imageUrl: "https://test-image-url.com/",
