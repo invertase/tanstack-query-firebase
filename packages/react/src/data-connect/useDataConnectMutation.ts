@@ -1,6 +1,5 @@
 import {
   type UseMutationOptions,
-  type QueryKey,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
@@ -11,7 +10,7 @@ import {
   type QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import { isQueryKey, type FlattenedMutationResult } from "./types";
+import { type FlattenedMutationResult } from "./types";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
@@ -19,7 +18,7 @@ export type useDataConnectMutationOptions<
   Variables = unknown
 > = Omit<UseMutationOptions<TData, TError, Variables>, "mutationFn"> & {
   invalidate?: ReadonlyArray<
-    QueryRef<unknown, unknown> | (() => QueryRef<unknown, unknown>) | QueryKey
+    QueryRef<unknown, unknown> | (() => QueryRef<unknown, unknown>)
   >;
 };
 
@@ -67,10 +66,6 @@ export function useDataConnectMutation<
             queryClient.invalidateQueries({
               queryKey: [ref.name, ref.variables],
               exact: true,
-            });
-          } else if (isQueryKey(ref)) {
-            queryClient.invalidateQueries({
-              queryKey: ref,
             });
           } else {
             queryClient.invalidateQueries({

@@ -472,48 +472,6 @@ describe("useDataConnectMutation", () => {
     );
   });
 
-  test("invalidates queries specified in the invalidate option as a QueryKey", async () => {
-    const movieData = {
-      title: "tanstack query firebase",
-      genre: "library",
-      imageUrl: "https://invertase.io/",
-    };
-
-    const createdMovie = await createMovie(movieData);
-
-    const movieId = createdMovie?.data?.movie_insert?.id;
-
-    const { result } = renderHook(
-      () =>
-        useDataConnectMutation(createMovieRef, {
-          invalidate: [["GetMovieById", { id: movieId }]],
-        }),
-      {
-        wrapper,
-      }
-    );
-    const movie = {
-      title: "TanStack Query Firebase",
-      genre: "invalidate_option_test",
-      imageUrl: "https://test-image-url.com/",
-    };
-
-    await act(async () => {
-      await result.current.mutateAsync(movie);
-    });
-
-    await waitFor(() => {
-      expect(result.current.status).toBe("success");
-    });
-
-    expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
-    expect(invalidateQueriesSpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        queryKey: ["GetMovieById", { id: movieId }],
-      })
-    );
-  });
-
   test("invalidates queries specified in the invalidate option for create mutations with both variable and non-variable refs", async () => {
     const movieData = {
       title: "tanstack query firebase",
