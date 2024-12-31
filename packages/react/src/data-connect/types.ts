@@ -14,8 +14,3 @@ export type FlattenedMutationResult<Data, Variables> = Omit<
   "data" | "toJSON"
 > &
   Data;
-
-// Helper function to determine if a key is a QueryKey.
-export function isQueryKey(key: unknown): key is QueryKey {
-  return Array.isArray(key) && key.length > 0;
-}
