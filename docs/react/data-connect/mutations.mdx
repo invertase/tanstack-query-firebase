@@ -72,18 +72,6 @@ const createMovie = useDataConnectMutation(createMovieRef, {
 
 In this case only the query reference `getMovieRef({ id: "1" })` will be invalidated.
 
-### QueryKey
-
-You can also provide a `QueryKey` to the invalidate array, for example:
-
-```tsx
-const createMovie = useDataConnectMutation(createMovieRef, {
-  invalidate: [
-    ["GetMovieById", { id: "1" }]
-  ],
-});
-```
-
 ## Overriding the mutation key
 
 ### Metadata
