@@ -78,7 +78,6 @@ export function useDataConnectMutation<
       options?.onSuccess?.(...args);
     },
     mutationFn: async (variables) => {
-      console.log('check', typeof ref)
       const mutationRef = typeof ref === "function" ? ref(variables) : ref;
       const response = await executeMutation<Data, Variables>(mutationRef);
 
