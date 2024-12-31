@@ -15,31 +15,41 @@ import type { FlattenedMutationResult } from "./types";
 export type useDataConnectMutationOptions<
   TData = unknown,
   TError = FirebaseError,
-  Variables = unknown,
+  Variables = unknown
 > = Omit<UseMutationOptions<TData, TError, Variables>, "mutationFn"> & {
-  invalidate?: Array<
+  invalidate?: ReadonlyArray<
     QueryRef<unknown, unknown> | (() => QueryRef<unknown, unknown>)
   >;
 };
 
 export function useDataConnectMutation<
-  Fn extends (...args: any[]) => MutationRef<any, any>,
-  Data = ReturnType<Fn> extends MutationRef<infer D, any> ? D : never,
-  Variables = Fn extends (
-    dc: DataConnect,
-    vars: infer V,
-  ) => MutationRef<any, any>
-    ? V
+  Fn extends
+    | (() => MutationRef<any, any>)
+    | ((vars: any) => MutationRef<any, any>)
+    | ((...args: any[]) => MutationRef<any, any>),
+  Data = ReturnType<
+    Fn extends (() => MutationRef<infer D, any>)
+      ? () => MutationRef<D, any>
+      : Fn extends (vars: any) => MutationRef<infer D, any>
+      ? (vars: any) => MutationRef<D, any>
+      : Fn
+  > extends MutationRef<infer D, any>
+    ? D
+    : never,
+  Variables = Fn extends () => MutationRef<any, any>
+    ? void
     : Fn extends (vars: infer V) => MutationRef<any, any>
-      ? V
-      : never,
+    ? V
+    : Fn extends (dc: DataConnect, vars: infer V) => MutationRef<any, any>
+    ? V
+    : never
 >(
   ref: Fn,
   options?: useDataConnectMutationOptions<
     FlattenedMutationResult<Data, Variables>,
     FirebaseError,
     Variables
-  >,
+  >
 ) {
   const queryClient = useQueryClient();
 
@@ -68,7 +78,8 @@ export function useDataConnectMutation<
       options?.onSuccess?.(...args);
     },
     mutationFn: async (variables) => {
-      const response = await executeMutation<Data, Variables>(ref(variables));
+      const mutationRef = typeof ref === "function" ? ref(variables) : ref;
+      const response = await executeMutation<Data, Variables>(mutationRef);
 
       return {
         ...response.data,
