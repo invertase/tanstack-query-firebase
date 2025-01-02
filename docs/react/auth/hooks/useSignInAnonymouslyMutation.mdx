@@ -2,4 +2,89 @@
 title: useSignInAnonymouslyMutation
 ---
 
-This hook is implemented, but the documentation is a work in progress, check back soon.
+The `useSignInAnonymouslyMutation` hook provides a simple way to sign in users anonymously using Firebase Authentication.
+This hook integrates Firebase’s `signInAnonymously` method with TanStack Query's mutation lifecycle, allowing seamless state management and error handling.
+
+## Features
+
+- **Firebase Authentication Integration**: Allows users to sign in anonymously with Firebase Authentication.
+- **Built-in State Management**: Tracks the mutation lifecycle (`idle`, `loading`, `success`, `error`).
+- **Customizable Callbacks**: Supports `onSuccess`, `onError`, and other TanStack Query mutation options.
+- **Type-Safe Handling**: Ensures only valid data is passed and received from Firebase Authentication.
+
+## Installation
+
+Ensure you have the necessary Firebase, TanStack Query and TanStack Query Firebase packages installed:
+
+```bash
+npm install firebase @tanstack/react-query @tanstack-query-firebase/react
+```
+
+## Usage
+
+```jsx
+import { useSignInAnonymouslyMutation } from "@tanstack-query-firebase/react/auth";
+
+function Component() {
+  const { mutate, isPending, isSuccess, isError, error } = useSignInAnonymouslyMutation(auth);
+
+  const handleSignIn = () => {
+    mutate(); // Trigger anonymous sign-in
+  };
+
+  return (
+    <div>
+      {isPending && <p>Signing in...</p>}
+      {isSuccess && <p>Signed in anonymously!</p>}
+      {isError && <p>Error: {error?.message}</p>}
+
+      <button onClick={handleSignIn} disabled={isPending}>
+        Sign In Anonymously
+      </button>
+    </div>
+  );
+}
+```
+
+## API Reference
+
+`useSignInAnonymouslyMutation(auth, options?)`
+
+### Parameters
+
+-`auth`: The Firebase `Auth` instance used to manage authentication.
+- `options` (optional):  
+  An object for customizing the mutation behavior. Accepts all options supported by TanStack Query's `useMutation`, such as:
+  - `onSuccess`: Callback fired when the mutation succeeds.
+  - `onError`: Callback fired when the mutation fails.
+  - `onSettled`: Callback fired after the mutation finishes, regardless of success or failure.
+
+For a full list of supported options, see the TanStack Query [useMutation documentation](https://tanstack.com/query/latest/docs/react/reference/useMutation)
+
+### Returns
+
+The hook returns the following properties, provided by TanStack Query's [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation):
+
+- `mutate`:
+  Function to trigger the mutation(signin anonymously).
+
+```ts
+mutate(): void;
+```
+
+- `isPending`:
+  Boolean indicating if the mutation is in progress (alias for `isLoading`).
+
+- `isSuccess`:
+  Boolean indicating if the mutation has successfully completed.
+
+- `isError`:
+  Boolean indicating if the mutation has failed.
+
+- `error`:
+  The error object, if the mutation failed.
+
+- `data`:
+  The result of the mutation, typically containing the authenticated user data.
+
+For a complete list of returned properties, see the official TanStack Query [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation) documentation.
