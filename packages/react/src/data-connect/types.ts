@@ -1,3 +1,4 @@
+import type { QueryKey } from "@tanstack/react-query";
 import type { MutationResult, QueryResult } from "firebase/data-connect";
 
 // Flattens a QueryResult data down into a single object.

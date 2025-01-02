@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import type React from "react";
+import React, { type ReactNode } from "react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { firestore, wipeFirestore } from "~/testing-utils";
 import { useClearIndexedDbPersistenceMutation } from "./useClearIndexedDbPersistenceMutation";
