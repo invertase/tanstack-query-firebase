@@ -42,7 +42,7 @@
 		"@dataconnect/default-connector": "workspace:*"
 	},
 	"peerDependencies": {
-		"firebase": "^11",
+		"firebase": "^10.14.0 || ^11",
 		"@tanstack/react-query": "^5"
 	}
 }
