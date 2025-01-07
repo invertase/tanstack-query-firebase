@@ -25,8 +25,7 @@ export type useDataConnectMutationOptions<
 export function useDataConnectMutation<
   Fn extends
     | (() => MutationRef<any, any>)
-    | ((vars: any) => MutationRef<any, any>)
-    | ((...args: any[]) => MutationRef<any, any>),
+    | ((vars: any) => MutationRef<any, any>),
   Data = ReturnType<
     Fn extends (() => MutationRef<infer D, any>)
       ? () => MutationRef<D, any>
