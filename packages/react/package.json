@@ -13,16 +13,16 @@
 			"types": "./dist/index.d.ts"
 		},
 		"./auth": {
-			"import": "./dist/auth.js",
-			"types": "./dist/auth.d.ts"
+			"import": "./dist/auth/index.js",
+			"types": "./dist/auth/index.d.ts"
 		},
 		"./firestore": {
-			"import": "./dist/firestore.js",
-			"types": "./dist/firestore.d.ts"
+			"import": "./dist/firestore/index.js",
+			"types": "./dist/firestore/index.d.ts"
 		},
 		"./data-connect": {
-			"import": "./dist/dataconnect.js",
-			"types": "./dist/dataconnect.d.ts"
+			"import": "./dist/data-connect/index.js",
+			"types": "./dist/data-connect/index.d.ts"
 		}
 	},
 	"author": {
