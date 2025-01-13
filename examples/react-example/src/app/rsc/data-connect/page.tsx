@@ -1,6 +1,6 @@
 import { Movies } from "@/examples/data-connect";
 import { listMoviesRef } from "@dataconnect/default-connector";
-import { DataConnectQueryClient } from "@tanstack-query-firebase/react";
+import { DataConnectQueryClient } from "@tanstack-query-firebase/react/data-connect";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 
 import "@/firebase";
