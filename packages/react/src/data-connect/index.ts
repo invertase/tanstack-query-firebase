@@ -10,3 +10,4 @@ export {
   useDataConnectMutation,
   type useDataConnectMutationOptions,
 } from "./useDataConnectMutation";
+export type { FlattenedQueryResult, FlattenedMutationResult } from "./types";
