@@ -8,6 +8,7 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
+		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
 		"types": ["vitest/globals"],
 		"paths": {
@@ -15,5 +16,5 @@
 			"@/dataconnect/*": ["../../dataconnect-sdk/js/*"]
 		}
 	},
-	"include": ["src", "utils.tsx"]
+	"include": ["src", "utils.tsx", "./package.json"]
 }

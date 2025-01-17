@@ -1,7 +1,7 @@
-import { CreateMutationOptions, CreateMutationResult, CreateQueryOptions, injectMutation, injectQueries, injectQuery, QueryFunction, QueryKey, } from '@tanstack/angular-query-experimental';
+import { CreateMutationOptions, CreateMutationResult, CreateQueryOptions, CreateQueryResult, injectMutation, injectQueries, injectQuery, QueryFunction, QueryKey, } from '@tanstack/angular-query-experimental';
 import { executeMutation, executeQuery, MutationRef, QueryRef, type DataConnect } from 'firebase/data-connect';
 import { FirebaseError } from 'firebase/app';
-import { FlattenedMutationResult } from '../../../react/src/data-connect';
+import { FlattenedMutationResult, FlattenedQueryResult } from '../../../react/src/data-connect';
 type DataConnectMutationOptions<Data, Error, Variables, Arguments> = CreateMutationOptions<Data, Error, Arguments> & {
     invalidate?: QueryKey | QueryRef<Data, Variables>[]
 };
@@ -37,12 +37,21 @@ export function injectDataConnectMutation<Data, Variables, Arguments = void>(
     }
     return injectMutation(fdcOptionsFn);
 }
-interface CreateDataConnectQueryOptions<Data, Variables> extends Omit<CreateQueryOptions<Data, FirebaseError, QueryKey>, 'queryFn'> {
-    queryFn: () => QueryRef<Data, Variables>
+interface CreateDataConnectQueryOptions<Data, Variables>
+  extends Omit<
+    CreateQueryOptions<
+      FlattenedQueryResult<Data, Variables>,
+      FirebaseError,
+      FlattenedQueryResult<Data, Variables>,
+      QueryKey
+    >,
+    "queryFn"
+  > {
+  queryFn: () => QueryRef<Data, Variables>;
 }
 export function injectDataConnectQuery<Data, Variables>(
     optionsFn: () => CreateDataConnectQueryOptions<Data, Variables>
-) {
+): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
     function fdcOptionsFn() {
         const options = optionsFn();
         const modifiedFn = () => {
@@ -53,7 +62,7 @@ export function injectDataConnectQuery<Data, Variables>(
                             ...data,
                             ...rest
                         }
-                    }) as Promise<FlattenedMutationResult<Data, Variables>>;
+                    }) as Promise<FlattenedQueryResult<Data, Variables>>;
                 };
             
         return {
