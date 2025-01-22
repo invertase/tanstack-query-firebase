@@ -4,53 +4,77 @@ import {
   CreateQueryOptions,
   CreateQueryResult,
   injectMutation,
-  injectQueries,
   injectQuery,
   QueryClient,
   QueryKey,
 } from "@tanstack/angular-query-experimental";
 import {
+    DataConnect,
   executeMutation,
   executeQuery,
   MutationRef,
+  MutationResult,
   QueryRef,
-  type DataConnect,
+  QueryResult,
 } from "firebase/data-connect";
 import { FirebaseError } from "firebase/app";
-import {
-  FlattenedMutationResult,
-  FlattenedQueryResult,
-} from "../../../react/src/data-connect";
-import { assertInInjectionContext, inject, signal } from "@angular/core";
+
+import {  inject, signal } from "@angular/core";
 function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   return [queryRef.name, queryRef.variables];
 }
-type DataConnectMutationOptions<Data, Error, Variables, Arguments> = Omit<
-  CreateMutationOptions<Data, Error, Arguments>,
-  "mutationFn"
-> & {
+type FlattenedQueryResult<Data, Variables> = Omit<QueryResult<Data, Variables>, "data" | "toJSON"> & Data;
+interface CreateDataConnectQueryOptions<Data, Variables> extends Omit<CreateQueryOptions<FlattenedQueryResult<Data, Variables>, FirebaseError, FlattenedQueryResult<Data, Variables>, QueryKey>, "queryFn" | "queryKey"> {
+    queryFn: () => QueryRef<Data, Variables>;
+}
+
+export function injectDataConnectQuery<Data, Variables>(queryRefOrOptionsFn: QueryRef<Data, Variables> | (() => CreateDataConnectQueryOptions<Data, Variables>)) : CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
+  const queryKey = signal<QueryKey>([]);
+  function fdcOptionsFn() {
+    const passedInOptions = typeof queryRefOrOptionsFn === 'function' ? queryRefOrOptionsFn() : undefined;
+    
+    const modifiedFn = () => {
+      const ref: QueryRef<Data, Variables> =passedInOptions?.queryFn() || queryRefOrOptionsFn as QueryRef<Data, Variables>;
+      queryKey.set([ref.name, ref.variables]);
+      console.log('mutationfn!')
+      return executeQuery(ref).then((res) => {
+        const { data, ...rest } = res;
+        return {
+          ...data,
+          ...rest,
+        };
+      }) as Promise<FlattenedQueryResult<Data, Variables>>;
+    };
+return  {
+      queryKey: queryKey(),
+      ...passedInOptions,
+      queryFn: modifiedFn,
+    }
+    
+  }
+  return injectQuery(fdcOptionsFn);
+}
+
+export type GeneratedSignature<Data, Variables> = (dc: DataConnect, vars: Variables) => MutationRef<Data, Variables>;
+export type DataConnectMutationOptionsFn<Data, Error, Variables, Arguments> = () => Omit<CreateMutationOptions<Data, Error, Arguments>, "mutationFn"> & {
   invalidate?: QueryKey | QueryRef<Data, Variables>[];
   dataConnect?: DataConnect;
   mutationFn: (args: Arguments) => MutationRef<Data, Variables>;
-};
+}
+export type DataConnectMutationOptionsUndefinedMutationFn<Data, Error, Variables> = () => (Omit<ReturnType<DataConnectMutationOptionsFn<Data, Error, Variables, Variables>>, 'mutationFn'>);
+export type FlattenedMutationResult<Data, Variables> = Omit<MutationResult<Data, Variables>, "data" | "toJSON"> & Data;
 
-type MutationsOptionsFn<
-  Data,
-  Variables,
-  Arguments = void
-> = DataConnectMutationOptions<Data, FirebaseError, Variables, Arguments>;
-export function injectDataConnectMutation<Data, Variables, Arguments = void>(
-  optionsFn: () => MutationsOptionsFn<Data, Variables, Arguments>
-): CreateMutationResult<
-  FlattenedMutationResult<Data, Variables>,
-  FirebaseError,
-  Arguments
-> {
-  const fdcOptionsFn = () => {
+export function injectDataConnectMutation<Data, Variables, Arguments>(factoryFn: undefined,  optionsFn: DataConnectMutationOptionsFn<Data, FirebaseError, Variables, Arguments>): CreateMutationResult<FlattenedMutationResult<Data, Variables>, FirebaseError, Arguments>;
+export function injectDataConnectMutation<Data, Variables extends undefined, Arguments = void | undefined>(factoryFn: GeneratedSignature<Data, Variables>): CreateMutationResult<FlattenedMutationResult<Data, Variables>, FirebaseError, Arguments>;
+export function injectDataConnectMutation<Data, Variables, Arguments>(factoryFn: GeneratedSignature<Data, Variables>): CreateMutationResult<FlattenedMutationResult<Data, Variables>, FirebaseError, Arguments>;
+export function injectDataConnectMutation<Data, Variables, Arguments>(factoryFn: GeneratedSignature<Data, Variables>, optionsFn?: DataConnectMutationOptionsUndefinedMutationFn<Data, FirebaseError, Arguments>): CreateMutationResult<FlattenedMutationResult<Data, Variables>, FirebaseError, Arguments>;
+export function injectDataConnectMutation<Data, Variables, Arguments extends Variables>(factoryFn: GeneratedSignature<Data, Variables> | undefined,  optionsFn?: DataConnectMutationOptionsFn<Data, FirebaseError, Variables, Arguments> | DataConnectMutationOptionsUndefinedMutationFn<Data, FirebaseError, Variables>):CreateMutationResult<FlattenedMutationResult<Data, Variables>, FirebaseError, Arguments> {
+  const injectCb = () => {
     const queryClient = inject(QueryClient);
+      const providedOptions = optionsFn ? optionsFn() : undefined;
     const modifiedFn = (args: Arguments) => {
-      const options = optionsFn();
-      const ref: MutationRef<Data, Variables> = options.mutationFn(args);
+      const dataConnect = inject(DataConnect);
+      const ref = (providedOptions && 'mutationFn' in providedOptions && providedOptions.mutationFn(args as Arguments)) || factoryFn!(dataConnect, args as Variables);
 
       return executeMutation(ref)
         .then((res) => {
@@ -61,7 +85,7 @@ export function injectDataConnectMutation<Data, Variables, Arguments = void>(
           };
         })
         .then((ret) => {
-          options?.invalidate?.forEach((qk) => {
+          providedOptions?.invalidate?.forEach((qk) => {
             let key = qk;
             if ("name" in (qk as Object)) {
               const queryKey = getQueryKey(qk as QueryRef<unknown, unknown>);
@@ -69,7 +93,7 @@ export function injectDataConnectMutation<Data, Variables, Arguments = void>(
             }
             console.log("invalidating", key);
             queryClient.invalidateQueries({
-              queryKey: ["listAllMovies", undefined],
+              queryKey: key,
             });
           });
           return ret;
@@ -77,48 +101,9 @@ export function injectDataConnectMutation<Data, Variables, Arguments = void>(
     };
 
     return {
-      ...optionsFn(),
+      ...providedOptions,
       mutationFn: modifiedFn,
     };
   };
-  return injectMutation(fdcOptionsFn);
-}
-interface CreateDataConnectQueryOptions<Data, Variables>
-  extends Omit<
-    CreateQueryOptions<
-      FlattenedQueryResult<Data, Variables>,
-      FirebaseError,
-      FlattenedQueryResult<Data, Variables>,
-      QueryKey
-    >,
-    "queryFn" | "queryKey"
-  > {
-  queryFn: () => QueryRef<Data, Variables>;
-}
-export function injectDataConnectQuery<Data, Variables>(
-  optionsFn: () => CreateDataConnectQueryOptions<Data, Variables>
-): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
-  const queryKey = signal<QueryKey>([]);
-  function fdcOptionsFn() {
-    const options = optionsFn();
-    const modifiedFn = () => {
-      const ref: QueryRef<Data, Variables> = options.queryFn();
-      queryKey.set([ref.name, ref.variables]);
-      console.log(queryKey());
-      return executeQuery(ref).then((res) => {
-        const { data, ...rest } = res;
-        return {
-          ...data,
-          ...rest,
-        };
-      }) as Promise<FlattenedQueryResult<Data, Variables>>;
-    };
-
-    return {
-      queryKey: queryKey(),
-      ...options,
-      queryFn: modifiedFn,
-    };
-  }
-  return injectQuery(fdcOptionsFn);
+  return injectMutation(injectCb);
 }
