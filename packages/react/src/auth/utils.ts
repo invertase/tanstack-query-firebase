@@ -76,7 +76,6 @@ function extractOobCode(line: string): string | null {
   return url ? new URL(url).searchParams.get("oobCode") : null;
 }
 
-// Exported helper functions for different use cases
 export async function waitForPasswordResetCode(
   email: string,
   timeout = 5000,
