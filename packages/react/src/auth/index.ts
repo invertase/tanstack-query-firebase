@@ -10,7 +10,7 @@
 // useMultiFactorUserGetSessionMutation (MultiFactorUser)
 // useMultiFactorResolverResolveSignInMutation (MultiFactorResolver)
 // useApplyActionCodeMutation
-// useCheckActionCodeMutation
+export { useCheckActionCodeMutation } from "./useCheckActionCodeMutation";
 // useConfirmPasswordResetMutation
 // useCreateUserWithEmailAndPasswordMutation
 // useFetchSignInMethodsForEmailQuery
