@@ -12,7 +12,7 @@
 // useApplyActionCodeMutation
 // useCheckActionCodeMutation
 // useConfirmPasswordResetMutation
-// useCreateUserWithEmailAndPasswordMutation
+export { useCreateUserWithEmailAndPasswordMutation } from "./useCreateUserWithEmailAndPasswordMutation";
 // useFetchSignInMethodsForEmailQuery
 // useGetRedirectResultQuery
 // useRevokeAccessTokenMutation
