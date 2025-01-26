@@ -9,7 +9,7 @@
 // useMultiFactorUserUnenrollMutation (MultiFactorUser)
 // useMultiFactorUserGetSessionMutation (MultiFactorUser)
 // useMultiFactorResolverResolveSignInMutation (MultiFactorResolver)
-// useApplyActionCodeMutation
+export { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
 // useCheckActionCodeMutation
 // useConfirmPasswordResetMutation
 // useCreateUserWithEmailAndPasswordMutation
