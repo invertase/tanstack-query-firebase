@@ -6,7 +6,8 @@ import {
   executeQuery,
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
-import type { FlattenedQueryResult } from "./types";
+import { CallerSdkType, type FlattenedQueryResult } from "./types";
+
 
 export type useDataConnectQueryOptions<
   TData = unknown,
@@ -19,6 +20,7 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
     FlattenedQueryResult<Data, Variables>,
     FirebaseError
   >,
+  _callerSdkType: CallerSdkType = CallerSdkType.TanstackReactCore
 ) {
   let queryRef: QueryRef<Data, Variables>;
   let initialData: FlattenedQueryResult<Data, Variables> | undefined;
@@ -34,7 +36,8 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   } else {
     queryRef = refOrResult;
   }
-
+  // @ts-expect-error function is hidden under `DataConnect`.
+  queryRef.dataConnect._setCallerSdkType(_callerSdkType);
   return useQuery<FlattenedQueryResult<Data, Variables>, FirebaseError>({
     ...options,
     initialData,
