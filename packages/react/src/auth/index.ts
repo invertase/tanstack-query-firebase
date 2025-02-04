@@ -13,7 +13,6 @@
 // useCheckActionCodeMutation
 // useConfirmPasswordResetMutation
 // useCreateUserWithEmailAndPasswordMutation
-// useFetchSignInMethodsForEmailQuery
 // useGetRedirectResultQuery
 // useRevokeAccessTokenMutation
 // useSendPasswordResetEmailMutation
