@@ -15,7 +15,7 @@ import { useDataConnectMutation } from "./useDataConnectMutation";
 // initialize firebase app
 firebaseApp;
 
-describe.only("useDataConnectMutation", () => {
+describe("useDataConnectMutation", () => {
   const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
   const onSuccess = vi.fn();
 
@@ -24,7 +24,7 @@ describe.only("useDataConnectMutation", () => {
     queryClient.clear();
   });
 
-  test.only("returns initial state correctly for create mutation", () => {
+  test("returns initial state correctly for create mutation", () => {
     const { result } = renderHook(
       () => useDataConnectMutation(createMovieRef),
       {
