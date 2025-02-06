@@ -5,12 +5,14 @@ import {
 } from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
+  CallerSdkType,
+  CallerSdkTypeEnum,
   type DataConnect,
   type MutationRef,
   type QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import { CallerSdkType, type FlattenedMutationResult } from "./types";
+import { type FlattenedMutationResult } from "./types";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
@@ -49,7 +51,7 @@ export function useDataConnectMutation<
     FirebaseError,
     Variables
   >,
-  _callerSdkType: CallerSdkType = CallerSdkType.TanstackReactCore
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ) {
   const queryClient = useQueryClient();
   return useMutation<

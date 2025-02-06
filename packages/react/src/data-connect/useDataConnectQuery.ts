@@ -4,10 +4,11 @@ import {
   type QueryRef,
   type QueryResult,
   executeQuery,
+  CallerSdkType,
+  CallerSdkTypeEnum
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
-import { CallerSdkType, type FlattenedQueryResult } from "./types";
-
+import { FlattenedQueryResult } from "./types";
 
 export type useDataConnectQueryOptions<
   TData = unknown,
@@ -20,7 +21,7 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
     FlattenedQueryResult<Data, Variables>,
     FirebaseError
   >,
-  _callerSdkType: CallerSdkType = CallerSdkType.TanstackReactCore
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ) {
   let queryRef: QueryRef<Data, Variables>;
   let initialData: FlattenedQueryResult<Data, Variables> | undefined;

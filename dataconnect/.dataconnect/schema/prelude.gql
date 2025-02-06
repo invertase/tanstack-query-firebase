@@ -75,6 +75,65 @@ to be a consistent snapshot.
 """
 directive @transaction on MUTATION
 
+"""
+Redact a part of the response from the client.
+
+Redacted fields are still evaluated for side effects (including data changes and
+`@check`) and the results are still available to later steps in CEL expressions
+(via `response.fieldName`).
+"""
+directive @redact on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
+"""
+Ensure this field is present and is not null or `[]`, or abort the request / transaction.
+
+A CEL expression, `expr` is used to test the field value. It defaults to
+rejecting null and `[]` but a custom expression can be provided instead.
+
+If the field occurs multiple times (i.e. directly or indirectly nested under a
+list), `expr` will be executed once for each occurrence and `@check` succeeds if
+all values succeed. `@check` fails when the field is not present at all (i.e.
+all ancestor paths contain `null` or `[]`), unless `optional` is true.
+
+If a `@check` fails in a mutation, the top-level field containing it will be
+replaced with a partial error, whose message can be customzied via the `message`
+argument. Each subsequent top-level fields will return an aborted error (i.e.
+not executed). To rollback previous steps, see `@transaction`.
+"""
+directive @check(
+  """
+  The CEL expression to test the field value (or values if nested under a list).
+
+  Within the CEL expression, a special value `this` evaluates to the field that
+  this directive is attached to. If this field occurs multiple times because
+  any ancestor is a list, each occurrence is tested with `this` bound to each
+  value. When the field itself is a list or object, `this` follows the same
+  structure (including all decendants selected in case of objects).
+
+  For any given path, if an ancestor is `null` or `[]`, the field will not be
+  reached and the CEL evaluation will be skipped for that path. In other words,
+  evaluation only takes place when `this` is `null` or non-null, but never
+  undefined. (See also the `optional` argument.)
+  """
+  expr: Boolean_Expr! = "!(this in [null, []])"
+  """
+  The error message to return to the client if the check fails.
+
+  Defaults to "permission denied" if not specified.
+  """
+  message: String! = "permission denied"
+  """
+  Whether the check should pass or fail (default) when the field is not present.
+
+  A field will not be reached at a given path if its parent or any ancestor is
+  `[]` or `null`. When this happens to all paths, the field will not be present
+  anywhere in the response tree. In other words, `expr` is evaluated 0 times.
+  By default, @check will automatically fail in this case. Set this argument to
+  `true` to make it pass even if no tests are run (a.k.a. "vacuously true").
+  """
+  optional: Boolean = false
+) repeatable on QUERY | MUTATION | FIELD | FRAGMENT_DEFINITION | FRAGMENT_SPREAD | INLINE_FRAGMENT
+
 "Query filter criteria for `String` scalar fields."
 input String_Filter {
   "When true, match if field `IS NULL`. When false, match if field is `NOT NULL`."
@@ -444,6 +503,17 @@ directive @fdc_oneOf(
   "If true, exactly one field / argument in the group must be specified."
   required: Boolean! = false
 ) repeatable on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+type Mutation {
+  """
+  Run a query during the mutation and add fields into the response.
+
+  Example: foo: query { users { id } } will add a field foo: {users: [{id: "..."}, …]} into the response JSON.
+
+  Note: Data fetched this way can be handy for permission checks. See @check.
+  """
+  query: Query
+}
 
 """
 `UUID` is a string of hexadecimal digits representing an RFC4122-compliant UUID.
@@ -1933,74 +2003,4 @@ scalar Vector_Embed_Model
   @fdc_example(value: "textembedding-gecko@003", description: "A stable version of the textembedding-gecko model")
   @fdc_example(value: "textembedding-gecko@001", description: "An older version of the textembedding-gecko model")
   @fdc_example(value: "text-embedding-004", description: "Another text embedding model")
-
-"""
-Redact a part of the response from the client.
-
-Redacted fields are still evaluated for side effects (including data changes and
-`@check`) and the results are still available to later steps in CEL expressions
-(via `response.fieldName`).
-"""
-directive @redact on FIELD | FRAGMENT_SPREAD | INLINE_FRAGMENT
-
-"""
-Ensure this field is present and is not null or `[]`, or abort the request / transaction.
-
-A CEL expression, `expr` is used to test the field value. It defaults to
-rejecting null and `[]` but a custom expression can be provided instead.
-
-If the field occurs multiple times (i.e. directly or indirectly nested under a
-list), `expr` will be executed once for each occurrence and `@check` succeeds if
-all values succeed. `@check` fails when the field is not present at all (i.e.
-all ancestor paths contain `null` or `[]`), unless `optional` is true.
-
-If a `@check` fails in a mutation, the top-level field containing it will be
-replaced with a partial error, whose message can be customzied via the `message`
-argument. Each subsequent top-level fields will return an aborted error (i.e.
-not executed). To rollback previous steps, see `@transaction`.
-"""
-directive @check(
-  """
-  The CEL expression to test the field value (or values if nested under a list).
-
-  Within the CEL expression, a special value `this` evaluates to the field that
-  this directive is attached to. If this field occurs multiple times because
-  any ancestor is a list, each occurrence is tested with `this` bound to each
-  value. When the field itself is a list or object, `this` follows the same
-  structure (including all decendants selected in case of objects).
-
-  For any given path, if an ancestor is `null` or `[]`, the field will not be
-  reached and the CEL evaluation will be skipped for that path. In other words,
-  evaluation only takes place when `this` is `null` or non-null, but never
-  undefined. (See also the `optional` argument.)
-  """
-  expr: Boolean_Expr! = "!(this in [null, []])"
-  """
-  The error message to return to the client if the check fails.
-
-  Defaults to "permission denied" if not specified.
-  """
-  message: String! = "permission denied"
-  """
-  Whether the check should pass or fail (default) when the field is not present.
-
-  A field will not be reached at a given path if its parent or any ancestor is
-  `[]` or `null`. When this happens to all paths, the field will not be present
-  anywhere in the response tree. In other words, `expr` is evaluated 0 times.
-  By default, @check will automatically fail in this case. Set this argument to
-  `true` to make it pass even if no tests are run (a.k.a. "vacuously true").
-  """
-  optional: Boolean = false
-) repeatable on QUERY | MUTATION | FIELD | FRAGMENT_DEFINITION | FRAGMENT_SPREAD | INLINE_FRAGMENT
-
-type Mutation {
-  """
-  Run a query during the mutation and add fields into the response.
-
-  Example: foo: query { users { id } } will add a field foo: {users: [{id: "..."}, …]} into the response JSON.
-
-  Note: Data fetched this way can be handy for permission checks. See @check.
-  """
-  query: Query
-}
 

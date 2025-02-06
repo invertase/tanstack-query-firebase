@@ -13,12 +13,3 @@ export type FlattenedMutationResult<Data, Variables> = Omit<
   "data" | "toJSON"
 > &
   Data;
-
-export enum CallerSdkType {
-  Base, // Core JS SDK
-  Generated, // Generated JS SDK
-  TanstackReactCore, // Tanstack non-generated React SDK
-  GeneratedReact, // Generated React SDK
-  TanstackAngularCore, // Tanstack non-generated Angular SDK
-  GeneratedAngular // Generated Angular SDK
-}
