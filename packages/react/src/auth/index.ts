@@ -13,7 +13,7 @@
 export { useCheckActionCodeMutation } from "./useCheckActionCodeMutation";
 export { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
 // useCheckActionCodeMutation
-// useConfirmPasswordResetMutation
+export { useConfirmPasswordResetMutation } from "./useConfirmPasswordResetMutation";
 // useCreateUserWithEmailAndPasswordMutation
 // useGetRedirectResultQuery
 export { useGetRedirectResultQuery } from "./useGetRedirectResultQuery";
