@@ -13,6 +13,9 @@
 export { useCheckActionCodeMutation } from "./useCheckActionCodeMutation";
 export { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
 // useCheckActionCodeMutation
+// useConfirmPasswordResetMutation
+export { useCreateUserWithEmailAndPasswordMutation } from "./useCreateUserWithEmailAndPasswordMutation";
+// useFetchSignInMethodsForEmailQuery
 export { useConfirmPasswordResetMutation } from "./useConfirmPasswordResetMutation";
 // useCreateUserWithEmailAndPasswordMutation
 // useGetRedirectResultQuery
