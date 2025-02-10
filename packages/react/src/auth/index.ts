@@ -16,6 +16,7 @@ export { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
 export { useConfirmPasswordResetMutation } from "./useConfirmPasswordResetMutation";
 // useCreateUserWithEmailAndPasswordMutation
 // useGetRedirectResultQuery
+export { useRevokeAccessTokenMutation } from "./useRevokeAccessTokenMutation";
 export { useGetRedirectResultQuery } from "./useGetRedirectResultQuery";
 // useRevokeAccessTokenMutation
 // useSendPasswordResetEmailMutation
