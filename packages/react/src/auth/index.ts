@@ -10,10 +10,13 @@
 // useMultiFactorUserGetSessionMutation (MultiFactorUser)
 // useMultiFactorResolverResolveSignInMutation (MultiFactorResolver)
 // useApplyActionCodeMutation
+export { useCheckActionCodeMutation } from "./useCheckActionCodeMutation";
+export { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
 // useCheckActionCodeMutation
 // useConfirmPasswordResetMutation
 // useCreateUserWithEmailAndPasswordMutation
 // useGetRedirectResultQuery
+export { useGetRedirectResultQuery } from "./useGetRedirectResultQuery";
 // useRevokeAccessTokenMutation
 // useSendPasswordResetEmailMutation
 export { useSendSignInLinkToEmailMutation } from "./useSendSignInLinkToEmailMutation";
