@@ -9,3 +9,4 @@ export { useCollectionQuery } from "./useCollectionQuery";
 export { useGetAggregateFromServerQuery } from "./useGetAggregateFromServerQuery";
 export { useGetCountFromServerQuery } from "./useGetCountFromServerQuery";
 // useNamedQuery
+export { useDeleteDocumentMutation } from "./useDeleteDocumentMutation";
