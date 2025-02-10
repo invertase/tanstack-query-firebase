@@ -11,6 +11,8 @@
 // useMultiFactorResolverResolveSignInMutation (MultiFactorResolver)
 // useApplyActionCodeMutation
 export { useCheckActionCodeMutation } from "./useCheckActionCodeMutation";
+export { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
+// useCheckActionCodeMutation
 // useConfirmPasswordResetMutation
 // useCreateUserWithEmailAndPasswordMutation
 // useFetchSignInMethodsForEmailQuery
