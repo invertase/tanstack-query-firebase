@@ -8,26 +8,32 @@ import {
   addDoc,
 } from "firebase/firestore";
 
-type FirestoreUseMutationOptions<TData = unknown, TError = Error> = Omit<
-  UseMutationOptions<TData, TError, void>,
+type FirestoreUseMutationOptions<
+  TData = unknown,
+  TError = Error,
+  AppModelType extends DocumentData = DocumentData
+> = Omit<
+  UseMutationOptions<TData, TError, WithFieldValue<AppModelType>>,
   "mutationFn"
 >;
+
 export function useAddDocumentMutation<
   AppModelType extends DocumentData = DocumentData,
   DbModelType extends DocumentData = DocumentData
 >(
   collectionRef: CollectionReference<AppModelType, DbModelType>,
-  data: WithFieldValue<AppModelType>,
   options?: FirestoreUseMutationOptions<
     DocumentReference<AppModelType, DbModelType>,
-    FirestoreError
+    FirestoreError,
+    AppModelType
   >
 ) {
   return useMutation<
     DocumentReference<AppModelType, DbModelType>,
-    FirestoreError
+    FirestoreError,
+    WithFieldValue<AppModelType>
   >({
     ...options,
-    mutationFn: () => addDoc(collectionRef, data),
+    mutationFn: (data) => addDoc(collectionRef, data),
   });
 }

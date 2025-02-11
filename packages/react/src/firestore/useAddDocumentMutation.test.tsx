@@ -26,14 +26,13 @@ describe("useAddDocumentMutation", () => {
     const collectionRef = collection(firestore, "tests");
     const testData = { foo: "bar", num: 42 };
 
-    const { result } = renderHook(
-      () => useAddDocumentMutation(collectionRef, testData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useAddDocumentMutation(collectionRef), {
+      wrapper,
+    });
 
     expect(result.current.isIdle).toBe(true);
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(testData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -59,12 +58,11 @@ describe("useAddDocumentMutation", () => {
     ) as CollectionReference<TestDoc>;
     const testData: TestDoc = { foo: "test", num: 123 };
 
-    const { result } = renderHook(
-      () => useAddDocumentMutation(collectionRef, testData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useAddDocumentMutation(collectionRef), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(testData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -84,11 +82,11 @@ describe("useAddDocumentMutation", () => {
     const testData = { foo: "bar" };
 
     const { result } = renderHook(
-      () => useAddDocumentMutation(restrictedCollectionRef, testData),
+      () => useAddDocumentMutation(restrictedCollectionRef),
       { wrapper }
     );
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(testData));
 
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
@@ -104,7 +102,7 @@ describe("useAddDocumentMutation", () => {
 
     const { result } = renderHook(
       () =>
-        useAddDocumentMutation(collectionRef, testData, {
+        useAddDocumentMutation(collectionRef, {
           onSuccess: (docRef) => {
             callbackDocRef = docRef;
           },
@@ -112,7 +110,7 @@ describe("useAddDocumentMutation", () => {
       { wrapper }
     );
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(testData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -127,12 +125,11 @@ describe("useAddDocumentMutation", () => {
     const collectionRef = collection(firestore, "tests");
     const emptyData = {};
 
-    const { result } = renderHook(
-      () => useAddDocumentMutation(collectionRef, emptyData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useAddDocumentMutation(collectionRef), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(emptyData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
