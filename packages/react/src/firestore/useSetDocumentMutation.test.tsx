@@ -20,15 +20,14 @@ describe("useSetDocumentMutation", () => {
     const docRef = doc(firestore, "tests", "setTest");
     const testData = { foo: "bar", num: 42 };
 
-    const { result } = renderHook(
-      () => useSetDocumentMutation(docRef, testData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useSetDocumentMutation(docRef), {
+      wrapper,
+    });
 
     expect(result.current.isPending).toBe(false);
     expect(result.current.isIdle).toBe(true);
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(testData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -44,12 +43,11 @@ describe("useSetDocumentMutation", () => {
     const initialData = { foo: "initial", num: 1 };
     const newData = { foo: "updated", num: 2 };
 
-    const { result } = renderHook(
-      () => useSetDocumentMutation(docRef, initialData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useSetDocumentMutation(docRef), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(initialData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -59,11 +57,11 @@ describe("useSetDocumentMutation", () => {
     expect(snapshot.data()).toEqual(initialData);
 
     const { result: result2 } = renderHook(
-      () => useSetDocumentMutation(docRef, newData),
+      () => useSetDocumentMutation(docRef),
       { wrapper }
     );
 
-    await act(() => result2.current.mutate());
+    await act(() => result2.current.mutate(newData));
 
     await waitFor(() => {
       expect(result2.current.isSuccess).toBe(true);
@@ -86,12 +84,11 @@ describe("useSetDocumentMutation", () => {
     ) as DocumentReference<TestDoc>;
     const testData: TestDoc = { foo: "test", num: 123 };
 
-    const { result } = renderHook(
-      () => useSetDocumentMutation(docRef, testData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useSetDocumentMutation(docRef), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(testData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -108,11 +105,11 @@ describe("useSetDocumentMutation", () => {
     const testData = { foo: "bar" };
 
     const { result } = renderHook(
-      () => useSetDocumentMutation(restrictedDocRef, testData),
+      () => useSetDocumentMutation(restrictedDocRef),
       { wrapper }
     );
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(testData));
 
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
@@ -128,7 +125,7 @@ describe("useSetDocumentMutation", () => {
 
     const { result } = renderHook(
       () =>
-        useSetDocumentMutation(docRef, testData, {
+        useSetDocumentMutation(docRef, {
           onSuccess: () => {
             callbackCalled = true;
           },
@@ -136,7 +133,7 @@ describe("useSetDocumentMutation", () => {
       { wrapper }
     );
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(testData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -151,12 +148,11 @@ describe("useSetDocumentMutation", () => {
     const docRef = doc(firestore, "tests", "emptyDoc");
     const emptyData = {};
 
-    const { result } = renderHook(
-      () => useSetDocumentMutation(docRef, emptyData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useSetDocumentMutation(docRef), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(emptyData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
