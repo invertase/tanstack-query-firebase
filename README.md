@@ -11,9 +11,6 @@
 
 TanStack Query Firebase provides a set of hooks for handling asynchronous tasks with Firebase in your applications.
 
-> [!IMPORTANT]  
-> This project is currently a work in progress.
-
 > Looking for React Query Firebase? Check out the [old branch](https://github.com/invertase/tanstack-query-firebase/tree/react-query-firebase).
 
 ## Why use this library?
