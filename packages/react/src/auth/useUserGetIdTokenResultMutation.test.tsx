@@ -1,4 +1,3 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import {
   createUserWithEmailAndPassword,
@@ -6,10 +5,10 @@ import {
 } from "firebase/auth";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, wipeAuth } from "~/testing-utils";
-import { userUserGetIdTokenResultMutation } from "./userUserGetIdTokenResultMutation";
+import { useUserGetIdTokenResultMutation } from "./useUseGetIdTokenResultMutation";
 import { queryClient, wrapper } from "../../utils";
 
-describe("userUserGetIdTokenResultMutation", () => {
+describe("useUserGetIdTokenResultMutation", () => {
   const email = "tqf@invertase.io";
   const password = "TanstackQueryFirebase#123";
 
@@ -24,7 +23,7 @@ describe("userUserGetIdTokenResultMutation", () => {
     await auth.signOut();
   });
 
-  test("successfully retrieves ID token result with all properties", async () => {
+  test("successfully retrieves ID token result with forceRefresh true", async () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -32,13 +31,12 @@ describe("userUserGetIdTokenResultMutation", () => {
     );
     const { user } = userCredential;
 
-    const { result } = renderHook(
-      () => userUserGetIdTokenResultMutation(user),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUserGetIdTokenResultMutation(user), {
+      wrapper,
+    });
 
     await act(async () => {
-      await result.current.mutateAsync();
+      await result.current.mutateAsync(true);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -61,7 +59,7 @@ describe("userUserGetIdTokenResultMutation", () => {
     ).toBe(true);
   });
 
-  test("can get token result with forceRefresh option", async () => {
+  test("can get token result with forceRefresh false", async () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -69,16 +67,12 @@ describe("userUserGetIdTokenResultMutation", () => {
     );
     const { user } = userCredential;
 
-    const { result } = renderHook(
-      () =>
-        userUserGetIdTokenResultMutation(user, {
-          auth: { forceRefresh: true },
-        }),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUserGetIdTokenResultMutation(user), {
+      wrapper,
+    });
 
     await act(async () => {
-      await result.current.mutateAsync();
+      await result.current.mutateAsync(false);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -98,12 +92,12 @@ describe("userUserGetIdTokenResultMutation", () => {
     const onSuccess = vi.fn();
 
     const { result } = renderHook(
-      () => userUserGetIdTokenResultMutation(user, { onSuccess }),
+      () => useUserGetIdTokenResultMutation(user, { onSuccess }),
       { wrapper }
     );
 
     await act(async () => {
-      await result.current.mutateAsync();
+      await result.current.mutateAsync(true);
     });
 
     await waitFor(() => expect(onSuccess).toHaveBeenCalled());
@@ -122,13 +116,12 @@ describe("userUserGetIdTokenResultMutation", () => {
     );
     const { user } = userCredential;
 
-    const { result } = renderHook(
-      () => userUserGetIdTokenResultMutation(user),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUserGetIdTokenResultMutation(user), {
+      wrapper,
+    });
 
     await act(async () => {
-      await result.current.mutateAsync();
+      await result.current.mutateAsync(false);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
