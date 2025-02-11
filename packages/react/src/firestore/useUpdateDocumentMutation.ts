@@ -7,8 +7,12 @@ import {
   type UpdateData,
 } from "firebase/firestore";
 
-type FirestoreUseMutationOptions<TData = unknown, TError = Error> = Omit<
-  UseMutationOptions<TData, TError, void>,
+type FirestoreUseMutationOptions<
+  TData = unknown,
+  TError = Error,
+  DbModelType extends DocumentData = DocumentData
+> = Omit<
+  UseMutationOptions<TData, TError, UpdateData<DbModelType>>,
   "mutationFn"
 >;
 
@@ -17,11 +21,10 @@ export function useUpdateDocumentMutation<
   DbModelType extends DocumentData = DocumentData
 >(
   documentRef: DocumentReference<AppModelType, DbModelType>,
-  data: UpdateData<DbModelType>,
-  options?: FirestoreUseMutationOptions<void, FirestoreError>
+  options?: FirestoreUseMutationOptions<void, FirestoreError, DbModelType>
 ) {
-  return useMutation<void, FirestoreError>({
+  return useMutation<void, FirestoreError, UpdateData<DbModelType>>({
     ...options,
-    mutationFn: () => updateDoc(documentRef, data),
+    mutationFn: (data) => updateDoc(documentRef, data),
   });
 }

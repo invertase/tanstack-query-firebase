@@ -28,14 +28,13 @@ describe("useUpdateDocumentMutation", () => {
 
     const updateData = { foo: "updated", num: 2 };
 
-    const { result } = renderHook(
-      () => useUpdateDocumentMutation(docRef, updateData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUpdateDocumentMutation(docRef), {
+      wrapper,
+    });
 
     expect(result.current.isPending).toBe(false);
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(updateData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -62,12 +61,11 @@ describe("useUpdateDocumentMutation", () => {
       "nested.field1": "new",
     };
 
-    const { result } = renderHook(
-      () => useUpdateDocumentMutation(docRef, updateData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUpdateDocumentMutation(docRef), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(updateData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -97,12 +95,11 @@ describe("useUpdateDocumentMutation", () => {
 
     const updateData = { num: 42 };
 
-    const { result } = renderHook(
-      () => useUpdateDocumentMutation(docRef, updateData),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUpdateDocumentMutation(docRef), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(updateData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -119,11 +116,11 @@ describe("useUpdateDocumentMutation", () => {
     const updateData = { foo: "bar" };
 
     const { result } = renderHook(
-      () => useUpdateDocumentMutation(nonExistentDocRef, updateData),
+      () => useUpdateDocumentMutation(nonExistentDocRef),
       { wrapper }
     );
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(updateData));
 
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
@@ -137,11 +134,11 @@ describe("useUpdateDocumentMutation", () => {
     const updateData = { foo: "bar" };
 
     const { result } = renderHook(
-      () => useUpdateDocumentMutation(restrictedDocRef, updateData),
+      () => useUpdateDocumentMutation(restrictedDocRef),
       { wrapper }
     );
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(updateData));
 
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
@@ -159,7 +156,7 @@ describe("useUpdateDocumentMutation", () => {
 
     const { result } = renderHook(
       () =>
-        useUpdateDocumentMutation(docRef, updateData, {
+        useUpdateDocumentMutation(docRef, {
           onSuccess: () => {
             callbackCalled = true;
           },
@@ -167,7 +164,7 @@ describe("useUpdateDocumentMutation", () => {
       { wrapper }
     );
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(updateData));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -184,12 +181,11 @@ describe("useUpdateDocumentMutation", () => {
 
     const emptyUpdate = {};
 
-    const { result } = renderHook(
-      () => useUpdateDocumentMutation(docRef, emptyUpdate),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUpdateDocumentMutation(docRef), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(emptyUpdate));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
