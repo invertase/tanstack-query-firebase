@@ -23,7 +23,7 @@ describe("useUserGetIdTokenMutation", () => {
     await auth.signOut();
   });
 
-  test("successfully retrieves an ID token", async () => {
+  test("successfully retrieves an ID token with forceRefresh true", async () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -36,7 +36,7 @@ describe("useUserGetIdTokenMutation", () => {
     });
 
     await act(async () => {
-      await result.current.mutateAsync();
+      await result.current.mutateAsync(true);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -45,7 +45,7 @@ describe("useUserGetIdTokenMutation", () => {
     expect(result.current.data?.length).toBeGreaterThan(0);
   });
 
-  test("can get token with forceRefresh option", async () => {
+  test("successfully retrieves an ID token with forceRefresh false", async () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -53,16 +53,12 @@ describe("useUserGetIdTokenMutation", () => {
     );
     const { user } = userCredential;
 
-    const { result } = renderHook(
-      () =>
-        useUserGetIdTokenMutation(user, {
-          auth: { forceRefresh: true },
-        }),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useUserGetIdTokenMutation(user), {
+      wrapper,
+    });
 
     await act(async () => {
-      await result.current.mutateAsync();
+      await result.current.mutateAsync(false);
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -71,7 +67,7 @@ describe("useUserGetIdTokenMutation", () => {
     expect(result.current.data?.length).toBeGreaterThan(0);
   });
 
-  test("executes onSuccess callback", async () => {
+  test("executes onSuccess callback with token", async () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -86,7 +82,7 @@ describe("useUserGetIdTokenMutation", () => {
     );
 
     await act(async () => {
-      await result.current.mutateAsync();
+      await result.current.mutateAsync(true);
     });
 
     await waitFor(() => expect(onSuccess).toHaveBeenCalled());
