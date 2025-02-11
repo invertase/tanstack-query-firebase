@@ -13,13 +13,10 @@ type AuthUseMutationOptions<
 
 export function useUserGetIdTokenMutation(
   user: User,
-  options?: AuthUseMutationOptions<string, AuthError>
+  options?: AuthUseMutationOptions<string, AuthError, boolean>
 ) {
-  const { auth, ...mutationOptions } = options || {};
-  const forceRefresh = auth?.forceRefresh;
-
-  return useMutation<string, AuthError>({
-    ...mutationOptions,
-    mutationFn: () => getIdToken(user, forceRefresh),
+  return useMutation<string, AuthError, boolean>({
+    ...options,
+    mutationFn: (forceRefresh?: boolean) => getIdToken(user, forceRefresh),
   });
 }
