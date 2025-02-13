@@ -4,11 +4,11 @@ import {
   type QueryRef,
   type QueryResult,
   executeQuery,
-  CallerSdkType,
-  CallerSdkTypeEnum
+  type CallerSdkType,
+  CallerSdkTypeEnum,
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
-import { FlattenedQueryResult } from "./types";
+import type { FlattenedQueryResult } from "./types";
 
 export type useDataConnectQueryOptions<
   TData = unknown,
