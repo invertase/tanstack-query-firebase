@@ -51,6 +51,7 @@ export { useDeleteUserMutation } from "./useDeleteUserMutation";
 // useReauthenticateWithRedirectMutation
 export { useReloadMutation } from "./useReloadMutation";
 // useSendEmailVerificationMutation
+export { useSendEmailVerificationMutation } from "./useSendEmailVerificationMutation";
 // useUnlinkMutation
 // useUpdateEmailMutation
 // useUpdatePasswordMutation
