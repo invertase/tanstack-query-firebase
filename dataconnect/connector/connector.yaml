@@ -5,3 +5,4 @@ generate:
     package: "@dataconnect/default-connector"
     packageJsonDir: ../..
     react: true
+    angular: true

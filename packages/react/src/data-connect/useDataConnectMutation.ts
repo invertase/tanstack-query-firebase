@@ -9,6 +9,7 @@ import {
   type MutationRef,
   type QueryRef,
   executeMutation,
+  mutationRef,
 } from "firebase/data-connect";
 import type { FlattenedMutationResult } from "./types";
 
