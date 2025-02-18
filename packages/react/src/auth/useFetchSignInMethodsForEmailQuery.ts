@@ -18,6 +18,6 @@ export function useFetchSignInMethodsForEmailQuery(
 ) {
   return useQuery<string[], AuthError, void>({
     ...options,
-    queryFn: async () => fetchSignInMethodsForEmail(auth, email),
+    queryFn: () => fetchSignInMethodsForEmail(auth, email),
   });
 }
