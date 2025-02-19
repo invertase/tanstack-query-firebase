@@ -15,6 +15,10 @@ import {
   assertInInjectionContext,
   computed,
   inject,
+  InjectionToken,
+  Injector,
+  isSignal,
+  runInInjectionContext,
   signal,
 } from "@angular/core";
 import {
@@ -27,6 +31,8 @@ import {
   QueryResult,
 } from "@angular/fire/data-connect";
 import { createMovieRef } from "../../dataconnect-sdk/js/default-connector/angular";
+import { mutationRef } from "firebase/data-connect";
+import { SIGNAL } from "@angular/core/primitives/signals";
 function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   const key: (string | Record<string, any>)[] = [queryRef.name];
   if ("variables" in queryRef && queryRef.variables !== undefined) {
@@ -95,7 +101,7 @@ export function injectDataConnectQuery<Data, Variables>(
 export type GeneratedSignature<Data, Variables> = ((
   dc: DataConnect,
   vars: Variables
-) => MutationRef<Data, Variables>); // TODO(mtewani): Add 
+) => MutationRef<Data, Variables>); // TODO(mtewani): Add __angular: true
 export type DataConnectMutationOptionsFn<Data, Error, Variables, Arguments> =
   () => Omit<CreateMutationOptions<Data, Error, Arguments>, "mutationFn"> & {
     invalidate?: QueryKey | QueryRef<unknown, unknown>[];
@@ -116,8 +122,9 @@ export type FlattenedMutationResult<Data, Variables> = Omit<
 > &
   Data;
 
+type EmptyFactoryFn<Data, Variables> = () => MutationRef<Data, Variables>;
 export function injectDataConnectMutation<Data, Variables, Arguments>(
-  factoryFn: undefined,
+  factoryFn: undefined | null,
   optionsFn: DataConnectMutationOptionsFn<
     Data,
     FirebaseError,
@@ -131,17 +138,40 @@ export function injectDataConnectMutation<Data, Variables, Arguments>(
 >;
 export function injectDataConnectMutation<
   Data,
-  Variables extends undefined,
+  Variables,
   Arguments = void | undefined
 >(
-  factoryFn: GeneratedSignature<Data, Variables>
+  factoryFn: EmptyFactoryFn<Data, Variables>,
+  options?: DataConnectMutationOptionsUndefinedMutationFn<Data, FirebaseError, Variables>
 ): CreateMutationResult<
   FlattenedMutationResult<Data, Variables>,
   FirebaseError,
   Arguments
 >;
-export function injectDataConnectMutation<Data, Variables, Arguments>(
-  factoryFn: GeneratedSignature<Data, Variables>
+
+export function injectDataConnectMutation<
+  Data,
+  Variables extends undefined,
+  Arguments = void | undefined
+>(
+  factoryFn: EmptyFactoryFn<Data, Variables>,
+  options?: DataConnectMutationOptionsUndefinedMutationFn<Data, FirebaseError, Variables>
+): CreateMutationResult<
+  FlattenedMutationResult<Data, Variables>,
+  FirebaseError,
+  Arguments
+>;
+export function injectDataConnectMutation<
+  Data,
+  Variables extends undefined,
+  Arguments = Variables
+>(
+  factoryFn: GeneratedSignature<Data, Variables>,
+  optionsFn?: DataConnectMutationOptionsUndefinedMutationFn<
+    Data,
+    FirebaseError,
+    Arguments
+  >
 ): CreateMutationResult<
   FlattenedMutationResult<Data, Variables>,
   FirebaseError,
@@ -166,6 +196,7 @@ export function injectDataConnectMutation<
 // TODO(mtewani): Just check for the fact that the user has passed in a generated Angular fn. AKA __angular: true
 /**
  * injectDataConnectMutation takes a mutation ref factory function and returns a tanstack wrapper around `injectMutation`
+ * @example injectDataConnectMutation(createMovieRef);
  * @param factoryFn generated SDK factory function
  * @param optionsFn options function to create a new mutation
  * @returns {CreateMutationResult<FlattenedMutationResult<Data, Variables>, FirebaseError, Arguments>}
@@ -175,7 +206,7 @@ export function injectDataConnectMutation<
   Variables,
   Arguments extends Variables
 >(
-  factoryFn: GeneratedSignature<Data, Variables> | undefined,
+  factoryFn: GeneratedSignature<Data, Variables> | EmptyFactoryFn<Data, Variables> | undefined | null,
   optionsFn?:
     | DataConnectMutationOptionsFn<Data, FirebaseError, Variables, Arguments>
     | DataConnectMutationOptionsUndefinedMutationFn<
@@ -188,21 +219,23 @@ export function injectDataConnectMutation<
   FirebaseError,
   Arguments
 > {
-  assertInInjectionContext(injectDataConnectMutation);
+  /**
+   * Hypothesis:
+   * It seems like optionsSignal is causing observerSignal to get called again
+   * 
+   */
   const dataConnect = inject(DataConnect);
   const queryClient = inject(QueryClient);
+  
   const injectCb = () => {
-    // TODO(mtewani): Figure out why this is needed
-    // Remember: there's a compute() on the optionsFn that's passed on the injectionMutation
-    const optionsSignal = computed(() => {
-      return optionsFn ? optionsFn() : undefined;
-    });
+    
+
+    const providedOptions = optionsFn && optionsFn();
     const modifiedFn = (args: Arguments) => {
-      const providedOptions = optionsSignal();
       const ref =
         (providedOptions &&
           "mutationFn" in providedOptions! &&
-          providedOptions!.mutationFn(args as Arguments)) ||
+          providedOptions!.mutationFn(args)) ||
         factoryFn!(dataConnect, args as Variables);
 
       return executeMutation(ref)
@@ -244,10 +277,10 @@ export function injectDataConnectMutation<
     };
 
     return {
+      ...providedOptions,
       mutationFn: modifiedFn,
     };
   };
+  
   return injectMutation(injectCb);
 }
-
-

@@ -30,15 +30,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@angular/animations": "^19.1.6",
-    "@angular/core": "^19.1.0",
     "@angular/fire": "^19.0.0-rc.5",
-    "@tanstack/angular-query-experimental": "^5.64.1",
+    "@tanstack/angular-query-experimental": "^5.66.4",
     "firebase": "^11.1.0"
   },
   "devDependencies": {
+    "@angular/animations": "^19.0.0",
     "@analogjs/vite-plugin-angular": "^1.13.0",
     "@testing-library/angular": "^17.3.5",
     "@testing-library/dom": "^10.4.0"
+  },
+  "peerDependencies": {
+    "@angular/core": "^19.0.0"
   }
 }

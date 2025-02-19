@@ -5,10 +5,12 @@ import {
 } from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
+  ConnectorConfig,
   type DataConnect,
   type MutationRef,
   type QueryRef,
   executeMutation,
+  getDataConnect,
   mutationRef,
 } from "firebase/data-connect";
 import type { FlattenedMutationResult } from "./types";
@@ -90,3 +92,4 @@ export function useDataConnectMutation<
     },
   });
 }
+const res = useDataConnectMutation((abc: string) => abc === 'a' ? mutationRef(getDataConnect({} as ConnectorConfig), '', { abc: 1 }) : mutationRef(getDataConnect({} as ConnectorConfig), '', { abc: 2}))
