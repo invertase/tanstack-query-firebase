@@ -11,11 +11,10 @@ import {
 
 import { FirebaseError } from "firebase/app";
 
+import { inject, signal } from "@angular/core";
 import {
-  inject,
-  signal,
-} from "@angular/core";
-import {
+  CallerSdkType,
+  CallerSdkTypeEnum,
   DataConnect,
   executeMutation,
   executeQuery,
@@ -58,9 +57,11 @@ export function injectDataConnectQuery<Data, Variables>(
   queryRefOrOptionsFn:
     | QueryRef<Data, Variables>
     | QueryRef<Data, Variables>
-    | (() => CreateDataConnectQueryOptions<Data, Variables>)
+    | (() => CreateDataConnectQueryOptions<Data, Variables>),
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
   const queryKey = signal<QueryKey>([]);
+
   function fdcOptionsFn() {
     const passedInOptions =
       typeof queryRefOrOptionsFn === "function"
@@ -71,6 +72,8 @@ export function injectDataConnectQuery<Data, Variables>(
       const ref: QueryRef<Data, Variables> =
         passedInOptions?.queryFn() ||
         (queryRefOrOptionsFn as QueryRef<Data, Variables>);
+      // @ts-expect-error function is hidden under `DataConnect`.
+      ref.dataConnect._setCallerSdkType(_callerSdkType);
       queryKey.set([ref.name, ref.variables]);
       return executeQuery(ref).then((res) => {
         const { data, ...rest } = res;
@@ -86,6 +89,7 @@ export function injectDataConnectQuery<Data, Variables>(
       queryFn: modifiedFn,
     };
   }
+
   return injectQuery(fdcOptionsFn);
 }
 
@@ -216,7 +220,8 @@ export function injectDataConnectMutation<
         Data,
         FirebaseError,
         Variables
-      >
+      >,
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ): CreateMutationResult<
   FlattenedMutationResult<Data, Variables>,
   FirebaseError,
@@ -233,7 +238,8 @@ export function injectDataConnectMutation<
           "mutationFn" in providedOptions! &&
           providedOptions!.mutationFn(args)) ||
         factoryFn!(dataConnect, args as Variables);
-
+      // @ts-expect-error function is hidden under `DataConnect`.
+      ref.dataConnect._setCallerSdkType(_callerSdkType);
       return executeMutation(ref)
         .then((res) => {
           const { data, ...rest } = res;
