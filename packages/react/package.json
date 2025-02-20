@@ -1,6 +1,6 @@
 {
 	"name": "@tanstack-query-firebase/react",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "TanStack Query bindings for Firebase and React",
 	"type": "module",
 	"scripts": {

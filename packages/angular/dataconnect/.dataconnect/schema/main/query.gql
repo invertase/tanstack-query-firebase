@@ -1,0 +1,88 @@
+extend type Query {
+  """
+  ✨ Look up a single `Movie` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  movie(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: Movie_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: Movie_FirstRow
+  ): Movie @fdc_generated(from: "Movie", purpose: QUERY_SINGLE)
+  """
+  ✨ Look up a single `MovieMetadata` based on `id`, `key` or `first` and return selected fields (or `null` if not found).
+  """
+  movieMetadata(
+    """
+    The unique ID of the object.
+    """
+    id: UUID
+
+    """
+    The key used to identify the object.
+    """
+    key: MovieMetadata_Key
+
+    """
+    Fetch the first row based on the filters and ordering.
+    """
+    first: MovieMetadata_FirstRow
+  ): MovieMetadata @fdc_generated(from: "MovieMetadata", purpose: QUERY_SINGLE)
+  """
+  ✨ List `Movie` objects in the table, optionally filtered by `where` conditions.
+  """
+  movies(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: Movie_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [Movie_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+  ): [Movie!]! @fdc_generated(from: "Movie", purpose: QUERY_MULTIPLE)
+  """
+  ✨ List `MovieMetadata` objects in the table, optionally filtered by `where` conditions.
+  """
+  movieMetadatas(
+    """
+    Filter condition to narrow down the query results.
+    """
+    where: MovieMetadata_Filter
+
+    """
+    Order the query results by specific fields.
+    """
+    orderBy: [MovieMetadata_Order!]
+
+    """
+    Number of rows to skip before starting to return the results.
+    """
+    offset: Int
+
+    """
+    Maximum number of rows to return (defaults to 100 rows).
+    """
+    limit: Int = 100
+  ): [MovieMetadata!]! @fdc_generated(from: "MovieMetadata", purpose: QUERY_MULTIPLE)
+}

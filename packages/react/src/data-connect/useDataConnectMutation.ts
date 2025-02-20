@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
-  CallerSdkType,
+  type CallerSdkType,
   CallerSdkTypeEnum,
   type DataConnect,
   type MutationRef,

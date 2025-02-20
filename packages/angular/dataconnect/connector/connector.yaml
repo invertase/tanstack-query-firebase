@@ -1,0 +1,7 @@
+connectorId: default
+generate:
+  javascriptSdk:
+    outputDir: ../../dataconnect-sdk/js/default-connector
+    package: "@dataconnect/default-connector"
+    packageJsonDir: ../..
+    angular: true
