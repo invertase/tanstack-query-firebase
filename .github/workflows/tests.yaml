@@ -50,6 +50,8 @@ jobs:
           filters: |
             react:
               - 'packages/react/**'
+            angular:
+              - 'packages/angular/**'
   
       # Run tests for the React package if it has changed
       - name: Run React Tests
