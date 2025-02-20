@@ -4,32 +4,24 @@ import {
   type QueryRef,
   type QueryResult,
   executeQuery,
+  CallerSdkType,
+  CallerSdkTypeEnum
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
-import type { FlattenedQueryResult } from "./types";
-import { listMoviesRef } from "@/dataconnect/default-connector";
+import { FlattenedQueryResult } from "./types";
 
 export type useDataConnectQueryOptions<
   TData = unknown,
   TError = FirebaseError,
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
-useDataConnectQuery(listMoviesRef()).data!.movies
-export function useDataConnectQuery2<Data = unknown, Variables = unknown, Ref extends QueryRef<Data, Variables> = QueryRef<Data, Variables>>(
-  refOrResult: Ref
-    | QueryResult<Data, Variables>,
-  options?: useDataConnectQueryOptions<
-    FlattenedQueryResult<Data, Variables>,
-    FirebaseError
-  >
-) {
-}
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   refOrResult: QueryRef<Data, Variables>
     | QueryResult<Data, Variables>,
   options?: useDataConnectQueryOptions<
     FlattenedQueryResult<Data, Variables>,
     FirebaseError
-  >
+  >,
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ) {
   let queryRef: QueryRef<Data, Variables>;
   let initialData: FlattenedQueryResult<Data, Variables> | undefined;
@@ -45,7 +37,8 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   } else {
     queryRef = refOrResult;
   }
-
+  // @ts-expect-error function is hidden under `DataConnect`.
+  queryRef.dataConnect._setCallerSdkType(_callerSdkType);
   return useQuery<FlattenedQueryResult<Data, Variables>, FirebaseError>({
     ...options,
     initialData,

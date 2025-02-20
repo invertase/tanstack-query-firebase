@@ -5,15 +5,14 @@ import {
 } from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
-  ConnectorConfig,
+  CallerSdkType,
+  CallerSdkTypeEnum,
   type DataConnect,
   type MutationRef,
   type QueryRef,
   executeMutation,
-  getDataConnect,
-  mutationRef,
 } from "firebase/data-connect";
-import type { FlattenedMutationResult } from "./types";
+import { type FlattenedMutationResult } from "./types";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
@@ -51,10 +50,10 @@ export function useDataConnectMutation<
     FlattenedMutationResult<Data, Variables>,
     FirebaseError,
     Variables
-  >
+  >,
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ) {
   const queryClient = useQueryClient();
-
   return useMutation<
     FlattenedMutationResult<Data, Variables>,
     FirebaseError,
@@ -81,6 +80,9 @@ export function useDataConnectMutation<
     },
     mutationFn: async (variables) => {
       const mutationRef = typeof ref === "function" ? ref(variables) : ref;
+
+      // @ts-expect-error function is hidden under `DataConnect`.
+      mutationRef.dataConnect._setCallerSdkType(_callerSdkType);
       const response = await executeMutation<Data, Variables>(mutationRef);
 
       return {
