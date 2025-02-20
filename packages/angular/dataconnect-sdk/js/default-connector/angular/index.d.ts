@@ -4,13 +4,15 @@ export { TimestampString, UUIDString, Int64String, DateString } from '../';
 import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, MutationRef, MutationPromise} from '@angular/fire/data-connect';
 import { FlattenedQueryResult, CreateDataConnectQueryOptions, FlattenedMutationResult, CreateDataConnectMutationOptions} from '@tanstack-query-firebase/angular/data-connect';
 import { CreateQueryResult, CreateMutationResult} from '@tanstack/angular-query-experimental';
+import { AngularQueryRef } from '../../../../data-connect/index';
 
 export const connectorConfig: ConnectorConfig;
 
+
 /* Allow users to create refs without passing in DataConnect */
-export function listMoviesRef(): QueryRef<ListMoviesData, undefined>;
+export function listMoviesRef(): AngularQueryRef<ListMoviesData, undefined>;
 /* Allow users to pass in custom DataConnect instances */
-export function listMoviesRef(dc: DataConnect): QueryRef<ListMoviesData, undefined>;
+export function listMoviesRef(dc: DataConnect): AngularQueryRef<ListMoviesData, undefined>;
 
 export function listMovies(): QueryPromise<ListMoviesData, undefined>;
 export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData, undefined>;
@@ -24,9 +26,9 @@ export function injectListMovies(options?: ListMoviesOptions): CreateQueryResult
 
 
 /* Allow users to create refs without passing in DataConnect */
-export function getMovieByIdRef(vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+export function getMovieByIdRef(vars: GetMovieByIdVariables): AngularQueryRef<GetMovieByIdData, GetMovieByIdVariables>;
 /* Allow users to pass in custom DataConnect instances */
-export function getMovieByIdRef(dc: DataConnect, vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+export function getMovieByIdRef(dc: DataConnect, vars: GetMovieByIdVariables): AngularQueryRef<GetMovieByIdData, GetMovieByIdVariables>;
 
 export function getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
 export function getMovieById(dc: DataConnect, vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;

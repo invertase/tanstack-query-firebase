@@ -56,7 +56,6 @@ interface CreateDataConnectQueryOptions<Data, Variables>
 export function injectDataConnectQuery<Data, Variables>(
   queryRefOrOptionsFn:
     | QueryRef<Data, Variables>
-    | QueryRef<Data, Variables>
     | (() => CreateDataConnectQueryOptions<Data, Variables>),
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
