@@ -1,0 +1,46 @@
+{
+  "name": "@tanstack-query-firebase/angular",
+  "version": "0.0.1",
+  "description": "Tanstack Query bindings for Firebase and Angular",
+  "type": "module",
+  "files": [
+    "./index.js",
+    "./index.d.ts",
+    "data-connect"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "watch": "tsup --watch",
+    "test": "vitest --dom --coverage"
+  },
+  "typings": "./index.d.ts",
+  "module": "./index.js",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "default": "./data-connect/index.js"
+    },
+    "./data-connect": {
+      "import": "./data-connect/index.js",
+      "types": "./data-connect/index.d.ts",
+      "default": "./data-connect/index.js"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@angular/fire": "^19.0.0-rc.5",
+    "@tanstack/angular-query-experimental": "5.66.4",
+    "firebase": "^11.1.0"
+  },
+  "devDependencies": {
+    "@angular/animations": "^19.0.0",
+    "@analogjs/vite-plugin-angular": "^1.13.0",
+    "@testing-library/angular": "^17.3.5",
+    "@testing-library/dom": "^10.4.0"
+  },
+  "peerDependencies": {
+    "@angular/core": "^19.0.0"
+  }
+}

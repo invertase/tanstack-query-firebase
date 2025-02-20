@@ -1,15 +1,15 @@
 {
-  "name": "@dataconnect/default-connector",
+  "name": "@dataconnect/default-connector-angular",
   "version": "1.0.0",
   "author": "Firebase <firebase-support@google.com> (https://firebase.google.com/)",
-  "description": "Generated SDK For default",
+  "description": "Generated SDK For default-angular",
   "license": "Apache-2.0",
   "engines": {
     "node": " >=18.0"
   },
   "typings": "index.d.ts",
-  "module": "esm/index.esm.js",
   "main": "index.cjs.js",
+  "module": "esm/index.esm.js",
   "browser": "esm/index.esm.js",
   "exports": {
     ".": {
@@ -17,15 +17,9 @@
       "require": "./index.cjs.js",
       "default": "./esm/index.esm.js"
     },
-    "./react": {
-      "types": "./react/index.d.ts",
-      "import": "./react/esm/index.esm.js",
-      "default": "./react/esm/index.esm.js"
-    },
     "./package.json": "./package.json"
   },
   "peerDependencies": {
-    "firebase": "^11.3.0",
-    "@tanstack-query-firebase/react": "^1.0.5"
+    "@angular/fire": "^19.0.0"
   }
 }
