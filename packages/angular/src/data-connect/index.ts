@@ -12,13 +12,7 @@ import {
 import { FirebaseError } from "firebase/app";
 
 import {
-  assertInInjectionContext,
-  computed,
   inject,
-  InjectionToken,
-  Injector,
-  isSignal,
-  runInInjectionContext,
   signal,
 } from "@angular/core";
 import {
@@ -30,9 +24,6 @@ import {
   QueryRef,
   QueryResult,
 } from "@angular/fire/data-connect";
-import { createMovieRef } from "../../dataconnect-sdk/js/default-connector/angular";
-import { mutationRef } from "firebase/data-connect";
-import { SIGNAL } from "@angular/core/primitives/signals";
 function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   const key: (string | Record<string, any>)[] = [queryRef.name];
   if ("variables" in queryRef && queryRef.variables !== undefined) {
@@ -66,7 +57,7 @@ interface CreateDataConnectQueryOptions<Data, Variables>
 export function injectDataConnectQuery<Data, Variables>(
   queryRefOrOptionsFn:
     | QueryRef<Data, Variables>
-    | (QueryRef<Data, Variables> )
+    | QueryRef<Data, Variables>
     | (() => CreateDataConnectQueryOptions<Data, Variables>)
 ): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
   const queryKey = signal<QueryKey>([]);
@@ -98,10 +89,10 @@ export function injectDataConnectQuery<Data, Variables>(
   return injectQuery(fdcOptionsFn);
 }
 
-export type GeneratedSignature<Data, Variables> = ((
+export type GeneratedSignature<Data, Variables> = (
   dc: DataConnect,
   vars: Variables
-) => MutationRef<Data, Variables>); // TODO(mtewani): Add __angular: true
+) => MutationRef<Data, Variables>; // TODO(mtewani): Add __angular: true
 export type DataConnectMutationOptionsFn<Data, Error, Variables, Arguments> =
   () => Omit<CreateMutationOptions<Data, Error, Arguments>, "mutationFn"> & {
     invalidate?: QueryKey | QueryRef<unknown, unknown>[];
@@ -142,7 +133,11 @@ export function injectDataConnectMutation<
   Arguments = void | undefined
 >(
   factoryFn: EmptyFactoryFn<Data, Variables>,
-  options?: DataConnectMutationOptionsUndefinedMutationFn<Data, FirebaseError, Variables>
+  options?: DataConnectMutationOptionsUndefinedMutationFn<
+    Data,
+    FirebaseError,
+    Variables
+  >
 ): CreateMutationResult<
   FlattenedMutationResult<Data, Variables>,
   FirebaseError,
@@ -155,7 +150,11 @@ export function injectDataConnectMutation<
   Arguments = void | undefined
 >(
   factoryFn: EmptyFactoryFn<Data, Variables>,
-  options?: DataConnectMutationOptionsUndefinedMutationFn<Data, FirebaseError, Variables>
+  options?: DataConnectMutationOptionsUndefinedMutationFn<
+    Data,
+    FirebaseError,
+    Variables
+  >
 ): CreateMutationResult<
   FlattenedMutationResult<Data, Variables>,
   FirebaseError,
@@ -206,7 +205,11 @@ export function injectDataConnectMutation<
   Variables,
   Arguments extends Variables
 >(
-  factoryFn: GeneratedSignature<Data, Variables> | EmptyFactoryFn<Data, Variables> | undefined | null,
+  factoryFn:
+    | GeneratedSignature<Data, Variables>
+    | EmptyFactoryFn<Data, Variables>
+    | undefined
+    | null,
   optionsFn?:
     | DataConnectMutationOptionsFn<Data, FirebaseError, Variables, Arguments>
     | DataConnectMutationOptionsUndefinedMutationFn<
@@ -219,17 +222,10 @@ export function injectDataConnectMutation<
   FirebaseError,
   Arguments
 > {
-  /**
-   * Hypothesis:
-   * It seems like optionsSignal is causing observerSignal to get called again
-   * 
-   */
   const dataConnect = inject(DataConnect);
   const queryClient = inject(QueryClient);
-  
-  const injectCb = () => {
-    
 
+  const injectCb = () => {
     const providedOptions = optionsFn && optionsFn();
     const modifiedFn = (args: Arguments) => {
       const ref =
@@ -249,10 +245,8 @@ export function injectDataConnectMutation<
         .then((ret) => {
           if (providedOptions?.invalidate) {
             for (const qk of providedOptions.invalidate) {
-              // @ts-ignore
               let key = qk;
               if ("name" in (key as Object)) {
-                // @ts-ignore
                 const queryKey = getQueryKey(key as QueryRef<unknown, unknown>);
                 key = queryKey;
                 if (
@@ -281,6 +275,6 @@ export function injectDataConnectMutation<
       mutationFn: modifiedFn,
     };
   };
-  
+
   return injectMutation(injectCb);
 }

@@ -1,10 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { provideHttpClient } from '@angular/common/http';
-import {
-  connectorConfig,
-  createMovie,
-  
-} from "../../dataconnect-sdk/js/default-connector";
+
 import {
   createMovieRef,
   upsertMovieRef,
@@ -12,7 +8,9 @@ import {
   getMovieByIdRef,
   UpsertMovieVariables,
   listMoviesRef,
-} from "../../dataconnect-sdk/js/default-connector/angular";
+  connectorConfig,
+  createMovie,
+} from "@/dataconnect/default-connector/angular";
 import { waitFor } from '@testing-library/angular';
 import { beforeEach, afterEach, describe, expect, test, vi } from "vitest";
 import { injectDataConnectMutation } from "./index";

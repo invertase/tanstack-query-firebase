@@ -92,4 +92,3 @@ export function useDataConnectMutation<
     },
   });
 }
-const res = useDataConnectMutation((abc: string) => abc === 'a' ? mutationRef(getDataConnect({} as ConnectorConfig), '', { abc: 1 }) : mutationRef(getDataConnect({} as ConnectorConfig), '', { abc: 2}))

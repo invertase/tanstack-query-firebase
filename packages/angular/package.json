@@ -31,7 +31,7 @@
   "license": "ISC",
   "dependencies": {
     "@angular/fire": "^19.0.0-rc.5",
-    "@tanstack/angular-query-experimental": "^5.66.4",
+    "@tanstack/angular-query-experimental": "5.66.4",
     "firebase": "^11.1.0"
   },
   "devDependencies": {

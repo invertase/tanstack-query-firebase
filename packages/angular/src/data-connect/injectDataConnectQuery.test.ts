@@ -3,7 +3,7 @@ import {
   createMovie,
   getMovieByIdRef,
   listMoviesRef,
-} from "../../dataconnect-sdk/js/default-connector/angular";
+} from "@/dataconnect/default-connector/angular";
 import { provideHttpClient } from '@angular/common/http';
 import { waitFor } from "@testing-library/angular";
 import { connectDataConnectEmulator, DataConnect, getDataConnect, provideDataConnect } from "@angular/fire/data-connect";

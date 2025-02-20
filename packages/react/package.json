@@ -36,7 +36,7 @@
 	],
 	"license": "Apache-2.0",
 	"devDependencies": {
-		"@dataconnect/default-connector": "file:../../dataconnect-sdk/js/default-connector",
+		"@dataconnect/default-connector": "file:dataconnect-sdk/js/default-connector",
 		"@testing-library/react": "^16.0.1",
 		"@types/react": "^19.0.1",
 		"react": "^19.0.0"

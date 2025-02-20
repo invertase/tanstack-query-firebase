@@ -12,8 +12,8 @@
 		"forceConsistentCasingInFileNames": true,
 		"types": ["vitest/globals"],
 		"paths": {
-			"~/testing-utils": ["../../vitest/utils.ts"],
-			"@/dataconnect/*": ["../../dataconnect-sdk/js/*"]
+			"~/testing-utils": ["../react/vitest/utils.ts"],
+			"@/dataconnect/*": ["./dataconnect-sdk/js/*"]
 		}
 	},
 	"include": ["src", "utils.tsx", "./package.json"]

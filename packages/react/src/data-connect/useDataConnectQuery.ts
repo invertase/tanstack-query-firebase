@@ -7,18 +7,29 @@ import {
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
 import type { FlattenedQueryResult } from "./types";
+import { listMoviesRef } from "@/dataconnect/default-connector";
 
 export type useDataConnectQueryOptions<
   TData = unknown,
   TError = FirebaseError,
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
-
-export function useDataConnectQuery<Data = unknown, Variables = unknown>(
-  refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
+useDataConnectQuery(listMoviesRef()).data!.movies
+export function useDataConnectQuery2<Data = unknown, Variables = unknown, Ref extends QueryRef<Data, Variables> = QueryRef<Data, Variables>>(
+  refOrResult: Ref
+    | QueryResult<Data, Variables>,
   options?: useDataConnectQueryOptions<
     FlattenedQueryResult<Data, Variables>,
     FirebaseError
-  >,
+  >
+) {
+}
+export function useDataConnectQuery<Data = unknown, Variables = unknown>(
+  refOrResult: QueryRef<Data, Variables>
+    | QueryResult<Data, Variables>,
+  options?: useDataConnectQueryOptions<
+    FlattenedQueryResult<Data, Variables>,
+    FirebaseError
+  >
 ) {
   let queryRef: QueryRef<Data, Variables>;
   let initialData: FlattenedQueryResult<Data, Variables> | undefined;

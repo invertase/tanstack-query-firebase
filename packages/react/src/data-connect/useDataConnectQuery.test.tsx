@@ -1,16 +1,12 @@
-import {
-  createMovie,
-  getMovieByIdRef,
-  listMoviesRef,
-} from "@/dataconnect/default-connector";
 import { dehydrate } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { executeQuery } from "firebase/data-connect";
+import { DataConnect, executeQuery, queryRef, QueryRef } from "firebase/data-connect";
 import { beforeEach, describe, expect, test } from "vitest";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { DataConnectQueryClient } from "./query-client";
 import { useDataConnectQuery } from "./useDataConnectQuery";
+import { createMovie, createMovieRef, getMovieByIdRef, ListMoviesData, listMoviesRef } from "@/dataconnect/default-connector";
 
 // initialize firebase app
 firebaseApp;
@@ -34,7 +30,7 @@ describe("useDataConnectQuery", () => {
   });
 
   test("fetches data successfully", async () => {
-    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
+    const { result } = renderHook(() => useListMoviesRef(), {
       wrapper,
     });
 
@@ -84,7 +80,9 @@ describe("useDataConnectQuery", () => {
   });
 
   test("returns correct data", async () => {
-    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
+    const abc = listMoviesRef();
+    useDataConnectQuery(getMovieByIdRef({ id: 'a'}))
+    const { result } = renderHook(() => useDataConnectQuery(abc), {
       wrapper,
     });
 
@@ -111,6 +109,9 @@ describe("useDataConnectQuery", () => {
   });
 
   test("returns the correct data properties", async () => {
+    const qc = queryRef<ListMoviesData>({} as DataConnect, '');
+    const newQc = Object.assign(qc, {__angular: false})
+
     const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
       wrapper,
     });
@@ -251,3 +252,7 @@ describe("useDataConnectQuery", () => {
     ]);
   });
 });
+function useListMoviesRef(): any {
+  throw new Error("Function not implemented.");
+}
+
