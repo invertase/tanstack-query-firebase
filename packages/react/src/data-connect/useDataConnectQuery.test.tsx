@@ -30,7 +30,7 @@ describe("useDataConnectQuery", () => {
   });
 
   test("fetches data successfully", async () => {
-    const { result } = renderHook(() => useListMoviesRef(), {
+    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
       wrapper,
     });
 
@@ -80,9 +80,7 @@ describe("useDataConnectQuery", () => {
   });
 
   test("returns correct data", async () => {
-    const abc = listMoviesRef();
-    useDataConnectQuery(getMovieByIdRef({ id: 'a'}))
-    const { result } = renderHook(() => useDataConnectQuery(abc), {
+    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
       wrapper,
     });
 
@@ -109,9 +107,6 @@ describe("useDataConnectQuery", () => {
   });
 
   test("returns the correct data properties", async () => {
-    const qc = queryRef<ListMoviesData>({} as DataConnect, '');
-    const newQc = Object.assign(qc, {__angular: false})
-
     const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
       wrapper,
     });
@@ -252,7 +247,4 @@ describe("useDataConnectQuery", () => {
     ]);
   });
 });
-function useListMoviesRef(): any {
-  throw new Error("Function not implemented.");
-}
 

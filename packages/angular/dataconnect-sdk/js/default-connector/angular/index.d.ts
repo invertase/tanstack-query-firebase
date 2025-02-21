@@ -1,47 +1,11 @@
-import { ListMoviesData, GetMovieByIdData, GetMovieByIdVariables, CreateMovieData, CreateMovieVariables, UpsertMovieData, UpsertMovieVariables, DeleteMovieData, DeleteMovieVariables } from '../';
-export { ListMoviesData, GetMovieByIdData, GetMovieByIdVariables, CreateMovieData, CreateMovieVariables, UpsertMovieData, UpsertMovieVariables, DeleteMovieData, DeleteMovieVariables } from '../';
+import { CreateMovieData, CreateMovieVariables, UpsertMovieData, UpsertMovieVariables, DeleteMovieData, DeleteMovieVariables, ListMoviesData, GetMovieByIdData, GetMovieByIdVariables } from '../';
+export { CreateMovieData, CreateMovieVariables, UpsertMovieData, UpsertMovieVariables, DeleteMovieData, DeleteMovieVariables, ListMoviesData, GetMovieByIdData, GetMovieByIdVariables } from '../';
 export { TimestampString, UUIDString, Int64String, DateString } from '../';
 import { ConnectorConfig, DataConnect, QueryRef, QueryPromise, MutationRef, MutationPromise} from '@angular/fire/data-connect';
 import { FlattenedQueryResult, CreateDataConnectQueryOptions, FlattenedMutationResult, CreateDataConnectMutationOptions} from '@tanstack-query-firebase/angular/data-connect';
 import { CreateQueryResult, CreateMutationResult} from '@tanstack/angular-query-experimental';
-import { AngularQueryRef } from '../../../../data-connect/index';
 
 export const connectorConfig: ConnectorConfig;
-
-
-/* Allow users to create refs without passing in DataConnect */
-export function listMoviesRef(): AngularQueryRef<ListMoviesData, undefined>;
-/* Allow users to pass in custom DataConnect instances */
-export function listMoviesRef(dc: DataConnect): AngularQueryRef<ListMoviesData, undefined>;
-
-export function listMovies(): QueryPromise<ListMoviesData, undefined>;
-export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData, undefined>;
-
-
-
-
-type ListMoviesOptions = () => Omit<CreateDataConnectQueryOptions<ListMoviesData, undefined>, 'queryFn'>;
-export function injectListMovies(options?: ListMoviesOptions): CreateQueryResult<FlattenedQueryResult<ListMoviesData, undefined>, FirebaseError, undefined>;
-
-
-
-/* Allow users to create refs without passing in DataConnect */
-export function getMovieByIdRef(vars: GetMovieByIdVariables): AngularQueryRef<GetMovieByIdData, GetMovieByIdVariables>;
-/* Allow users to pass in custom DataConnect instances */
-export function getMovieByIdRef(dc: DataConnect, vars: GetMovieByIdVariables): AngularQueryRef<GetMovieByIdData, GetMovieByIdVariables>;
-
-export function getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
-export function getMovieById(dc: DataConnect, vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
-
-
-
-
-type GetMovieByIdArgs = GetMovieByIdVariables | (() => GetMovieByIdVariables);
-
-type GetMovieByIdOptions = () => Omit<CreateDataConnectQueryOptions<GetMovieByIdData, GetMovieByIdVariables>, 'queryFn'>;
-export function injectGetMovieById(args: GetMovieByIdArgs, options?: GetMovieByIdOptions): CreateQueryResult<FlattenedQueryResult<GetMovieByIdData, GetMovieByIdVariables>, FirebaseError, GetMovieByIdVariables>;
-
-
 
 /* Allow users to create refs without passing in DataConnect */
 export function createMovieRef(vars: CreateMovieVariables): MutationRef<CreateMovieData, CreateMovieVariables>;
@@ -85,6 +49,40 @@ export function deleteMovie(dc: DataConnect, vars: DeleteMovieVariables): Mutati
 
 type DeleteMovieOptions = () => Omit<CreateDataConnectMutationOptions<DeleteMovieData, DeleteMovieVariables>, 'mutationFn'>;
 export function injectDeleteMovie(options?: DeleteMovieOptions): CreateMutationResult<DeleteMovieData, FirebaseError, DeleteMovieVariables>;
+
+
+
+/* Allow users to create refs without passing in DataConnect */
+export function listMoviesRef(): QueryRef<ListMoviesData, undefined>;
+/* Allow users to pass in custom DataConnect instances */
+export function listMoviesRef(dc: DataConnect): QueryRef<ListMoviesData, undefined>;
+
+export function listMovies(): QueryPromise<ListMoviesData, undefined>;
+export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData, undefined>;
+
+
+
+
+type ListMoviesOptions = () => Omit<CreateDataConnectQueryOptions<ListMoviesData, undefined>, 'queryFn'>;
+export function injectListMovies(options?: ListMoviesOptions): CreateQueryResult<FlattenedQueryResult<ListMoviesData, undefined>, FirebaseError, undefined>;
+
+
+
+/* Allow users to create refs without passing in DataConnect */
+export function getMovieByIdRef(vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+/* Allow users to pass in custom DataConnect instances */
+export function getMovieByIdRef(dc: DataConnect, vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+
+export function getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
+export function getMovieById(dc: DataConnect, vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
+
+
+
+
+type GetMovieByIdArgs = GetMovieByIdVariables | (() => GetMovieByIdVariables);
+
+type GetMovieByIdOptions = () => Omit<CreateDataConnectQueryOptions<GetMovieByIdData, GetMovieByIdVariables>, 'queryFn'>;
+export function injectGetMovieById(args: GetMovieByIdArgs, options?: GetMovieByIdOptions): CreateQueryResult<FlattenedQueryResult<GetMovieByIdData, GetMovieByIdVariables>, FirebaseError, GetMovieByIdVariables>;
 
 
 

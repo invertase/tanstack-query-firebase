@@ -7,40 +7,6 @@ const connectorConfig = {
 };
 exports.connectorConfig = connectorConfig;
 
-function listMoviesRef(dc) {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  if('_useGeneratedSdk' in dcInstance) {
-    dcInstance._useGeneratedSdk();
-  } else {
-    console.error('Please update to the latest version of the Data Connect SDK by running `npm install firebase@dataconnect-preview`.');
-  }
-  return queryRef(dcInstance, 'ListMovies');
-}
-exports.listMoviesRef = listMoviesRef;
-exports.listMovies = function listMovies(dc) {
-  return executeQuery(listMoviesRef(dc));
-};
-
-
-
-
-function getMovieByIdRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  if('_useGeneratedSdk' in dcInstance) {
-    dcInstance._useGeneratedSdk();
-  } else {
-    console.error('Please update to the latest version of the Data Connect SDK by running `npm install firebase@dataconnect-preview`.');
-  }
-  return queryRef(dcInstance, 'GetMovieById', inputVars);
-}
-exports.getMovieByIdRef = getMovieByIdRef;
-exports.getMovieById = function getMovieById(dcOrVars, vars) {
-  return executeQuery(getMovieByIdRef(dcOrVars, vars));
-};
-
-
-
-
 function createMovieRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   if('_useGeneratedSdk' in dcInstance) {
@@ -87,6 +53,40 @@ function deleteMovieRef(dcOrVars, vars) {
 exports.deleteMovieRef = deleteMovieRef;
 exports.deleteMovie = function deleteMovie(dcOrVars, vars) {
   return executeMutation(deleteMovieRef(dcOrVars, vars));
+};
+
+
+
+
+function listMoviesRef(dc) {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  if('_useGeneratedSdk' in dcInstance) {
+    dcInstance._useGeneratedSdk();
+  } else {
+    console.error('Please update to the latest version of the Data Connect SDK by running `npm install firebase@dataconnect-preview`.');
+  }
+  return queryRef(dcInstance, 'ListMovies');
+}
+exports.listMoviesRef = listMoviesRef;
+exports.listMovies = function listMovies(dc) {
+  return executeQuery(listMoviesRef(dc));
+};
+
+
+
+
+function getMovieByIdRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  if('_useGeneratedSdk' in dcInstance) {
+    dcInstance._useGeneratedSdk();
+  } else {
+    console.error('Please update to the latest version of the Data Connect SDK by running `npm install firebase@dataconnect-preview`.');
+  }
+  return queryRef(dcInstance, 'GetMovieById', inputVars);
+}
+exports.getMovieByIdRef = getMovieByIdRef;
+exports.getMovieById = function getMovieById(dcOrVars, vars) {
+  return executeQuery(getMovieByIdRef(dcOrVars, vars));
 };
 
 

@@ -11,70 +11,6 @@ const connectorConfig = {
 };
 exports.connectorConfig = connectorConfig;
 
-function listMoviesRef(dc) {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
-  if('_useGeneratedSdk' in dcInstance) {
-    dcInstance._useGeneratedSdk();
-  } else {
-    console.error('Please update to the latest version of the Data Connect SDK by running `npm install firebase@dataconnect-preview`.');
-  }
-  return queryRef(dcInstance, 'ListMovies');
-}
-exports.listMoviesRef = listMoviesRef;
-exports.listMovies = function listMovies(dc) {
-  return executeQuery(listMoviesRef(dc));
-};
-
-exports.injectListMovies = function injectListMovies(options) {
-  const dc = inject(DataConnect);
-  
-  return injectDataConnectQuery(() => {
-    const addOpn = options && options();
-    return {
-      queryFn: () =>  ListMoviesRef(dc),
-      ...addOpn
-    };
-  });
-}
-
-
-
-
-
-
-function getMovieByIdRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
-  if('_useGeneratedSdk' in dcInstance) {
-    dcInstance._useGeneratedSdk();
-  } else {
-    console.error('Please update to the latest version of the Data Connect SDK by running `npm install firebase@dataconnect-preview`.');
-  }
-  return queryRef(dcInstance, 'GetMovieById', inputVars);
-}
-exports.getMovieByIdRef = getMovieByIdRef;
-exports.getMovieById = function getMovieById(dcOrVars, vars) {
-  return executeQuery(getMovieByIdRef(dcOrVars, vars));
-};
-
-exports.injectGetMovieById = function injectGetMovieById(args, options) {
-  const dc = inject(DataConnect);
-  
-  const varsFactoryFn = (typeof args === 'function') ? args : () => args;
-  
-  return injectDataConnectQuery(() => {
-    const addOpn = options && options();
-    return {
-      queryFn: () =>  GetMovieByIdRef(dc, varsFactoryFn()),
-      ...addOpn
-    };
-  });
-}
-
-
-
-
-
-
 function createMovieRef(dcOrVars, vars) {
   const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   if('_useGeneratedSdk' in dcInstance) {
@@ -137,6 +73,70 @@ exports.deleteMovie = function deleteMovie(dcOrVars, vars) {
 
 exports.injectDeleteMovie = function injectDeleteMovie(args) {
   return injectDataConnectMutation(DeleteMovieRef, args);
+}
+
+
+
+
+
+
+function listMoviesRef(dc) {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  if('_useGeneratedSdk' in dcInstance) {
+    dcInstance._useGeneratedSdk();
+  } else {
+    console.error('Please update to the latest version of the Data Connect SDK by running `npm install firebase@dataconnect-preview`.');
+  }
+  return queryRef(dcInstance, 'ListMovies');
+}
+exports.listMoviesRef = listMoviesRef;
+exports.listMovies = function listMovies(dc) {
+  return executeQuery(listMoviesRef(dc));
+};
+
+exports.injectListMovies = function injectListMovies(options) {
+  const dc = inject(DataConnect);
+  
+  return injectDataConnectQuery(() => {
+    const addOpn = options && options();
+    return {
+      queryFn: () =>  ListMoviesRef(dc),
+      ...addOpn
+    };
+  });
+}
+
+
+
+
+
+
+function getMovieByIdRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  if('_useGeneratedSdk' in dcInstance) {
+    dcInstance._useGeneratedSdk();
+  } else {
+    console.error('Please update to the latest version of the Data Connect SDK by running `npm install firebase@dataconnect-preview`.');
+  }
+  return queryRef(dcInstance, 'GetMovieById', inputVars);
+}
+exports.getMovieByIdRef = getMovieByIdRef;
+exports.getMovieById = function getMovieById(dcOrVars, vars) {
+  return executeQuery(getMovieByIdRef(dcOrVars, vars));
+};
+
+exports.injectGetMovieById = function injectGetMovieById(args, options) {
+  const dc = inject(DataConnect);
+  
+  const varsFactoryFn = (typeof args === 'function') ? args : () => args;
+  
+  return injectDataConnectQuery(() => {
+    const addOpn = options && options();
+    return {
+      queryFn: () =>  GetMovieByIdRef(dc, varsFactoryFn()),
+      ...addOpn
+    };
+  });
 }
 
 

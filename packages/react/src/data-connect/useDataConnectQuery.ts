@@ -15,7 +15,6 @@ export type useDataConnectQueryOptions<
   TData = unknown,
   TError = FirebaseError,
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
-useDataConnectQuery(listMoviesRef()).data!.movies;
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   refOrResult: QueryRef<Data, Variables>
     | QueryResult<Data, Variables>,

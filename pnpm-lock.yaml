@@ -100,7 +100,7 @@ importers:
         specifier: ^19.0.0
         version: 19.1.7(rxjs@7.8.1)(zone.js@0.15.0)
       '@angular/fire':
-        specifier: ^19.0.0-rc.5
+        specifier: ^19.0.0
         version: 19.0.0(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@19.1.7(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(chokidar@3.6.0)(rxjs@7.8.1)
       '@tanstack/angular-query-experimental':
         specifier: 5.66.4
@@ -384,7 +384,7 @@ packages:
     resolution: {directory: packages/react/dataconnect-sdk/js/default-connector, type: directory}
     engines: {node: ' >=18.0'}
     peerDependencies:
-      firebase: ^10.14.0 || ^11.3.0
+      firebase: ^10.14.0 || ^11.0.0
 
   '@emnapi/runtime@1.3.1':
     resolution: {integrity: sha512-kEBmG8KyqtxJZv+ygbEim+KCGtIq1fC22Ms3S4ziXmYKm8uyoLX0MHONVKwp+9opg390VaKRNt4a7A9NwmpNhw==}

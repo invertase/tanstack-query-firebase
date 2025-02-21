@@ -28,13 +28,14 @@
     }
   },
   "author": "",
-	"license": "Apache-2.0",
+  "license": "Apache-2.0",
   "dependencies": {
+    "@dataconnect/default-connector": "file:dataconnect-sdk/js/default-connector",
     "@tanstack/angular-query-experimental": "5.66.4"
   },
   "devDependencies": {
-    "@angular/animations": "^19.0.0",
     "@analogjs/vite-plugin-angular": "^1.13.0",
+    "@angular/animations": "^19.0.0",
     "@testing-library/angular": "^17.3.5",
     "@testing-library/dom": "^10.4.0"
   },
