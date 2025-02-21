@@ -3,7 +3,7 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   EmailAuthProvider,
-  User,
+  type User,
 } from "firebase/auth";
 import { useReauthenticateWithCredentialMutation } from "./useReauthenticateWithCredentialMutation";
 import { describe, test, expect, beforeEach, afterEach } from "vitest";
