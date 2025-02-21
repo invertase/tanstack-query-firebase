@@ -29,7 +29,6 @@ describe("useReauthenticateWithCredentialMutation", () => {
 
   afterEach(async () => {
     await signOut(auth);
-    queryClient.clear();
   });
 
   test("should successfully reauthenticate with correct credentials", async () => {
