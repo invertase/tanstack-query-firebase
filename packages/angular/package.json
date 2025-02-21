@@ -28,11 +28,9 @@
     }
   },
   "author": "",
-  "license": "ISC",
+	"license": "Apache-2.0",
   "dependencies": {
-    "@angular/fire": "^19.0.0-rc.5",
-    "@tanstack/angular-query-experimental": "5.66.4",
-    "firebase": "^11.1.0"
+    "@tanstack/angular-query-experimental": "5.66.4"
   },
   "devDependencies": {
     "@angular/animations": "^19.0.0",
@@ -41,6 +39,8 @@
     "@testing-library/dom": "^10.4.0"
   },
   "peerDependencies": {
-    "@angular/core": "^19.0.0"
+    "@angular/core": "^19.0.0",
+    "@angular/fire": "^19.0.0",
+    "firebase": "^11.1.0"
   }
 }

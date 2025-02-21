@@ -62,7 +62,7 @@ jobs:
       - name: Run Angular Tests
         if: steps.changes.outputs.angular == 'true'
         run:
-          - cd packages/react
+          - cd packages/angular
           - pnpm vitest --dom
 
       # Run tests for the Vue package if it has changed
