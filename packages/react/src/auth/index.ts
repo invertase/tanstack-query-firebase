@@ -45,7 +45,7 @@ export { useDeleteUserMutation } from "./useDeleteUserMutation";
 // useLinkWithPhoneNumberMutation
 // useLinkWithPopupMutation
 // useLinkWithRedirectMutation
-// useReauthenticateWithPhoneNumberMutation
+export { useReauthenticateWithPhoneNumberMutation } from "./useReauthenticateWithPhoneNumberMutation";
 // useReauthenticateWithCredentialMutation
 // useReauthenticateWithPopupMutation
 // useReauthenticateWithRedirectMutation
