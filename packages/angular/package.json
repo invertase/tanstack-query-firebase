@@ -3,13 +3,9 @@
   "version": "0.0.1",
   "description": "Tanstack Query bindings for Firebase and Angular",
   "type": "module",
-  "files": [
-    "./index.js",
-    "./index.d.ts",
-    "data-connect"
-  ],
   "scripts": {
-    "build": "tsup",
+    "copyPackageJson": "node copyPackageJson.js",
+    "build": "tsup && npm run copyPackageJson",
     "watch": "tsup --watch",
     "test": "vitest --dom --coverage"
   },
