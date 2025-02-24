@@ -7,10 +7,20 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@angular/fire':
+        specifier: ^19.0.0
+        version: 19.0.0(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@19.1.7(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(chokidar@3.6.0)(rxjs@7.8.1)
     devDependencies:
+      '@angular/core':
+        specifier: ^19.1.7
+        version: 19.1.7(rxjs@7.8.1)(zone.js@0.15.0)
       '@biomejs/biome':
         specifier: 1.9.4
         version: 1.9.4
+      '@tanstack/angular-query-experimental':
+        specifier: 5.66.4
+        version: 5.66.4(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))
       '@tanstack/react-query':
         specifier: ^5.55.4
         version: 5.56.2(react@19.0.0)
@@ -102,6 +112,9 @@ importers:
       '@angular/fire':
         specifier: ^19.0.0
         version: 19.0.0(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@19.1.7(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(chokidar@3.6.0)(rxjs@7.8.1)
+      '@dataconnect/default-connector':
+        specifier: file:dataconnect-sdk/js/default-connector
+        version: file:packages/angular/dataconnect-sdk/js/default-connector(firebase@11.3.0)
       '@tanstack/angular-query-experimental':
         specifier: 5.66.4
         version: 5.66.4(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))
@@ -379,6 +392,12 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
+
+  '@dataconnect/default-connector@file:packages/angular/dataconnect-sdk/js/default-connector':
+    resolution: {directory: packages/angular/dataconnect-sdk/js/default-connector, type: directory}
+    engines: {node: ' >=18.0'}
+    peerDependencies:
+      firebase: ^10.14.0 || ^11.0.0
 
   '@dataconnect/default-connector@file:packages/react/dataconnect-sdk/js/default-connector':
     resolution: {directory: packages/react/dataconnect-sdk/js/default-connector, type: directory}
@@ -3634,6 +3653,10 @@ snapshots:
 
   '@biomejs/cli-win32-x64@1.9.4':
     optional: true
+
+  '@dataconnect/default-connector@file:packages/angular/dataconnect-sdk/js/default-connector(firebase@11.3.0)':
+    dependencies:
+      firebase: 11.3.0
 
   '@dataconnect/default-connector@file:packages/react/dataconnect-sdk/js/default-connector(firebase@11.3.0)':
     dependencies:
