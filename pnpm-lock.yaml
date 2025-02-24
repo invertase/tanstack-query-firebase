@@ -55,8 +55,8 @@ importers:
   examples/react-example:
     dependencies:
       '@dataconnect/default-connector':
-        specifier: link:../../packages/react/dataconnect-sdk
-        version: link:../../packages/react/dataconnect-sdk
+        specifier: link:../../dataconnect-sdk
+        version: link:../../dataconnect-sdk
       '@tanstack-query-firebase/react':
         specifier: link:../../packages/react
         version: link:../../packages/react
