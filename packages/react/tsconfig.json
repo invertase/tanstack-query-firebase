@@ -12,7 +12,7 @@
 		"types": ["vitest/globals"],
 		"paths": {
 			"~/testing-utils": ["./vitest/utils.ts"],
-			"@/dataconnect/*": ["./dataconnect-sdk/js/*"]
+			"@/dataconnect/*": ["../../dataconnect-sdk/js/*"]
 		}
 	},
 	"include": ["src", "utils.tsx"]
