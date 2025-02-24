@@ -11,7 +11,7 @@ import {
 
 import { FirebaseError } from "firebase/app";
 
-import { inject, signal } from "@angular/core";
+import { inject, Injector, signal } from "@angular/core";
 import {
   CallerSdkType,
   CallerSdkTypeEnum,
@@ -30,12 +30,12 @@ function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   }
   return key;
 }
-type FlattenedQueryResult<Data, Variables> = Omit<
+export type FlattenedQueryResult<Data, Variables> = Omit<
   QueryResult<Data, Variables>,
   "data" | "toJSON"
 > &
   Data;
-interface CreateDataConnectQueryOptions<Data, Variables>
+export interface CreateDataConnectQueryOptions<Data, Variables>
   extends Omit<
     CreateQueryOptions<
       FlattenedQueryResult<Data, Variables>,
@@ -57,8 +57,10 @@ export function injectDataConnectQuery<Data, Variables>(
   queryRefOrOptionsFn:
     | QueryRef<Data, Variables>
     | (() => CreateDataConnectQueryOptions<Data, Variables>),
+  injector?: Injector,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
+  const finalInjector = injector || inject(Injector);
   const queryKey = signal<QueryKey>([]);
 
   function fdcOptionsFn() {
@@ -89,7 +91,7 @@ export function injectDataConnectQuery<Data, Variables>(
     };
   }
 
-  return injectQuery(fdcOptionsFn);
+  return injectQuery(fdcOptionsFn, finalInjector);
 }
 
 export type GeneratedSignature<Data, Variables> = (
@@ -220,14 +222,16 @@ export function injectDataConnectMutation<
         FirebaseError,
         Variables
       >,
+  injector?: Injector,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ): CreateMutationResult<
   FlattenedMutationResult<Data, Variables>,
   FirebaseError,
   Arguments
 > {
-  const dataConnect = inject(DataConnect);
-  const queryClient = inject(QueryClient);
+  const finalInjector = injector || inject(Injector);
+  const dataConnect = finalInjector.get(DataConnect);
+  const queryClient = finalInjector.get(QueryClient);
 
   const injectCb = () => {
     const providedOptions = optionsFn && optionsFn();
@@ -281,5 +285,5 @@ export function injectDataConnectMutation<
     };
   };
 
-  return injectMutation(injectCb);
+  return injectMutation(injectCb, finalInjector);
 }
