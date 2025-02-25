@@ -52,6 +52,15 @@ importers:
         specifier: ^2.0.5
         version: 2.1.1(@types/node@20.17.10)(happy-dom@15.7.4)
 
+  dataconnect-sdk/js/default-connector:
+    dependencies:
+      '@angular/fire':
+        specifier: ^19.0.0
+        version: 19.0.0(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@19.1.7(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(chokidar@3.6.0)(rxjs@7.8.1)
+      firebase:
+        specifier: ^11.3.0
+        version: 11.3.0
+
   examples/react-example:
     dependencies:
       '@dataconnect/default-connector':
@@ -113,8 +122,8 @@ importers:
         specifier: ^19.0.0
         version: 19.0.0(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@19.1.7(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))))(@angular/platform-browser@19.1.7(@angular/animations@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0)))(chokidar@3.6.0)(rxjs@7.8.1)
       '@dataconnect/default-connector':
-        specifier: file:dataconnect-sdk/js/default-connector
-        version: file:packages/angular/dataconnect-sdk/js/default-connector(firebase@11.3.0)
+        specifier: workspace:*
+        version: link:../../dataconnect-sdk/js/default-connector
       '@tanstack/angular-query-experimental':
         specifier: 5.66.4
         version: 5.66.4(@angular/common@19.1.7(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.7(rxjs@7.8.1)(zone.js@0.15.0))
@@ -145,8 +154,8 @@ importers:
         version: 11.3.0
     devDependencies:
       '@dataconnect/default-connector':
-        specifier: file:dataconnect-sdk/js/default-connector
-        version: file:packages/react/dataconnect-sdk/js/default-connector(firebase@11.3.0)
+        specifier: workspace:*
+        version: link:../../dataconnect-sdk/js/default-connector
       '@testing-library/react':
         specifier: ^16.0.1
         version: 16.0.1(@testing-library/dom@10.4.0)(@types/react-dom@19.0.2(@types/react@19.0.1))(@types/react@19.0.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -392,18 +401,6 @@ packages:
     engines: {node: '>=14.21.3'}
     cpu: [x64]
     os: [win32]
-
-  '@dataconnect/default-connector@file:packages/angular/dataconnect-sdk/js/default-connector':
-    resolution: {directory: packages/angular/dataconnect-sdk/js/default-connector, type: directory}
-    engines: {node: ' >=18.0'}
-    peerDependencies:
-      firebase: ^10.14.0 || ^11.0.0
-
-  '@dataconnect/default-connector@file:packages/react/dataconnect-sdk/js/default-connector':
-    resolution: {directory: packages/react/dataconnect-sdk/js/default-connector, type: directory}
-    engines: {node: ' >=18.0'}
-    peerDependencies:
-      firebase: ^10.14.0 || ^11.0.0
 
   '@emnapi/runtime@1.3.1':
     resolution: {integrity: sha512-kEBmG8KyqtxJZv+ygbEim+KCGtIq1fC22Ms3S4ziXmYKm8uyoLX0MHONVKwp+9opg390VaKRNt4a7A9NwmpNhw==}
@@ -3653,14 +3650,6 @@ snapshots:
 
   '@biomejs/cli-win32-x64@1.9.4':
     optional: true
-
-  '@dataconnect/default-connector@file:packages/angular/dataconnect-sdk/js/default-connector(firebase@11.3.0)':
-    dependencies:
-      firebase: 11.3.0
-
-  '@dataconnect/default-connector@file:packages/react/dataconnect-sdk/js/default-connector(firebase@11.3.0)':
-    dependencies:
-      firebase: 11.3.0
 
   '@emnapi/runtime@1.3.1':
     dependencies:

@@ -26,7 +26,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@dataconnect/default-connector": "file:dataconnect-sdk/js/default-connector",
+    "@dataconnect/default-connector": "workspace:*",
     "@tanstack/angular-query-experimental": "5.66.4"
   },
   "devDependencies": {
