@@ -54,11 +54,8 @@ importers:
 
   dataconnect-sdk/js/default-connector:
     dependencies:
-      '@angular/fire':
-        specifier: ^19.0.0
-        version: 19.0.0(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser-dynamic@19.1.8(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/compiler@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.8(@angular/animations@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))))(@angular/platform-browser@19.1.8(@angular/animations@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(chokidar@4.0.3)(rxjs@7.8.1)
       firebase:
-        specifier: ^11.3.0
+        specifier: ^10.14.0 || ^11.3.0
         version: 11.3.1
 
   examples/react-example:
