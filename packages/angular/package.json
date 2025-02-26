@@ -26,6 +26,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
+    "@angular/platform-browser-dynamic": "^19.1.8",
     "@dataconnect/default-connector": "workspace:*",
     "@tanstack/angular-query-experimental": "5.66.4"
   },
