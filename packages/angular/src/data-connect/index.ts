@@ -58,7 +58,7 @@ export function injectDataConnectQuery<Data, Variables>(
     | QueryRef<Data, Variables>
     | (() => CreateDataConnectQueryOptions<Data, Variables>),
   injector?: Injector,
-  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
 ): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
   const finalInjector = injector || inject(Injector);
   const queryKey = signal<QueryKey>([]);
@@ -223,7 +223,7 @@ export function injectDataConnectMutation<
         Variables
       >,
   injector?: Injector,
-  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
 ): CreateMutationResult<
   FlattenedMutationResult<Data, Variables>,
   FirebaseError,
