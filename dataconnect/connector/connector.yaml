@@ -4,4 +4,3 @@ generate:
     outputDir: ../../dataconnect-sdk/js/default-connector
     package: "@dataconnect/default-connector"
     packageJsonDir: ../..
-    angular: true

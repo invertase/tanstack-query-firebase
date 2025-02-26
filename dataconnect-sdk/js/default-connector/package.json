@@ -17,16 +17,9 @@
       "require": "./index.cjs.js",
       "default": "./esm/index.esm.js"
     },
-    "./angular": {
-      "types": "./angular/index.d.ts",
-      "require": "./angular/index.cjs.js",
-      "import": "./angular/esm/index.esm.js",
-      "default": "./angular/esm/index.esm.js"
-    },
     "./package.json": "./package.json"
   },
   "peerDependencies": {
-    "firebase": "^11.3.0",
-    "@angular/fire": "^19.0.0"
+    "firebase": "^10.14.0 || ^11.3.0"
   }
 }

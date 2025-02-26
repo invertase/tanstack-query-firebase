@@ -26,7 +26,6 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@angular/platform-browser-dynamic": "^19.1.8",
     "@dataconnect/default-connector": "workspace:*",
     "@tanstack/angular-query-experimental": "5.66.4"
   },
@@ -39,6 +38,8 @@
   "peerDependencies": {
     "@angular/core": "^19.0.0",
     "@angular/fire": "^19.0.0",
+    "@angular/common": "^19.0.0",
+    "@angular/platform-browser-dynamic": "^19.0.0",
     "firebase": "^11.1.0"
   }
 }

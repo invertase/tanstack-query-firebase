@@ -10,7 +10,7 @@ import {
   listMoviesRef,
   connectorConfig,
   createMovie,
-} from "@/dataconnect/default-connector/angular";
+} from "@/dataconnect/default-connector";
 import { waitFor } from '@testing-library/angular';
 import { beforeEach, afterEach, describe, expect, test, vi } from "vitest";
 import { injectDataConnectMutation } from "./index";
