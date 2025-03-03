@@ -24,7 +24,8 @@
 				"noNonNullAssertion": "off"
 			},
 			"suspicious": {
-				"noExplicitAny": "off"
+				"noExplicitAny": "off",
+				"noConfusingVoidType": "off"
 			},
 			"complexity": {
 				"noForEach": "off"

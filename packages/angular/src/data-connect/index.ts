@@ -1,27 +1,27 @@
 import {
-  CreateMutationOptions,
-  CreateMutationResult,
-  CreateQueryOptions,
-  CreateQueryResult,
+  type CreateMutationOptions,
+  type CreateMutationResult,
+  type CreateQueryOptions,
+  type CreateQueryResult,
   injectMutation,
   injectQuery,
   QueryClient,
-  QueryKey,
+  type QueryKey,
 } from "@tanstack/angular-query-experimental";
 
-import { FirebaseError } from "firebase/app";
+import type { FirebaseError } from "firebase/app";
 
 import { inject, Injector, signal } from "@angular/core";
 import {
-  CallerSdkType,
+  type CallerSdkType,
   CallerSdkTypeEnum,
   DataConnect,
   executeMutation,
   executeQuery,
-  MutationRef,
-  MutationResult,
-  QueryRef,
-  QueryResult,
+  type MutationRef,
+  type MutationResult,
+  type QueryRef,
+  type QueryResult,
 } from "@angular/fire/data-connect";
 function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   const key: (string | Record<string, any>)[] = [queryRef.name];
@@ -234,7 +234,7 @@ export function injectDataConnectMutation<
   const queryClient = finalInjector.get(QueryClient);
 
   const injectCb = () => {
-    const providedOptions = optionsFn && optionsFn();
+    const providedOptions = optionsFn?.();
     const modifiedFn = (args: Arguments) => {
       const ref =
         (providedOptions &&
@@ -255,12 +255,12 @@ export function injectDataConnectMutation<
           if (providedOptions?.invalidate) {
             for (const qk of providedOptions.invalidate) {
               let key = qk;
-              if ("name" in (key as Object)) {
+              if ("name" in (key as object)) {
                 const queryKey = getQueryKey(key as QueryRef<unknown, unknown>);
                 key = queryKey;
                 if (
                   key &&
-                  "variables" in (qk as Object) &&
+                  "variables" in (qk as object) &&
                   (qk as QueryRef<unknown, unknown>).variables !== undefined
                 ) {
                   queryClient.invalidateQueries({

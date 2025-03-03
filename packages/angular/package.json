@@ -33,7 +33,8 @@
     "@analogjs/vite-plugin-angular": "^1.13.0",
     "@angular/animations": "^19.0.0",
     "@testing-library/angular": "^17.3.5",
-    "@testing-library/dom": "^10.4.0"
+    "@testing-library/dom": "^10.4.0",
+    "tsup": "^8.4.0"
   },
   "peerDependencies": {
     "@angular/core": "^19.0.0",

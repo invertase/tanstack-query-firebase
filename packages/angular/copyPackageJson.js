@@ -1,4 +1,5 @@
-import * as fs from 'fs';
+import * as fs from 'node:fs';
+
 if(!fs.existsSync('./dist')) {
     fs.mkdirSync('./dist');
 }

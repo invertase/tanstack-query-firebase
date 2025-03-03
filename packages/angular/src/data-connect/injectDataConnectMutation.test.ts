@@ -6,7 +6,7 @@ import {
   upsertMovieRef,
   deleteMovieRef,
   getMovieByIdRef,
-  UpsertMovieVariables,
+  type UpsertMovieVariables,
   listMoviesRef,
   connectorConfig,
   createMovie,
