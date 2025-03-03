@@ -56,13 +56,13 @@ You can execute the `ListMovies` query using the following action shortcut funct
 ```javascript
 listMovies(): QueryPromise<ListMoviesData, undefined>;
 
-listMoviesRef(): QueryRef<ListMoviesData, undefined>;
+listMoviesRef(): (QueryRef<ListMoviesData, undefined> & { __angular?: false });
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```javascript
 listMovies(dc: DataConnect): QueryPromise<ListMoviesData, undefined>;
 
-listMoviesRef(dc: DataConnect): QueryRef<ListMoviesData, undefined>;
+listMoviesRef(dc: DataConnect): (QueryRef<ListMoviesData, undefined> & { __angular?: false });
 ```
 
 ### Variables
@@ -135,13 +135,13 @@ You can execute the `GetMovieById` query using the following action shortcut fun
 ```javascript
 getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
 
-getMovieByIdRef(vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+getMovieByIdRef(vars: GetMovieByIdVariables): (QueryRef<GetMovieByIdData, GetMovieByIdVariables> & { __angular?: false });
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
 ```javascript
 getMovieById(dc: DataConnect, vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
 
-getMovieByIdRef(dc: DataConnect, vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+getMovieByIdRef(dc: DataConnect, vars: GetMovieByIdVariables): (QueryRef<GetMovieByIdData, GetMovieByIdVariables> & { __angular?: false });
 ```
 
 ### Variables
@@ -246,13 +246,13 @@ You can execute the `CreateMovie` mutation using the following action shortcut f
 ```javascript
 createMovie(vars: CreateMovieVariables): MutationPromise<CreateMovieData, CreateMovieVariables>;
 
-createMovieRef(vars: CreateMovieVariables): MutationRef<CreateMovieData, CreateMovieVariables>;
+createMovieRef(vars: CreateMovieVariables): (MutationRef<CreateMovieData, CreateMovieVariables> & { __angular?: false });
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
 ```javascript
 createMovie(dc: DataConnect, vars: CreateMovieVariables): MutationPromise<CreateMovieData, CreateMovieVariables>;
 
-createMovieRef(dc: DataConnect, vars: CreateMovieVariables): MutationRef<CreateMovieData, CreateMovieVariables>;
+createMovieRef(dc: DataConnect, vars: CreateMovieVariables): (MutationRef<CreateMovieData, CreateMovieVariables> & { __angular?: false });
 ```
 
 ### Variables
@@ -344,13 +344,13 @@ You can execute the `UpsertMovie` mutation using the following action shortcut f
 ```javascript
 upsertMovie(vars: UpsertMovieVariables): MutationPromise<UpsertMovieData, UpsertMovieVariables>;
 
-upsertMovieRef(vars: UpsertMovieVariables): MutationRef<UpsertMovieData, UpsertMovieVariables>;
+upsertMovieRef(vars: UpsertMovieVariables): (MutationRef<UpsertMovieData, UpsertMovieVariables> & { __angular?: false });
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
 ```javascript
 upsertMovie(dc: DataConnect, vars: UpsertMovieVariables): MutationPromise<UpsertMovieData, UpsertMovieVariables>;
 
-upsertMovieRef(dc: DataConnect, vars: UpsertMovieVariables): MutationRef<UpsertMovieData, UpsertMovieVariables>;
+upsertMovieRef(dc: DataConnect, vars: UpsertMovieVariables): (MutationRef<UpsertMovieData, UpsertMovieVariables> & { __angular?: false });
 ```
 
 ### Variables
@@ -442,13 +442,13 @@ You can execute the `DeleteMovie` mutation using the following action shortcut f
 ```javascript
 deleteMovie(vars: DeleteMovieVariables): MutationPromise<DeleteMovieData, DeleteMovieVariables>;
 
-deleteMovieRef(vars: DeleteMovieVariables): MutationRef<DeleteMovieData, DeleteMovieVariables>;
+deleteMovieRef(vars: DeleteMovieVariables): (MutationRef<DeleteMovieData, DeleteMovieVariables> & { __angular?: false });
 ```
 You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
 ```javascript
 deleteMovie(dc: DataConnect, vars: DeleteMovieVariables): MutationPromise<DeleteMovieData, DeleteMovieVariables>;
 
-deleteMovieRef(dc: DataConnect, vars: DeleteMovieVariables): MutationRef<DeleteMovieData, DeleteMovieVariables>;
+deleteMovieRef(dc: DataConnect, vars: DeleteMovieVariables): (MutationRef<DeleteMovieData, DeleteMovieVariables> & { __angular?: false });
 ```
 
 ### Variables

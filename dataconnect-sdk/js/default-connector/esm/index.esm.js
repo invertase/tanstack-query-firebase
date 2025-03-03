@@ -1,5 +1,6 @@
 import { queryRef, executeQuery, mutationRef, executeMutation, validateArgs } from 'firebase/data-connect';
 
+
 export const connectorConfig = {
   connector: 'default',
   service: 'tanstack-query-firebase',
@@ -55,4 +56,3 @@ export function getMovieByIdRef(dcOrVars, vars) {
 export function getMovieById(dcOrVars, vars) {
   return executeQuery(getMovieByIdRef(dcOrVars, vars));
 }
-

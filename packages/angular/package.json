@@ -1,6 +1,6 @@
 {
   "name": "@tanstack-query-firebase/angular",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.5",
   "description": "Tanstack Query bindings for Firebase and Angular",
   "type": "module",
   "scripts": {
@@ -26,10 +26,10 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@dataconnect/default-connector": "workspace:*",
     "@tanstack/angular-query-experimental": "5.66.4"
   },
   "devDependencies": {
+    "@dataconnect/default-connector": "workspace:*",
     "@analogjs/vite-plugin-angular": "^1.13.0",
     "@angular/animations": "^19.0.0",
     "@testing-library/angular": "^17.3.5",
