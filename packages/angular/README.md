@@ -3,16 +3,20 @@
 `@tanstack-query-firebase/angular` provides angular bindings for Firebase products.
 
 ## Install Dependencies
-```
+
+```bash
 npm i --save @angular/fire firebase @tanstack-query-firebase/angular
 ```
 
 ## Usage
+
 ### Data Connect
+
 In your `app.config.ts`, add `provideTanstack` as a provider and `provideDataConnect` and `provideFirebaseApp`:
 
-```javascript
+```ts
 import { connectorConfig } from '@myorg/movies'; // Replace with your generated package name
+
 export const appConfig: ApplicationConfig = {
   providers: [
     ...
@@ -29,9 +33,11 @@ export const appConfig: ApplicationConfig = {
 ```
 
 #### Calling Queries
-```javascript
+
+```ts
 import { injectDataConnectQuery } from '@tanstack-query-firebase/angular';
 import { listMoviesRef } from '@myorg/movies/angular';
+
 @Component({
     ...,
     template: `
@@ -59,7 +65,7 @@ export class MovieListComponent {
 
 #### Adding options
 
-```
+```ts
     ...
     public query = injectDataConnectQuery(listMoviesRef(), () => ({
         enabled: false
@@ -67,7 +73,8 @@ export class MovieListComponent {
 ```
 
 #### Calling Mutations
-```javascript
+
+```ts
 import { injectDataConnectMutation } from '@tanstack-query-firebase/angular';
 import { addMovieRef } from '@myorg/movies/angular';
 @Component({
@@ -96,11 +103,14 @@ export class MovieListComponent {
 ```
 
 ##### Adding options
+
 We allow invalidating other related queries by:
-```
+
+```ts
     ...
     public mutation = injectDataConnectQuery(addMovieRef(), () => ({
         invalidate: [listMoviesRef()]
     }))
 ```
+
 You can also pass in other valid options from [CreateMutationOptions](https://tanstack.com/query/latest/docs/framework/angular/reference/interfaces/createmutationoptions).

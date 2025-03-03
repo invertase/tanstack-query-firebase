@@ -1,13 +1,15 @@
 {
   "name": "@tanstack-query-firebase/angular",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.2",
   "description": "Tanstack Query bindings for Firebase and Angular",
   "type": "module",
   "scripts": {
-    "copyPackageJson": "node copyPackageJson.js",
-    "build": "tsup && npm run copyPackageJson",
+    "copyToBuild": "node ./copyToBuild.js",
+    "build": "tsup && npm run copyToBuild",
     "watch": "tsup --watch",
-    "test": "vitest --dom --coverage"
+    "test": "vitest --dom --coverage",
+    "prepublishOnly": "npm run build",
+    "publish": "npm run build && cd dist && npm publish"
   },
   "typings": "./index.d.ts",
   "module": "./index.js",
