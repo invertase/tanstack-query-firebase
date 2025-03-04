@@ -15,13 +15,15 @@ npm i --save @angular/fire firebase @tanstack-query-firebase/angular
 In your `app.config.ts`, add `provideTanstack` as a provider and `provideDataConnect` and `provideFirebaseApp`:
 
 ```ts
+import { initializeApp } from '@angular/fire/app';
+import { provideDataConnect, getDataConnect } from '@angular/fire/data-connect';
 import { connectorConfig } from '@myorg/movies'; // Replace with your generated package name
 
 export const appConfig: ApplicationConfig = {
   providers: [
     ...
     provideTanStackQuery(new QueryClient()),
-    provideFirebaseApp(() => initFirebase()),
+    provideFirebaseApp(() => initializeFirebase({/*paste your config here*/})),
     provideDataConnect(() => {
       const dc = getDataConnect(connectorConfig);
       // Add below to connect to the Data Connect emulator
