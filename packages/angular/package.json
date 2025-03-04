@@ -4,8 +4,7 @@
   "description": "TanStack Query bindings for Firebase and Angular",
   "type": "module",
   "scripts": {
-    "copyToBuild": "node ./copyToBuild.js",
-    "build": "tsup && npm run copyToBuild",
+    "build": "tsup",
     "watch": "tsup --watch",
     "test": "vitest --dom --coverage"
   },
