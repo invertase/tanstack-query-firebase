@@ -4,26 +4,35 @@
   "description": "Tanstack Query bindings for Firebase and Angular",
   "type": "module",
   "scripts": {
-    "copyToBuild": "node ./copyToBuild.js",
-    "build": "tsup && npm run copyToBuild",
+    "build": "tsup",
     "watch": "tsup --watch",
-    "test": "vitest --dom --coverage"
+    "test": "vitest --dom --coverage",
+    "prepublishOnly": "npm run build"
   },
-  "typings": "./index.d.ts",
-  "module": "./index.js",
+  "typings": "./dist/index.d.ts",
+  "module": "./dist/index.js",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js",
-      "default": "./data-connect/index.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./data-connect": {
-      "import": "./data-connect/index.js",
-      "types": "./data-connect/index.d.ts",
-      "default": "./data-connect/index.js"
+      "import": "./dist/data-connect/index.js",
+      "types": "./dist/data-connect/index.d.ts",
+      "default": "./dist/data-connect/index.js"
     }
   },
-  "author": "",
+  "files": [
+		"dist",
+		"README.md",
+    "LICENSE"
+	],
+  "author": {
+		"name": "Invertase",
+		"email": "oss@invertase.io",
+		"url": "https://github.com/invertase/tanstack-query-firebase"
+	},
   "license": "Apache-2.0",
   "dependencies": {
     "@tanstack/angular-query-experimental": "5.66.4"
