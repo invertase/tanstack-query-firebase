@@ -11,8 +11,13 @@ export default defineConfig({
 		options.outbase = './src';
 	},
 	async onSuccess() {
-		await fs.copyFile('./package.json', './dist/package.json');
-		await fs.copyFile('./README.md', './dist/README.md');
-		await fs.copyFile('./LICENSE', './dist/LICENSE');
+		try {
+			await fs.copyFile('./package.json', './dist/package.json');
+			await fs.copyFile('./README.md', './dist/README.md');
+			await fs.copyFile('./LICENSE', './dist/LICENSE');
+		} catch (e) {
+			console.error("Error copying files: " + e);
+		}
+		
 	}
 });
