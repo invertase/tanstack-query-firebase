@@ -127,9 +127,6 @@ importers:
       '@tanstack/angular-query-experimental':
         specifier: 5.66.4
         version: 5.66.4(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))
-      firebase:
-        specifier: ^11.1.0
-        version: 11.3.1
     devDependencies:
       '@analogjs/vite-plugin-angular':
         specifier: ^1.13.0
