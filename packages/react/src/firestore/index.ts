@@ -9,5 +9,6 @@ export { useCollectionQuery } from "./useCollectionQuery";
 export { useGetAggregateFromServerQuery } from "./useGetAggregateFromServerQuery";
 export { useGetCountFromServerQuery } from "./useGetCountFromServerQuery";
 export { useUpdateDocumentMutation } from "./useUpdateDocumentMutation";
+export { useSetDocumentMutation } from "./useSetDocumentMutation";
 export { useNamedQuery } from "./useNamedQuery";
 export { useDeleteDocumentMutation } from "./useDeleteDocumentMutation";
