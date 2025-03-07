@@ -11,7 +11,12 @@ import {
 
 import type { FirebaseError } from "firebase/app";
 
-import { inject, Injector, signal } from "@angular/core";
+import {
+  EnvironmentInjector,
+  inject,
+  type Injector,
+  signal,
+} from "@angular/core";
 import {
   type CallerSdkType,
   CallerSdkTypeEnum,
@@ -60,7 +65,7 @@ export function injectDataConnectQuery<Data, Variables>(
   injector?: Injector,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
 ): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
-  const finalInjector = injector || inject(Injector);
+  const finalInjector = injector || inject(EnvironmentInjector);
   const queryKey = signal<QueryKey>([]);
 
   function fdcOptionsFn() {
@@ -69,20 +74,20 @@ export function injectDataConnectQuery<Data, Variables>(
         ? queryRefOrOptionsFn()
         : undefined;
 
-    const modifiedFn = () => {
+    const modifiedFn = async (): Promise<
+      FlattenedQueryResult<Data, Variables>
+    > => {
       const ref: QueryRef<Data, Variables> =
         passedInOptions?.queryFn() ||
         (queryRefOrOptionsFn as QueryRef<Data, Variables>);
       // @ts-expect-error function is hidden under `DataConnect`.
       ref.dataConnect._setCallerSdkType(_callerSdkType);
       queryKey.set([ref.name, ref.variables]);
-      return executeQuery(ref).then((res) => {
-        const { data, ...rest } = res;
-        return {
-          ...data,
-          ...rest,
-        };
-      }) as Promise<FlattenedQueryResult<Data, Variables>>;
+      const { data, ...rest } = await executeQuery(ref);
+      return {
+        ...data,
+        ...rest,
+      };
     };
     return {
       queryKey: queryKey(),
@@ -229,13 +234,15 @@ export function injectDataConnectMutation<
   FirebaseError,
   Arguments
 > {
-  const finalInjector = injector || inject(Injector);
+  const finalInjector = injector || inject(EnvironmentInjector);
   const dataConnect = finalInjector.get(DataConnect);
   const queryClient = finalInjector.get(QueryClient);
 
   const injectCb = () => {
     const providedOptions = optionsFn?.();
-    const modifiedFn = (args: Arguments) => {
+    const modifiedFn = async (
+      args: Arguments
+    ): Promise<FlattenedMutationResult<Data, Variables>> => {
       const ref =
         (providedOptions &&
           "mutationFn" in providedOptions! &&
@@ -243,40 +250,29 @@ export function injectDataConnectMutation<
         factoryFn!(dataConnect, args as Variables);
       // @ts-expect-error function is hidden under `DataConnect`.
       ref.dataConnect._setCallerSdkType(_callerSdkType);
-      return executeMutation(ref)
-        .then((res) => {
-          const { data, ...rest } = res;
-          return {
-            ...data,
-            ...rest,
-          };
-        })
-        .then((ret) => {
-          if (providedOptions?.invalidate) {
-            for (const qk of providedOptions.invalidate) {
-              let key = qk;
-              if ("name" in (key as object)) {
-                const queryKey = getQueryKey(key as QueryRef<unknown, unknown>);
-                key = queryKey;
-                if (
-                  key &&
-                  "variables" in (qk as object) &&
-                  (qk as QueryRef<unknown, unknown>).variables !== undefined
-                ) {
-                  queryClient.invalidateQueries({
-                    queryKey: key,
-                    exact: true,
-                  });
-                } else {
-                  queryClient.invalidateQueries({
-                    queryKey: key,
-                  });
-                }
-              }
-            }
+      const { data, ...rest } = await executeMutation(ref);
+      const ret = {
+        ...data,
+        ...rest,
+      };
+
+      if (providedOptions?.invalidate) {
+        for (const qk of providedOptions.invalidate) {
+          let key = qk;
+          if ("name" in (key as object)) {
+            const queryKey = getQueryKey(key as QueryRef<unknown, unknown>);
+            key = queryKey;
+            const exact =
+              "variables" in (qk as object) &&
+              (qk as QueryRef<unknown, unknown>).variables !== undefined;
+            queryClient.invalidateQueries({
+              queryKey: key,
+              exact,
+            });
           }
-          return ret;
-        }) as Promise<FlattenedMutationResult<Data, Variables>>;
+        }
+      }
+      return ret;
     };
 
     return {
