@@ -8,6 +8,7 @@ export { useDocumentQuery } from "./useDocumentQuery";
 export { useCollectionQuery } from "./useCollectionQuery";
 export { useGetAggregateFromServerQuery } from "./useGetAggregateFromServerQuery";
 export { useGetCountFromServerQuery } from "./useGetCountFromServerQuery";
+export { useAddDocumentMutation } from "./useAddDocumentMutation";
 export { useUpdateDocumentMutation } from "./useUpdateDocumentMutation";
 export { useSetDocumentMutation } from "./useSetDocumentMutation";
 export { useNamedQuery } from "./useNamedQuery";
