@@ -7,6 +7,7 @@ ui-debug.log
 dist
 *.log
 .idea
+dataconnect/.dataconnect
 
 functions/lib/**/*.js
 functions/lib/**/*.js.map

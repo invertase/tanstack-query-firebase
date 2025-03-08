@@ -59,7 +59,7 @@ The status of the following Firebase services and frameworks are as follows:
 | app-check      |        |       |       |         |        |
 | auth           | 🟠     |       |       |         |        |
 | database       |        |       |       |         |        |
-| data-connect   | ✅     |       |       |         |        |
+| data-connect   | ✅     |       |       | ✅      |        |
 | firestore      | 🟠     |       |       |         |        |
 | firestore/lite |        |       |       |         |        |
 | functions      |        |       |       |         |        |

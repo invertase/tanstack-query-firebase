@@ -15,7 +15,7 @@ async function getCodeFromLogs(
 ): Promise<string | null> {
   try {
     // Read the firebase-debug.log file
-    const logPath = path.join(process.cwd(), "firebase-debug.log");
+    const logPath = path.join(process.cwd(), "../../firebase-debug.log");
     const logContent = await fs.promises.readFile(logPath, "utf8");
 
     // Reverse lines to start with the most recent logs
