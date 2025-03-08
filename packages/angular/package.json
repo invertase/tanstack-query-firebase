@@ -24,9 +24,6 @@
   },
   "author": "",
   "license": "Apache-2.0",
-  "dependencies": {
-    "@tanstack/angular-query-experimental": "5.66.4"
-  },
   "devDependencies": {
     "@dataconnect/default-connector": "workspace:*",
     "@analogjs/vite-plugin-angular": "^1.13.0",
@@ -36,6 +33,7 @@
     "tsup": "^8.4.0"
   },
   "peerDependencies": {
+    "@tanstack/angular-query-experimental": "5.66.4",
     "@angular/core": "^19.0.0",
     "@angular/fire": "^19.0.0",
     "@angular/common": "^19.0.0",
