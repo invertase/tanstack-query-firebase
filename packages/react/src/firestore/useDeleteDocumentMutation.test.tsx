@@ -29,14 +29,14 @@ describe("useDeleteDocumentMutation", () => {
     const initialSnapshot = await getDoc(docRef);
     expect(initialSnapshot.exists()).toBe(true);
 
-    const { result } = renderHook(() => useDeleteDocumentMutation(docRef), {
+    const { result } = renderHook(() => useDeleteDocumentMutation(), {
       wrapper,
     });
 
     expect(result.current.isPending).toBe(false);
     expect(result.current.isIdle).toBe(true);
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(docRef));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -59,11 +59,11 @@ describe("useDeleteDocumentMutation", () => {
     ) as DocumentReference<TestDoc>;
     await setDoc(docRef, { foo: "test", num: 123 });
 
-    const { result } = renderHook(() => useDeleteDocumentMutation(docRef), {
+    const { result } = renderHook(() => useDeleteDocumentMutation(), {
       wrapper,
     });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(docRef));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -76,12 +76,11 @@ describe("useDeleteDocumentMutation", () => {
   test("handles errors when deleting from restricted collection", async () => {
     const restrictedDocRef = doc(firestore, "restrictedCollection", "someDoc");
 
-    const { result } = renderHook(
-      () => useDeleteDocumentMutation(restrictedDocRef),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useDeleteDocumentMutation(), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(restrictedDocRef));
 
     await waitFor(() => {
       expect(result.current.isError).toBe(true);
@@ -98,7 +97,7 @@ describe("useDeleteDocumentMutation", () => {
 
     const { result } = renderHook(
       () =>
-        useDeleteDocumentMutation(docRef, {
+        useDeleteDocumentMutation({
           onSuccess: () => {
             callbackCalled = true;
           },
@@ -106,7 +105,7 @@ describe("useDeleteDocumentMutation", () => {
       { wrapper }
     );
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(docRef));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
@@ -120,12 +119,11 @@ describe("useDeleteDocumentMutation", () => {
   test("handles deletion of non-existent document", async () => {
     const nonExistentDocRef = doc(firestore, "tests", "doesNotExist");
 
-    const { result } = renderHook(
-      () => useDeleteDocumentMutation(nonExistentDocRef),
-      { wrapper }
-    );
+    const { result } = renderHook(() => useDeleteDocumentMutation(), {
+      wrapper,
+    });
 
-    await act(() => result.current.mutate());
+    await act(() => result.current.mutate(nonExistentDocRef));
 
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);

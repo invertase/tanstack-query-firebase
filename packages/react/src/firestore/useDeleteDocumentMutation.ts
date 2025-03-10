@@ -6,20 +6,28 @@ import {
   type DocumentReference,
 } from "firebase/firestore";
 
-type FirestoreUseMutationOptions<TData = unknown, TError = Error> = Omit<
-  UseMutationOptions<TData, TError, void>,
-  "mutationFn"
->;
+type FirestoreUseMutationOptions<
+  TData = unknown,
+  TError = Error,
+  TVariables = unknown
+> = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;
 
 export function useDeleteDocumentMutation<
   AppModelType extends DocumentData = DocumentData,
   DbModelType extends DocumentData = DocumentData
 >(
-  documentRef: DocumentReference<AppModelType, DbModelType>,
-  options?: FirestoreUseMutationOptions<void, FirestoreError>
+  options?: FirestoreUseMutationOptions<
+    void,
+    FirestoreError,
+    DocumentReference<AppModelType, DbModelType>
+  >
 ) {
-  return useMutation<void, FirestoreError>({
+  return useMutation<
+    void,
+    FirestoreError,
+    DocumentReference<AppModelType, DbModelType>
+  >({
     ...options,
-    mutationFn: () => deleteDoc(documentRef),
+    mutationFn: (documentRef) => deleteDoc(documentRef),
   });
 }
