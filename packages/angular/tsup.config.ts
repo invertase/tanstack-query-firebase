@@ -16,7 +16,7 @@ export default defineConfig({
 			await fs.copyFile('./README.md', './dist/README.md');
 			await fs.copyFile('./LICENSE', './dist/LICENSE');
 		} catch (e) {
-			console.error("Error copying files: " + e);
+			console.error(`Error copying files: ${e}`);
 		}
 		
 	}
