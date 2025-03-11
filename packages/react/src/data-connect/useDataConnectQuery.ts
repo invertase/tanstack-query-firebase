@@ -8,15 +8,16 @@ import {
   CallerSdkTypeEnum,
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
-import type { FlattenedQueryResult } from "./types";
+import { FlattenedQueryResult } from "./types";
+import { listMoviesRef } from "@/dataconnect/default-connector";
 
 export type useDataConnectQueryOptions<
   TData = unknown,
   TError = FirebaseError,
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
-
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
-  refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
+  refOrResult: QueryRef<Data, Variables>
+    | QueryResult<Data, Variables>,
   options?: useDataConnectQueryOptions<
     FlattenedQueryResult<Data, Variables>,
     FirebaseError

@@ -12,7 +12,7 @@ import {
   type QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import type { FlattenedMutationResult } from "./types";
+import { type FlattenedMutationResult } from "./types";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
