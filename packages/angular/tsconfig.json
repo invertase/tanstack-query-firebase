@@ -8,12 +8,13 @@
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
+		"resolveJsonModule": true,
 		"forceConsistentCasingInFileNames": true,
 		"types": ["vitest/globals"],
 		"paths": {
-			"~/testing-utils": ["./vitest/utils.ts"],
+			"~/testing-utils": ["../react/vitest/utils.ts"],
 			"@/dataconnect/*": ["../../dataconnect-sdk/js/*"]
 		}
 	},
-	"include": ["src", "utils.tsx"]
+	"include": ["src", "utils.tsx", "./package.json"]
 }
