@@ -28,6 +28,8 @@ import {
   type QueryRef,
   type QueryResult,
 } from "@angular/fire/data-connect";
+export const RESERVED_OPERATION_FIELDS: (ReservedQueryKeys &
+  ReservedMutationKeys)[] = ["ref", "fetchTime", "source"];
 function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   const key: (string | Record<string, any>)[] = [queryRef.name];
   if ("variables" in queryRef && queryRef.variables !== undefined) {
@@ -35,11 +37,40 @@ function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   }
   return key;
 }
-export type FlattenedQueryResult<Data, Variables> = Omit<
+type ReservedQueryKeys = keyof FlattenedQResult<unknown, unknown>;
+type ReservedMutationKeys = keyof FlattenedMResult<undefined, undefined>;
+type QueryResultIntersection<Data> = keyof Data &
+  ReservedQueryKeys extends never
+  ? undefined
+  : {
+      [key in keyof Data & ReservedQueryKeys]: Data[key];
+    };
+type MutationResultIntersection<Data> = keyof Data &
+  ReservedMutationKeys extends never
+  ? undefined
+  : {
+      [key in keyof Data & ReservedMutationKeys]: Data[key];
+    };
+
+type QueryResultMeta<Data> = {
+  resultMeta: QueryResultIntersection<Data>;
+};
+type MutationResultMeta<Data> = {
+  resultMeta: MutationResultIntersection<Data>;
+};
+
+// type ResultMeta<Data> = IntersectionKeys<Data, QueryResult<unknown, unknown>>;
+export type FlattenedQResult<Data, Variables> = Omit<
   QueryResult<Data, Variables>,
   "data" | "toJSON"
 > &
   Data;
+
+export type FlattenedQueryResult<Data, Variables> = FlattenedQResult<
+  Data,
+  Variables
+> &
+  QueryResultMeta<Data>;
 export interface CreateDataConnectQueryOptions<Data, Variables>
   extends Omit<
     CreateQueryOptions<
@@ -58,7 +89,7 @@ export interface CreateDataConnectQueryOptions<Data, Variables>
  * @param queryRefOrOptionsFn Query Ref or callback function for calling a new query
  * @returns {CreateQueryResult<FlattenedQueryResult<Data, Variables>>}
  */
-export function injectDataConnectQuery<Data, Variables>(
+export function injectDataConnectQuery<Data extends {}, Variables>(
   queryRefOrOptionsFn:
     | QueryRef<Data, Variables>
     | (() => CreateDataConnectQueryOptions<Data, Variables>),
@@ -84,9 +115,24 @@ export function injectDataConnectQuery<Data, Variables>(
       ref.dataConnect._setCallerSdkType(_callerSdkType);
       queryKey.set([ref.name, ref.variables]);
       const { data, ...rest } = await executeQuery(ref);
+      let resultMeta: QueryResultIntersection<Data> =
+        undefined as QueryResultIntersection<Data>;
+      RESERVED_OPERATION_FIELDS.forEach((reserved) => {
+        if (!resultMeta) {
+          resultMeta = {
+            [reserved]:
+              data[
+                reserved as keyof Data & keyof QueryResultIntersection<Data>
+              ],
+          } as MutationResultIntersection<Data>;
+        } else {
+          resultMeta![reserved as keyof QueryResultIntersection<Data>];
+        }
+      });
       return {
         ...data,
         ...rest,
+        resultMeta: resultMeta,
       };
     };
     return {
@@ -117,11 +163,16 @@ export type DataConnectMutationOptionsUndefinedMutationFn<
   ReturnType<DataConnectMutationOptionsFn<Data, Error, Variables, Variables>>,
   "mutationFn"
 >;
-export type FlattenedMutationResult<Data, Variables> = Omit<
+export type FlattenedMResult<Data, Variables> = Omit<
   MutationResult<Data, Variables>,
   "data" | "toJSON"
 > &
   Data;
+export type FlattenedMutationResult<Data, Variables> = FlattenedMResult<
+  Data,
+  Variables
+> &
+  MutationResultMeta<Data>;
 
 type EmptyFactoryFn<Data, Variables> = () => MutationRef<Data, Variables>;
 export function injectDataConnectMutation<Data, Variables, Arguments>(
@@ -251,9 +302,27 @@ export function injectDataConnectMutation<
       // @ts-expect-error function is hidden under `DataConnect`.
       ref.dataConnect._setCallerSdkType(_callerSdkType);
       const { data, ...rest } = await executeMutation(ref);
-      const ret = {
+      let resultMeta: MutationResultIntersection<Data> =
+        undefined as MutationResultIntersection<Data>;
+      RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedMutationKeys) => {
+        if (reserved in (data as Object)) {
+          if (!resultMeta) {
+            resultMeta = {
+              [reserved]:
+                data[
+                  reserved as keyof Data &
+                    keyof MutationResultIntersection<Data>
+                ],
+            } as MutationResultIntersection<Data>;
+          } else {
+            resultMeta![reserved as keyof MutationResultIntersection<Data>];
+          }
+        }
+      });
+      const ret: FlattenedMutationResult<Data, Variables> = {
         ...data,
         ...rest,
+        resultMeta,
       };
 
       if (providedOptions?.invalidate) {
