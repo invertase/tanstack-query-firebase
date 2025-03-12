@@ -15,7 +15,7 @@ export { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
 // useCheckActionCodeMutation
 // useConfirmPasswordResetMutation
 export { useCreateUserWithEmailAndPasswordMutation } from "./useCreateUserWithEmailAndPasswordMutation";
-// useFetchSignInMethodsForEmailQuery
+export { useFetchSignInMethodsForEmailQuery } from "./useFetchSignInMethodsForEmailQuery";
 export { useConfirmPasswordResetMutation } from "./useConfirmPasswordResetMutation";
 // useCreateUserWithEmailAndPasswordMutation
 // useGetRedirectResultQuery
