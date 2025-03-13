@@ -1,6 +1,6 @@
 import { dehydrate } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { executeQuery } from "firebase/data-connect";
+import { DataConnect, executeQuery, queryRef, QueryRef } from "firebase/data-connect";
 import { beforeEach, describe, expect, test } from "vitest";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";

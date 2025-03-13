@@ -1,12 +1,13 @@
 {
   "name": "@tanstack-query-firebase/angular",
-  "version": "0.0.1-alpha.5",
+  "version": "0.0.1-alpha.7",
   "description": "TanStack Query bindings for Firebase and Angular",
   "type": "module",
   "scripts": {
     "build": "tsup",
     "watch": "tsup --watch",
-    "test": "vitest --dom --coverage"
+    "test": "vitest --dom --coverage",
+    "publish-package": "pnpm run build && cd dist && npm publish"
   },
   "typings": "./index.d.ts",
   "module": "./index.js",

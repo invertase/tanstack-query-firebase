@@ -101,7 +101,6 @@ export interface ListMoviesData {
 import { getDataConnect, DataConnect } from 'firebase/data-connect';
 import { connectorConfig, listMovies } from '@dataconnect/default-connector';
 
-
 // Call the `listMovies()` function to execute the query.
 // You can use the `await` keyword to wait for the promise to resolve.
 const { data } = await listMovies();
@@ -124,7 +123,6 @@ listMovies().then((response) => {
 ```javascript
 import { getDataConnect, DataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, listMoviesRef } from '@dataconnect/default-connector';
-
 
 // Call the `listMoviesRef()` function to get a reference to the query.
 const ref = listMoviesRef();
@@ -376,7 +374,6 @@ export interface CreateMovieData {
 ```javascript
 import { getDataConnect, DataConnect } from 'firebase/data-connect';
 import { connectorConfig, createMovie, CreateMovieVariables } from '@dataconnect/default-connector';
-
 // The `CreateMovie` mutation requires an argument of type `CreateMovieVariables`:
 const createMovieVars: CreateMovieVariables = {
   title: ..., 
@@ -408,7 +405,6 @@ createMovie(createMovieVars).then((response) => {
 ```javascript
 import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, createMovieRef, CreateMovieVariables } from '@dataconnect/default-connector';
-
 // The `CreateMovie` mutation requires an argument of type `CreateMovieVariables`:
 const createMovieVars: CreateMovieVariables = {
   title: ..., 
@@ -476,7 +472,6 @@ export interface UpsertMovieData {
 ```javascript
 import { getDataConnect, DataConnect } from 'firebase/data-connect';
 import { connectorConfig, upsertMovie, UpsertMovieVariables } from '@dataconnect/default-connector';
-
 // The `UpsertMovie` mutation requires an argument of type `UpsertMovieVariables`:
 const upsertMovieVars: UpsertMovieVariables = {
   id: ..., 
@@ -508,7 +503,6 @@ upsertMovie(upsertMovieVars).then((response) => {
 ```javascript
 import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, upsertMovieRef, UpsertMovieVariables } from '@dataconnect/default-connector';
-
 // The `UpsertMovie` mutation requires an argument of type `UpsertMovieVariables`:
 const upsertMovieVars: UpsertMovieVariables = {
   id: ..., 

@@ -47,7 +47,6 @@ function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   }
   return key;
 }
-
 export interface CreateDataConnectQueryOptions<Data, Variables>
   extends Omit<
     CreateQueryOptions<
