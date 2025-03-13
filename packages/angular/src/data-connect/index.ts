@@ -26,10 +26,20 @@ import {
   type MutationRef,
   type MutationResult,
   type QueryRef,
-  type QueryResult,
 } from "@angular/fire/data-connect";
-export const RESERVED_OPERATION_FIELDS: (ReservedQueryKeys &
-  ReservedMutationKeys)[] = ["ref", "fetchTime", "source"];
+import {
+  FlattenedMutationResult,
+  FlattenedQueryResult,
+  MutationResultMeta,
+  MutationResultMetaObject,
+  QueryResultMeta,
+  QueryResultMetaObject,
+  RESERVED_MUTATION_FIELDS,
+  RESERVED_QUERY_FIELDS,
+  ReservedMutationKeys,
+  ReservedQueryKeys,
+} from "./types";
+
 function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   const key: (string | Record<string, any>)[] = [queryRef.name];
   if ("variables" in queryRef && queryRef.variables !== undefined) {
@@ -37,43 +47,7 @@ function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
   }
   return key;
 }
-type ReservedQueryKeys = keyof FlattenedQResult<unknown, unknown> & string;
-type ReservedMutationKeys = keyof FlattenedMResult<undefined, undefined> &
-  string;
-type MutationIntersection<Data> = {
-  [key in keyof Data & keyof FlattenedMResult<undefined, undefined>]: Data[key];
-};
-type QueryIntersection<Data> = {
-  [key in keyof Data & keyof FlattenedQResult<undefined, undefined>]: Data[key];
-};
-type QueryResultIntersection<Data> = keyof Data &
-  ReservedQueryKeys extends never
-  ? undefined
-  : QueryIntersection<Data>;
-type MutationResultIntersection<Data> = keyof Data &
-  ReservedMutationKeys extends never
-  ? undefined
-  : MutationIntersection<Data>;
 
-type QueryResultMeta<Data> = {
-  resultMeta: QueryResultIntersection<Data>;
-};
-type MutationResultMeta<Data> = {
-  resultMeta: MutationResultIntersection<Data>;
-};
-
-// type ResultMeta<Data> = IntersectionKeys<Data, QueryResult<unknown, unknown>>;
-export type FlattenedQResult<Data, Variables> = Omit<
-  QueryResult<Data, Variables>,
-  "data" | "toJSON"
-> &
-  Data;
-
-export type FlattenedQueryResult<Data, Variables> = FlattenedQResult<
-  Data,
-  Variables
-> &
-  QueryResultMeta<Data>;
 export interface CreateDataConnectQueryOptions<Data, Variables>
   extends Omit<
     CreateQueryOptions<
@@ -118,15 +92,17 @@ export function injectDataConnectQuery<Data, Variables>(
       ref.dataConnect._setCallerSdkType(_callerSdkType);
       queryKey.set([ref.name, ref.variables]);
       const { data, ...rest } = await executeQuery(ref);
-      let intersectionInfo: QueryIntersection<Data> =
-        {} as QueryIntersection<Data>;
-      RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedQueryKeys) => {
-        intersectionInfo![reserved as keyof QueryIntersection<Data> & string] =
-          data[reserved as keyof QueryIntersection<Data> & string];
+      let intersectionInfo: QueryResultMetaObject<Data> =
+        {} as QueryResultMetaObject<Data>;
+      RESERVED_QUERY_FIELDS.forEach((reserved: ReservedQueryKeys) => {
+        if (reserved in (data as Object)) {
+          intersectionInfo![reserved as keyof QueryResultMetaObject<Data>] =
+            data[reserved as keyof QueryResultMetaObject<Data>];
+        }
       });
-      const resultMeta: QueryResultIntersection<Data> = (
+      const resultMeta: QueryResultMeta<Data> = (
         Object.keys(intersectionInfo).length ? intersectionInfo : undefined
-      ) as QueryResultIntersection<Data>;
+      ) as QueryResultMeta<Data>;
       return {
         ...data,
         ...rest,
@@ -166,11 +142,6 @@ export type FlattenedMResult<Data, Variables> = Omit<
   "data" | "toJSON"
 > &
   Data;
-export type FlattenedMutationResult<Data, Variables> = FlattenedMResult<
-  Data,
-  Variables
-> &
-  MutationResultMeta<Data>;
 
 type EmptyFactoryFn<Data, Variables> = () => MutationRef<Data, Variables>;
 export function injectDataConnectMutation<Data, Variables, Arguments>(
@@ -299,19 +270,21 @@ export function injectDataConnectMutation<
       // @ts-expect-error function is hidden under `DataConnect`.
       ref.dataConnect._setCallerSdkType(_callerSdkType);
       const { data, ...rest } = await executeMutation(ref);
-      let intersectionInfo: MutationIntersection<Data> =
-        {} as MutationIntersection<Data>;
-      RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedMutationKeys) => {
+      let intersectionInfo: MutationResultMetaObject<Data> =
+        {} as MutationResultMetaObject<Data>;
+      RESERVED_MUTATION_FIELDS.forEach((reserved: ReservedMutationKeys) => {
         intersectionInfo![
-          reserved as keyof MutationIntersection<Data> & string
-        ] = data[reserved as keyof MutationIntersection<Data> & string];
+          reserved as keyof MutationResultMetaObject<Data> & string
+        ] = data[reserved as keyof MutationResultMetaObject<Data> & string];
       });
-      const resultMeta: MutationResultIntersection<Data> = (
+      const resultMeta: MutationResultMeta<Data> = (
         Object.keys(intersectionInfo).length ? intersectionInfo : undefined
-      ) as MutationResultIntersection<Data>;
+      ) as MutationResultMeta<Data>;
       const ret: FlattenedMutationResult<Data, Variables> = {
         ...data,
-        ...rest,
+        fetchTime: rest.fetchTime,
+        ref: rest.ref,
+        source: rest.source,
         resultMeta,
       };
 

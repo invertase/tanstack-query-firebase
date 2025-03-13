@@ -6,19 +6,22 @@ import {
   executeQuery,
   type CallerSdkType,
   CallerSdkTypeEnum,
-  MutationResult,
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
-import { FlattenedQueryResult, QueryIntersection, QueryResultIntersection, RESERVED_OPERATION_FIELDS, ReservedQueryKeys } from "./types";
-
+import {
+  FlattenedQueryResult,
+  QueryResultMeta,
+  QueryResultMetaObject,
+  RESERVED_QUERY_FIELDS,
+  ReservedQueryKeys,
+} from "./types";
 
 export type useDataConnectQueryOptions<
   TData = {},
-  TError = FirebaseError,
+  TError = FirebaseError
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
-  refOrResult: QueryRef<Data, Variables>
-    | QueryResult<Data, Variables>,
+  refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
   options?: useDataConnectQueryOptions<
     FlattenedQueryResult<Data, Variables>,
     FirebaseError
@@ -30,22 +33,14 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
 
   if ("ref" in refOrResult) {
     queryRef = refOrResult.ref;
-    // TODO(mtewani): Move this to a function.
-    let intersectionInfo: QueryIntersection<Data> =
-        {} as QueryIntersection<Data>;
-      RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedQueryKeys) => {
-        intersectionInfo![reserved as keyof QueryIntersection<Data> & string] =
-          refOrResult.data[reserved as keyof QueryIntersection<Data> & string];
-      });
-      const resultMeta: QueryResultIntersection<Data> = (
-        Object.keys(intersectionInfo).length ? intersectionInfo : undefined
-      ) as QueryResultIntersection<Data>;
+
+    const resultMeta = getResultMeta(refOrResult);
     initialData = {
       ...refOrResult.data,
       ref: refOrResult.ref,
       source: refOrResult.source,
       fetchTime: refOrResult.fetchTime,
-      resultMeta
+      resultMeta,
     };
   } else {
     queryRef = refOrResult;
@@ -58,22 +53,31 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
     queryKey: options?.queryKey ?? [queryRef.name, queryRef.variables || null],
     queryFn: async () => {
       const response = await executeQuery<Data, Variables>(queryRef);
-      let intersectionInfo: QueryIntersection<Data> =
-        {} as QueryIntersection<Data>;
-      RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedQueryKeys) => {
-        intersectionInfo![reserved as keyof QueryIntersection<Data> & string] =
-          response.data[reserved as keyof QueryIntersection<Data> & string];
-      });
-      const resultMeta: QueryResultIntersection<Data> = (
-        Object.keys(intersectionInfo).length ? intersectionInfo : undefined
-      ) as QueryResultIntersection<Data>;
+      const resultMeta = getResultMeta(response);
       return {
         ...response.data,
         ref: response.ref,
         source: response.source,
         fetchTime: response.fetchTime,
-        resultMeta
+        resultMeta,
       };
     },
   });
+}
+
+export function getResultMeta<Data, Variables>(
+  response: QueryResult<Data, Variables>
+) {
+  let intersectionInfo: QueryResultMetaObject<Data> =
+    {} as QueryResultMetaObject<Data>;
+  RESERVED_QUERY_FIELDS.forEach((reserved: ReservedQueryKeys) => {
+    if (reserved in (response.data as Object)) {
+      intersectionInfo![reserved as keyof QueryResultMetaObject<Data>] =
+        response.data[reserved as keyof QueryResultMetaObject<Data>];
+    }
+  });
+  const resultMeta: QueryResultMeta<Data> = (
+    Object.keys(intersectionInfo).length ? intersectionInfo : undefined
+  ) as QueryResultMeta<Data>;
+  return resultMeta;
 }

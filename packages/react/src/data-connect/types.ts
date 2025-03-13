@@ -1,55 +1,65 @@
-import type { MutationResult, QueryResult } from "firebase/data-connect";
-export type ReservedQueryKeys = keyof FlattenedQResult<unknown, unknown> & string;
-export type ReservedMutationKeys = keyof FlattenedMResult<undefined, undefined> &
-  string;
-export type MutationIntersection<Data> = {
-  [key in keyof Data & keyof FlattenedMResult<undefined, undefined>]: Data[key];
-};
-export type QueryIntersection<Data> = {
-  [key in keyof Data & keyof FlattenedQResult<undefined, undefined>]: Data[key];
-};
-export type FlattenedQResult<Data, Variables> = Omit<
-  QueryResult<Data, Variables>,
-  "data" | "toJSON"
-> &
-  Data;
+import type { MutationResult, OpResult, QueryResult } from "firebase/data-connect";
 
-export type FlattenedQueryResult<Data, Variables> = FlattenedQResult<
-  Data,
-  Variables
-> &
-  QueryResultMeta<Data>;
-export type QueryResultIntersection<Data> = keyof Data &
+// Reserved keys such as ref, source, fetchtime
+export type ReservedQueryKeys = keyof FlattenedQueryData<undefined, QueryResult<undefined, undefined>> & string;
+
+// If there are no reserved fields used, the Meta type should be undefined.
+export type QueryResultMeta<Data> = keyof Data &
   ReservedQueryKeys extends never
   ? undefined
-  : QueryIntersection<Data>;
-export type MutationResultIntersection<Data> = keyof Data &
-  ReservedMutationKeys extends never
-  ? undefined
-  : MutationIntersection<Data>;
+  : QueryResultMetaObject<Data>;
 
-export type QueryResultMeta<Data> = {
-  resultMeta: QueryResultIntersection<Data>;
+// Result Meta Object storing all reserved fields.
+export type QueryResultMetaObject<Data> = {
+  [key in keyof Data & ReservedQueryKeys]: Data[key];
 };
-export type MutationResultMeta<Data> = {
-  resultMeta: MutationResultIntersection<Data>;
-};
+
+export type FlattenedQueryData<Data, Variables> = FlattenData<Data, QueryResult<Data, Variables>>;
+
+export type FlattenData<Data,  OperationResult extends OpResult<Data>> = Omit<OperationResult, 'data' | 'toJSON'> & Data;
 
 // Flattens a QueryResult data down into a single object.
 // This is to prevent query.data.data, and also expose additional properties.
-
-export type FlattenedMResult<Data, Variables> = Omit<
-  MutationResult<Data, Variables>,
-  "data" | "toJSON"
-> &
-  Data;
-export type FlattenedMutationResult<Data, Variables> = FlattenedMResult<
+export type FlattenedQueryResult<Data, Variables> = FlattenedQueryData<
   Data,
   Variables
-> &
-  MutationResultMeta<Data>;
+> & {
+  resultMeta: QueryResultMeta<Data>
+}
 
-export const RESERVED_OPERATION_FIELDS: ReservedQueryKeys[] = [
+// Reserved keys such as ref, source, fetchtime
+export type ReservedMutationKeys = keyof FlattenedMutationData<undefined, MutationResult<undefined, undefined>> & string;
+
+// If there are no reserved fields used, the Meta type should be undefined.
+export type MutationResultMeta<Data> = keyof Data &
+  ReservedMutationKeys extends never
+  ? undefined
+  : MutationResultMetaObject<Data>;
+
+// Result Meta Object storing all reserved fields.
+export type MutationResultMetaObject<Data> = {
+  [key in keyof Data & ReservedMutationKeys]: Data[key];
+};
+
+export type FlattenedMutationData<Data, Variables> = FlattenData<Data, MutationResult<Data, Variables>>;
+
+// Flattens a MutationResult data down into a single object.
+// This is to prevent mutation.data.data, and also expose additional properties.
+export type FlattenedMutationResult<Data, Variables> = FlattenedMutationData<
+  Data,
+  Variables
+> & {
+  resultMeta: QueryResultMeta<Data>
+}
+
+export const RESERVED_QUERY_FIELDS: ReservedQueryKeys[] = [
+  "ref",
+  "fetchTime",
+  "source",
+  'asdf'
+];
+
+export const RESERVED_MUTATION_FIELDS: ReservedMutationKeys[] = [
   "ref",
   "fetchTime",
   "source",

@@ -9,10 +9,17 @@ import {
   CallerSdkTypeEnum,
   type DataConnect,
   type MutationRef,
-  type QueryRef,
+  MutationResult,
+  QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import { RESERVED_OPERATION_FIELDS, MutationResultIntersection, ReservedMutationKeys, type FlattenedMutationResult, MutationIntersection } from "./types";
+import {
+  RESERVED_MUTATION_FIELDS,
+  ReservedMutationKeys,
+  MutationResultMeta,
+  MutationResultMetaObject,
+  FlattenedMutationResult,
+} from "./types";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
@@ -29,7 +36,7 @@ export function useDataConnectMutation<
     | (() => MutationRef<any, any>)
     | ((vars: any) => MutationRef<any, any>),
   Data = ReturnType<
-    Fn extends (() => MutationRef<infer D, any>)
+    Fn extends () => MutationRef<infer D, any>
       ? () => MutationRef<D, any>
       : Fn extends (vars: any) => MutationRef<infer D, any>
       ? (vars: any) => MutationRef<D, any>
@@ -84,25 +91,30 @@ export function useDataConnectMutation<
       // @ts-expect-error function is hidden under `DataConnect`.
       mutationRef.dataConnect._setCallerSdkType(_callerSdkType);
       const response = await executeMutation<Data, Variables>(mutationRef);
-      let intersectionInfo: MutationIntersection<Data> =
-        {} as MutationIntersection<Data>;
-      RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedMutationKeys) => {
-        intersectionInfo![
-          reserved as keyof MutationIntersection<Data> & string
-        ] = response.data[reserved as keyof MutationIntersection<Data> & string];
-      });
-      const resultMeta: MutationResultIntersection<Data> = (
-        Object.keys(intersectionInfo).length ? intersectionInfo : undefined
-      ) as MutationResultIntersection<Data>;
-      console.log(resultMeta);
+      const resultMeta: MutationResultMeta<Data> = getResultMeta(response);
 
       return {
         ...response.data,
         ref: response.ref,
         source: response.source,
         fetchTime: response.fetchTime,
-        resultMeta
+        resultMeta,
       };
     },
   });
+}
+
+export function getResultMeta<Data, Variables>(
+  response: MutationResult<Data, Variables>
+) {
+  let intersectionInfo: MutationResultMetaObject<Data> =
+    {} as MutationResultMetaObject<Data>;
+  RESERVED_MUTATION_FIELDS.forEach((reserved: ReservedMutationKeys) => {
+    intersectionInfo![reserved as keyof MutationResultMetaObject<Data>] =
+      response.data[reserved as keyof MutationResultMetaObject<Data>];
+  });
+  const resultMeta: MutationResultMeta<Data> = (
+    Object.keys(intersectionInfo).length ? intersectionInfo : undefined
+  ) as MutationResultMeta<Data>;
+  return resultMeta;
 }

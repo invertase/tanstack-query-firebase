@@ -1,12 +1,12 @@
 import { dehydrate } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { DataConnect, executeQuery, queryRef, QueryRef } from "firebase/data-connect";
+import { executeQuery } from "firebase/data-connect";
 import { beforeEach, describe, expect, test } from "vitest";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { DataConnectQueryClient } from "./query-client";
 import { useDataConnectQuery } from "./useDataConnectQuery";
-import { addMeta, createMovie, createMovieRef, deleteMeta, getMetaRef, getMovieByIdRef, ListMoviesData, listMoviesRef } from "@/dataconnect/default-connector";
+import { addMeta, createMovie, deleteMeta, getMetaRef, getMovieByIdRef, listMoviesRef } from "@/dataconnect/default-connector";
 
 // initialize firebase app
 firebaseApp;
