@@ -9,7 +9,7 @@ import {
   MutationResult,
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
-import { FlattenedQueryResult, QueryResultIntersection, RESERVED_OPERATION_FIELDS } from "./types";
+import { FlattenedQueryResult, QueryIntersection, QueryResultIntersection, RESERVED_OPERATION_FIELDS, ReservedQueryKeys } from "./types";
 
 
 export type useDataConnectQueryOptions<
@@ -31,20 +31,15 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   if ("ref" in refOrResult) {
     queryRef = refOrResult.ref;
     // TODO(mtewani): Move this to a function.
-    let resultMeta: QueryResultIntersection<Data> =
-        undefined as QueryResultIntersection<Data>;
-    RESERVED_OPERATION_FIELDS.forEach((reserved) => {
-        if (!resultMeta) {
-          resultMeta = {
-            [reserved]:
-              refOrResult.data[
-                reserved as keyof Data & keyof QueryResultIntersection<Data>
-              ],
-          } as QueryResultIntersection<Data>;
-        } else {
-          resultMeta![reserved as keyof QueryResultIntersection<Data>];
-        }
+    let intersectionInfo: QueryIntersection<Data> =
+        {} as QueryIntersection<Data>;
+      RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedQueryKeys) => {
+        intersectionInfo![reserved as keyof QueryIntersection<Data> & string] =
+          refOrResult.data[reserved as keyof QueryIntersection<Data> & string];
       });
+      const resultMeta: QueryResultIntersection<Data> = (
+        Object.keys(intersectionInfo).length ? intersectionInfo : undefined
+      ) as QueryResultIntersection<Data>;
     initialData = {
       ...refOrResult.data,
       ref: refOrResult.ref,
@@ -63,20 +58,15 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
     queryKey: options?.queryKey ?? [queryRef.name, queryRef.variables || null],
     queryFn: async () => {
       const response = await executeQuery<Data, Variables>(queryRef);
-      let resultMeta: QueryResultIntersection<Data> =
-        undefined as QueryResultIntersection<Data>;
-      RESERVED_OPERATION_FIELDS.forEach((reserved) => {
-        if (!resultMeta) {
-          resultMeta = {
-            [reserved]:
-              response.data[
-                reserved as keyof Data & keyof QueryResultIntersection<Data>
-              ],
-          } as QueryResultIntersection<Data>;
-        } else {
-          resultMeta![reserved as keyof QueryResultIntersection<Data>];
-        }
+      let intersectionInfo: QueryIntersection<Data> =
+        {} as QueryIntersection<Data>;
+      RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedQueryKeys) => {
+        intersectionInfo![reserved as keyof QueryIntersection<Data> & string] =
+          response.data[reserved as keyof QueryIntersection<Data> & string];
       });
+      const resultMeta: QueryResultIntersection<Data> = (
+        Object.keys(intersectionInfo).length ? intersectionInfo : undefined
+      ) as QueryResultIntersection<Data>;
       return {
         ...response.data,
         ref: response.ref,

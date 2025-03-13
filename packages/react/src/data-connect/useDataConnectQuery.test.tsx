@@ -6,12 +6,12 @@ import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { DataConnectQueryClient } from "./query-client";
 import { useDataConnectQuery } from "./useDataConnectQuery";
-import { createMovie, createMovieRef, getMovieByIdRef, ListMoviesData, listMoviesRef } from "@/dataconnect/default-connector";
+import { addMeta, createMovie, createMovieRef, deleteMeta, getMetaRef, getMovieByIdRef, ListMoviesData, listMoviesRef } from "@/dataconnect/default-connector";
 
 // initialize firebase app
 firebaseApp;
 
-describe("useDataConnectQuery", () => {
+describe.only("useDataConnectQuery", () => {
   beforeEach(async () => {
     queryClient.clear();
   });
@@ -80,14 +80,13 @@ describe("useDataConnectQuery", () => {
   });
 
   test("returns correct data", async () => {
-    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
-      wrapper,
-    });
-
     await createMovie({
       title: "tanstack query firebase",
       genre: "library",
       imageUrl: "https://invertase.io/",
+    });
+    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
+      wrapper,
     });
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -97,7 +96,7 @@ describe("useDataConnectQuery", () => {
     expect(Array.isArray(result.current.data?.movies)).toBe(true);
 
     const movie = result.current.data?.movies.find(
-      (m) => m.title === "tanstack query firebase",
+      (m) => m.title === "tanstack query firebase"
     );
 
     expect(movie).toBeDefined();
@@ -246,5 +245,16 @@ describe("useDataConnectQuery", () => {
       { id: movieId },
     ]);
   });
+  test.only('a query with reserved keys is stored in resultMeta', async () => {
+    const metaResult = await addMeta();
+    const { result } = renderHook(() => useDataConnectQuery(getMetaRef()), {
+          wrapper,
+    });
+    expect(result.current.isPending).toBe(true);
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data?.resultMeta.ref).to.deep.equal([metaResult.data.ref]);
+    await deleteMeta({ id: metaResult.data.ref.id });
+  })
 });
 

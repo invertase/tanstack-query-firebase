@@ -1,4 +1,6 @@
 import {
+  addMeta,
+  addMetaRef,
   createMovie,
   createMovieRef,
   deleteMovieRef,
@@ -1075,5 +1077,17 @@ describe("useDataConnectMutation", () => {
         imageUrl: "https://test-image-url.com/",
       });
     });
+  });
+  test("stores valid properties in resultMeta", async () => {
+    const { result } = renderHook(() => useDataConnectMutation(addMetaRef), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync();
+    }); 
+  await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+  });
+    expect(result.current.data?.resultMeta.ref).toBeDefined();
   });
 });

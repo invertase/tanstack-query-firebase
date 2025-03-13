@@ -5,10 +5,13 @@
 - [**Queries**](#queries)
   - [*ListMovies*](#listmovies)
   - [*GetMovieById*](#getmoviebyid)
+  - [*GetMeta*](#getmeta)
 - [**Mutations**](#mutations)
   - [*CreateMovie*](#createmovie)
   - [*UpsertMovie*](#upsertmovie)
   - [*DeleteMovie*](#deletemovie)
+  - [*AddMeta*](#addmeta)
+  - [*DeleteMeta*](#deletemeta)
 
 # Generated TypeScript README
 This README will guide you through the process of using the generated TypeScript SDK package for the connector `default`. It will also provide examples on how to use your generated SDK to call your Data Connect queries and mutations.
@@ -239,6 +242,84 @@ console.log(data.movie);
 executeQuery(ref).then((response) => {
   const data = response.data;
   console.log(data.movie);
+});
+```
+
+## GetMeta
+You can execute the `GetMeta` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+```javascript
+getMeta(): QueryPromise<GetMetaData, undefined>;
+
+getMetaRef(): QueryRef<GetMetaData, undefined>;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `QueryRef` function.
+```javascript
+getMeta(dc: DataConnect): QueryPromise<GetMetaData, undefined>;
+
+getMetaRef(dc: DataConnect): QueryRef<GetMetaData, undefined>;
+```
+
+### Variables
+The `GetMeta` query has no variables.
+### Return Type
+Recall that executing the `GetMeta` query returns a `QueryPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `GetMetaData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+```javascript
+export interface GetMetaData {
+  ref: ({
+    id: UUIDString;
+  } & Meta_Key)[];
+}
+```
+### Using `GetMeta`'s action shortcut function
+
+```javascript
+import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { connectorConfig, getMeta } from '@dataconnect/default-connector';
+
+
+// Call the `getMeta()` function to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await getMeta();
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await getMeta(dataConnect);
+
+console.log(data.ref);
+
+// Or, you can use the `Promise` API.
+getMeta().then((response) => {
+  const data = response.data;
+  console.log(data.ref);
+});
+```
+
+### Using `GetMeta`'s `QueryRef` function
+
+```javascript
+import { getDataConnect, DataConnect, executeQuery } from 'firebase/data-connect';
+import { connectorConfig, getMetaRef } from '@dataconnect/default-connector';
+
+
+// Call the `getMetaRef()` function to get a reference to the query.
+const ref = getMetaRef();
+
+// You can also pass in a `DataConnect` instance to the `QueryRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = getMetaRef(dataConnect);
+
+// Call `executeQuery()` on the reference to execute the query.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeQuery(ref);
+
+console.log(data.ref);
+
+// Or, you can use the `Promise` API.
+executeQuery(ref).then((response) => {
+  const data = response.data;
+  console.log(data.ref);
 });
 ```
 
@@ -548,6 +629,176 @@ console.log(data.movie_delete);
 executeMutation(ref).then((response) => {
   const data = response.data;
   console.log(data.movie_delete);
+});
+```
+
+## AddMeta
+You can execute the `AddMeta` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+```javascript
+addMeta(): MutationPromise<AddMetaData, undefined>;
+
+addMetaRef(): MutationRef<AddMetaData, undefined>;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```javascript
+addMeta(dc: DataConnect): MutationPromise<AddMetaData, undefined>;
+
+addMetaRef(dc: DataConnect): MutationRef<AddMetaData, undefined>;
+```
+
+### Variables
+The `AddMeta` mutation has no variables.
+### Return Type
+Recall that executing the `AddMeta` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `AddMetaData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+```javascript
+export interface AddMetaData {
+  ref: Meta_Key;
+}
+```
+### Using `AddMeta`'s action shortcut function
+
+```javascript
+import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { connectorConfig, addMeta } from '@dataconnect/default-connector';
+
+
+// Call the `addMeta()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await addMeta();
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await addMeta(dataConnect);
+
+console.log(data.ref);
+
+// Or, you can use the `Promise` API.
+addMeta().then((response) => {
+  const data = response.data;
+  console.log(data.ref);
+});
+```
+
+### Using `AddMeta`'s `MutationRef` function
+
+```javascript
+import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, addMetaRef } from '@dataconnect/default-connector';
+
+
+// Call the `addMetaRef()` function to get a reference to the mutation.
+const ref = addMetaRef();
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = addMetaRef(dataConnect);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.ref);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.ref);
+});
+```
+
+## DeleteMeta
+You can execute the `DeleteMeta` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+```javascript
+deleteMeta(vars: DeleteMetaVariables): MutationPromise<DeleteMetaData, DeleteMetaVariables>;
+
+deleteMetaRef(vars: DeleteMetaVariables): MutationRef<DeleteMetaData, DeleteMetaVariables>;
+```
+You can also pass in a `DataConnect` instance to the action shortcut function or `MutationRef` function.
+```javascript
+deleteMeta(dc: DataConnect, vars: DeleteMetaVariables): MutationPromise<DeleteMetaData, DeleteMetaVariables>;
+
+deleteMetaRef(dc: DataConnect, vars: DeleteMetaVariables): MutationRef<DeleteMetaData, DeleteMetaVariables>;
+```
+
+### Variables
+The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+
+```javascript
+export interface DeleteMetaVariables {
+  id: UUIDString;
+}
+```
+### Return Type
+Recall that executing the `DeleteMeta` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
+
+The `data` property is an object of type `DeleteMetaData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+```javascript
+export interface DeleteMetaData {
+  ref?: Meta_Key | null;
+}
+```
+### Using `DeleteMeta`'s action shortcut function
+
+```javascript
+import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { connectorConfig, deleteMeta, DeleteMetaVariables } from '@dataconnect/default-connector';
+
+// The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`:
+const deleteMetaVars: DeleteMetaVariables = {
+  id: ..., 
+};
+
+// Call the `deleteMeta()` function to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await deleteMeta(deleteMetaVars);
+// Variables can be defined inline as well.
+const { data } = await deleteMeta({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the action shortcut function.
+const dataConnect = getDataConnect(connectorConfig);
+const { data } = await deleteMeta(dataConnect, deleteMetaVars);
+
+console.log(data.ref);
+
+// Or, you can use the `Promise` API.
+deleteMeta(deleteMetaVars).then((response) => {
+  const data = response.data;
+  console.log(data.ref);
+});
+```
+
+### Using `DeleteMeta`'s `MutationRef` function
+
+```javascript
+import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
+import { connectorConfig, deleteMetaRef, DeleteMetaVariables } from '@dataconnect/default-connector';
+
+// The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`:
+const deleteMetaVars: DeleteMetaVariables = {
+  id: ..., 
+};
+
+// Call the `deleteMetaRef()` function to get a reference to the mutation.
+const ref = deleteMetaRef(deleteMetaVars);
+// Variables can be defined inline as well.
+const ref = deleteMetaRef({ id: ..., });
+
+// You can also pass in a `DataConnect` instance to the `MutationRef` function.
+const dataConnect = getDataConnect(connectorConfig);
+const ref = deleteMetaRef(dataConnect, deleteMetaVars);
+
+// Call `executeMutation()` on the reference to execute the mutation.
+// You can use the `await` keyword to wait for the promise to resolve.
+const { data } = await executeMutation(ref);
+
+console.log(data.ref);
+
+// Or, you can use the `Promise` API.
+executeMutation(ref).then((response) => {
+  const data = response.data;
+  console.log(data.ref);
 });
 ```
 

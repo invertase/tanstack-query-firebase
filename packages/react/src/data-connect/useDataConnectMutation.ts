@@ -12,7 +12,7 @@ import {
   type QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import { RESERVED_OPERATION_FIELDS, MutationResultIntersection, ReservedMutationKeys, type FlattenedMutationResult } from "./types";
+import { RESERVED_OPERATION_FIELDS, MutationResultIntersection, ReservedMutationKeys, type FlattenedMutationResult, MutationIntersection } from "./types";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
@@ -84,23 +84,17 @@ export function useDataConnectMutation<
       // @ts-expect-error function is hidden under `DataConnect`.
       mutationRef.dataConnect._setCallerSdkType(_callerSdkType);
       const response = await executeMutation<Data, Variables>(mutationRef);
-      let resultMeta: MutationResultIntersection<Data> =
-        undefined as MutationResultIntersection<Data>;
+      let intersectionInfo: MutationIntersection<Data> =
+        {} as MutationIntersection<Data>;
       RESERVED_OPERATION_FIELDS.forEach((reserved: ReservedMutationKeys) => {
-        if (reserved in (response.data as Object)) {
-          if (!resultMeta) {
-            resultMeta = {
-              [reserved]:
-                response.data[
-                  reserved as keyof Data &
-                    keyof MutationResultIntersection<Data>
-                ],
-            } as MutationResultIntersection<Data>;
-          } else {
-            resultMeta![reserved as keyof MutationResultIntersection<Data>];
-          }
-        }
+        intersectionInfo![
+          reserved as keyof MutationIntersection<Data> & string
+        ] = response.data[reserved as keyof MutationIntersection<Data> & string];
       });
+      const resultMeta: MutationResultIntersection<Data> = (
+        Object.keys(intersectionInfo).length ? intersectionInfo : undefined
+      ) as MutationResultIntersection<Data>;
+      console.log(resultMeta);
 
       return {
         ...response.data,
