@@ -122,7 +122,7 @@ export function injectDataConnectQuery<Data, Variables>(
 export type GeneratedSignature<Data, Variables> = (
   dc: DataConnect,
   vars: Variables
-) => MutationRef<Data, Variables>; // TODO(mtewani): Add __angular: true
+) => MutationRef<Data, Variables>;
 export type DataConnectMutationOptionsFn<Data, Error, Variables, Arguments> =
   () => Omit<CreateMutationOptions<Data, Error, Arguments>, "mutationFn"> & {
     invalidate?: QueryKey | QueryRef<unknown, unknown>[];
