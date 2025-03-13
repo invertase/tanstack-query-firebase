@@ -3,6 +3,7 @@ import {
   addMetaRef,
   createMovie,
   createMovieRef,
+  deleteMetaRef,
   deleteMovieRef,
   getMovieByIdRef,
   listMoviesRef,
@@ -1079,15 +1080,16 @@ describe("useDataConnectMutation", () => {
     });
   });
   test("stores valid properties in resultMeta", async () => {
-    const { result } = renderHook(() => useDataConnectMutation(addMetaRef), {
+    const metaResult = await addMeta();
+    const { result } = renderHook(() => useDataConnectMutation(deleteMetaRef), {
       wrapper,
     });
     await act(async () => {
-      await result.current.mutateAsync();
-    }); 
-  await waitFor(() => {
+      await result.current.mutateAsync({ id: metaResult.data.ref.id });
+    });
+    await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
-  });
-    expect(result.current.data?.resultMeta.ref).toBeDefined();
+    });
+    expect(result.current.data?.resultMeta.ref).to.deep.eq(metaResult.data.ref)
   });
 });

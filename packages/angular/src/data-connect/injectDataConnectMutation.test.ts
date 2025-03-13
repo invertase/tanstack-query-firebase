@@ -10,6 +10,8 @@ import {
   listMoviesRef,
   connectorConfig,
   createMovie,
+  addMeta,
+  deleteMetaRef,
 } from "@/dataconnect/default-connector";
 import { waitFor } from '@testing-library/angular';
 import { beforeEach, afterEach, describe, expect, test, vi } from "vitest";
@@ -963,5 +965,14 @@ describe("injectDataConnectMutation", () => {
         imageUrl: "https://test-image-url.com/",
       });
     });
+  });
+  test("stores valid properties in resultMeta", async () => {
+    const metaResult = await addMeta();
+    const result = TestBed.runInInjectionContext(() =>   injectDataConnectMutation(deleteMetaRef));
+    await result.mutateAsync({ id: metaResult.data.ref.id });
+    await waitFor(() => {
+      expect(result.isSuccess()).toBe(true);
+    });
+    expect(result.data()?.resultMeta.ref).to.deep.eq(metaResult.data.ref)
   });
 });

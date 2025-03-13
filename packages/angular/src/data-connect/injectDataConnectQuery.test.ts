@@ -1,6 +1,9 @@
 import {
+  addMeta,
   connectorConfig,
   createMovie,
+  deleteMeta,
+  getMetaRef,
   getMovieByIdRef,
   listMoviesRef,
 } from "@/dataconnect/default-connector";
@@ -9,7 +12,7 @@ import { waitFor } from "@testing-library/angular";
 import { connectDataConnectEmulator, DataConnect, getDataConnect, provideDataConnect } from "@angular/fire/data-connect";
 import { beforeEach, describe, expect, test } from "vitest";
 import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
-import {injectDataConnectQuery } from "./index";
+import { injectDataConnectQuery } from "./index";
 import { provideTanStackQuery, QueryClient } from "@tanstack/angular-query-experimental";
 import { TestBed } from "@angular/core/testing";
 import { inject, provideExperimentalZonelessChangeDetection } from "@angular/core";
@@ -19,9 +22,6 @@ initializeApp({projectId: 'p'});
 
 describe("injectDataConnectQuery", () => {
   let queryClient: QueryClient = new QueryClient();
-  const onSuccess = vi.fn();
-  let invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
-  let oldMutationObserver: typeof window.MutationObserver;
   let dc: DataConnect;
   beforeEach(async () => {
     queryClient.clear();
@@ -76,7 +76,6 @@ describe("injectDataConnectQuery", () => {
       expect(result.data()).toHaveProperty("fetchTime");
     });
 
-    const initialFetchTime = result.data()?.fetchTime;
 
     await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay before refetching
 
@@ -93,7 +92,6 @@ describe("injectDataConnectQuery", () => {
       expect(result.data()?.movies.length).toBeGreaterThanOrEqual(0);
     });
 
-    const refetchTime = result.data()?.fetchTime;
   });
 
   test("returns correct data", async () => {
@@ -198,5 +196,14 @@ describe("injectDataConnectQuery", () => {
     expect(result.data()).toHaveProperty("source");
     expect(result.data()).toHaveProperty("fetchTime");
   });
+test('a query with reserved keys is stored in resultMeta', async () => {
+    const metaResult = await addMeta();
+    const  result = TestBed.runInInjectionContext(() => injectDataConnectQuery(getMetaRef()));
+    expect(result.isPending()).toBe(true);
+
+    await waitFor(() => expect(result.isSuccess()).toBe(true));
+    expect(result.data()?.resultMeta.ref).to.deep.equal([metaResult.data.ref]);
+    await deleteMeta({ id: metaResult.data.ref.id });
+  })
 
 });

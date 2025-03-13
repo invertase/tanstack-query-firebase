@@ -11,7 +11,7 @@ import { addMeta, createMovie, createMovieRef, deleteMeta, getMetaRef, getMovieB
 // initialize firebase app
 firebaseApp;
 
-describe.only("useDataConnectQuery", () => {
+describe("useDataConnectQuery", () => {
   beforeEach(async () => {
     queryClient.clear();
   });
@@ -245,7 +245,7 @@ describe.only("useDataConnectQuery", () => {
       { id: movieId },
     ]);
   });
-  test.only('a query with reserved keys is stored in resultMeta', async () => {
+  test('a query with reserved keys is stored in resultMeta', async () => {
     const metaResult = await addMeta();
     const { result } = renderHook(() => useDataConnectQuery(getMetaRef()), {
           wrapper,
