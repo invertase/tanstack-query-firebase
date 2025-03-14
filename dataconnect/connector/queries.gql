@@ -21,6 +21,12 @@ query GetMovieById($id: UUID!) @auth(level: PUBLIC) {
   }
 }
 
+query GetMeta @auth(level: PUBLIC) {
+  ref: metas {
+    id
+  }
+}
+
 # # List all users, only admins should be able to list all users, so we use NO_ACCESS
 # query ListUsers @auth(level: NO_ACCESS) {
 #   users { id, username }

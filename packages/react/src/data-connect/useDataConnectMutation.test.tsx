@@ -1,6 +1,8 @@
 import {
+  addMeta,
   createMovie,
   createMovieRef,
+  deleteMetaRef,
   deleteMovieRef,
   getMovieByIdRef,
   listMoviesRef,
@@ -83,11 +85,13 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toBeDefined();
-      expect(result.current.data).toHaveProperty("ref");
-      expect(result.current.data).toHaveProperty("source");
-      expect(result.current.data).toHaveProperty("fetchTime");
+      expect(result.current.dataConnectResult).toHaveProperty("ref");
+      expect(result.current.dataConnectResult).toHaveProperty("source");
+      expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
       expect(result.current.data).toHaveProperty("movie_insert");
-      expect(result.current.data?.ref.variables).toMatchObject(movie);
+      expect(result.current.dataConnectResult?.ref?.variables).toMatchObject(
+        movie
+      );
     });
   });
 
@@ -135,9 +139,15 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(upsertMutationResult.current.isSuccess).toBe(true);
       expect(upsertMutationResult.current.data).toBeDefined();
-      expect(upsertMutationResult.current.data).toHaveProperty("ref");
-      expect(upsertMutationResult.current.data).toHaveProperty("source");
-      expect(upsertMutationResult.current.data).toHaveProperty("fetchTime");
+      expect(upsertMutationResult.current.dataConnectResult).toHaveProperty(
+        "ref"
+      );
+      expect(upsertMutationResult.current.dataConnectResult).toHaveProperty(
+        "source"
+      );
+      expect(upsertMutationResult.current.dataConnectResult).toHaveProperty(
+        "fetchTime"
+      );
       expect(upsertMutationResult.current.data).toHaveProperty("movie_upsert");
       expect(upsertMutationResult.current.data?.movie_upsert.id).toBe(movieId);
     });
@@ -186,9 +196,15 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(deleteMutationResult.current.isSuccess).toBe(true);
       expect(deleteMutationResult.current.data).toBeDefined();
-      expect(deleteMutationResult.current.data).toHaveProperty("ref");
-      expect(deleteMutationResult.current.data).toHaveProperty("source");
-      expect(deleteMutationResult.current.data).toHaveProperty("fetchTime");
+      expect(deleteMutationResult.current.dataConnectResult).toHaveProperty(
+        "ref"
+      );
+      expect(deleteMutationResult.current.dataConnectResult).toHaveProperty(
+        "source"
+      );
+      expect(deleteMutationResult.current.dataConnectResult).toHaveProperty(
+        "fetchTime"
+      );
       expect(deleteMutationResult.current.data).toHaveProperty("movie_delete");
       expect(deleteMutationResult.current.data?.movie_delete?.id).toBe(movieId);
     });
@@ -1037,7 +1053,7 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toHaveProperty("movie_insert");
-      expect(result.current.data?.ref.variables).toMatchObject({
+      expect(result.current.dataConnectResult?.ref?.variables).toMatchObject({
         title: movie.title,
         genre: movie.genre,
         imageUrl: movie.imageUrl,
@@ -1069,11 +1085,24 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toHaveProperty("movie_insert");
-      expect(result.current.data?.ref.variables).toMatchObject({
+      expect(result.current.dataConnectResult?.ref?.variables).toMatchObject({
         title: movieTitle,
         genre: "library",
         imageUrl: "https://test-image-url.com/",
       });
     });
+  });
+  test("stores valid properties in resultMeta", async () => {
+    const metaResult = await addMeta();
+    const { result } = renderHook(() => useDataConnectMutation(deleteMetaRef), {
+      wrapper,
+    });
+    await act(async () => {
+      await result.current.mutateAsync({ id: metaResult.data.ref.id });
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+    });
+    expect(result.current.data?.ref).to.deep.eq(metaResult.data.ref);
   });
 });

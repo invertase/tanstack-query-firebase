@@ -1,3 +1,5 @@
+import { ReservedQueryKeys } from "./types";
+
 export {
   DataConnectQueryClient,
   type DataConnectQueryOptions,

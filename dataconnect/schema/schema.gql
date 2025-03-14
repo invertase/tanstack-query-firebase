@@ -34,6 +34,10 @@ type MovieMetadata @table {
   description: String
 }
 
+type Meta @table {
+  ref: String!
+}
+
 # # Reviews
 # type Review @table(name: "Reviews", key: ["movie", "user"]) {
 #   id: UUID! @default(expr: "uuidV4()")

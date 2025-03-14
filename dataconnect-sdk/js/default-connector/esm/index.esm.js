@@ -36,6 +36,26 @@ export function deleteMovie(dcOrVars, vars) {
   return executeMutation(deleteMovieRef(dcOrVars, vars));
 }
 
+export function addMetaRef(dc) {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'AddMeta');
+}
+
+export function addMeta(dc) {
+  return executeMutation(addMetaRef(dc));
+}
+
+export function deleteMetaRef(dcOrVars, vars) {
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+  dcInstance._useGeneratedSdk();
+  return mutationRef(dcInstance, 'DeleteMeta', inputVars);
+}
+
+export function deleteMeta(dcOrVars, vars) {
+  return executeMutation(deleteMetaRef(dcOrVars, vars));
+}
+
 export function listMoviesRef(dc) {
   const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
@@ -54,5 +74,15 @@ export function getMovieByIdRef(dcOrVars, vars) {
 
 export function getMovieById(dcOrVars, vars) {
   return executeQuery(getMovieByIdRef(dcOrVars, vars));
+}
+
+export function getMetaRef(dc) {
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+  dcInstance._useGeneratedSdk();
+  return queryRef(dcInstance, 'GetMeta');
+}
+
+export function getMeta(dc) {
+  return executeQuery(getMetaRef(dc));
 }
 
