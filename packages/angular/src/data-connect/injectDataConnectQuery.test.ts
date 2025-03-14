@@ -1,25 +1,32 @@
 import {
-  addMeta,
   connectorConfig,
   createMovie,
-  deleteMeta,
-  getMetaRef,
   getMovieByIdRef,
   listMoviesRef,
 } from "@/dataconnect/default-connector";
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from "@angular/common/http";
 import { waitFor } from "@testing-library/angular";
-import { connectDataConnectEmulator, DataConnect, getDataConnect, provideDataConnect } from "@angular/fire/data-connect";
+import {
+  connectDataConnectEmulator,
+  DataConnect,
+  getDataConnect,
+  provideDataConnect,
+} from "@angular/fire/data-connect";
 import { beforeEach, describe, expect, test } from "vitest";
 import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
 import { injectDataConnectQuery } from "./index";
-import { provideTanStackQuery, QueryClient } from "@tanstack/angular-query-experimental";
+import {
+  provideTanStackQuery,
+  QueryClient,
+} from "@tanstack/angular-query-experimental";
 import { TestBed } from "@angular/core/testing";
-import { effect, inject, provideExperimentalZonelessChangeDetection } from "@angular/core";
-import { executeMutation } from "firebase/data-connect";
+import {
+  inject,
+  provideExperimentalZonelessChangeDetection,
+} from "@angular/core";
 
 // initialize firebase app
-initializeApp({projectId: 'p'});
+initializeApp({ projectId: "p" });
 
 describe("injectDataConnectQuery", () => {
   let queryClient: QueryClient = new QueryClient();
@@ -43,7 +50,9 @@ describe("injectDataConnectQuery", () => {
   });
 
   test("returns pending state initially", async () => {
-    const result = TestBed.runInInjectionContext(() => injectDataConnectQuery(listMoviesRef(dc)));
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(listMoviesRef(dc))
+    );
 
     expect(result.isPending()).toBe(true);
     expect(result.status()).toBe("pending");
@@ -54,7 +63,9 @@ describe("injectDataConnectQuery", () => {
   });
 
   test("fetches data successfully", async () => {
-    const result = TestBed.runInInjectionContext(() => injectDataConnectQuery(listMoviesRef(dc)));
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(listMoviesRef(dc))
+    );
 
     expect(result.isPending()).toBe(true);
 
@@ -67,36 +78,38 @@ describe("injectDataConnectQuery", () => {
   });
 
   test("refetches data successfully", async () => {
-    const result = TestBed.runInInjectionContext(() => injectDataConnectQuery(listMoviesRef(dc)), );
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(listMoviesRef(dc))
+    );
 
     await waitFor(() => {
       expect(result.isSuccess()).toBe(true);
       expect(result.data()).toBeDefined();
-      expect(result).toHaveProperty("ref");
-      expect(result).toHaveProperty("source");
-      expect(result).toHaveProperty("fetchTime");
+      expect(result.dataConnectResult()).toHaveProperty("ref");
+      expect(result.dataConnectResult()).toHaveProperty("source");
+      expect(result.dataConnectResult()).toHaveProperty("fetchTime");
     });
-
 
     await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay before refetching
 
-      result.refetch();
+    result.refetch();
 
     await waitFor(() => {
       expect(result.isSuccess()).toBe(true);
       expect(result.data()).toBeDefined();
-      expect(result).toHaveProperty("ref");
-      expect(result).toHaveProperty("source");
-      expect(result).toHaveProperty("fetchTime");
-      expect(result).toHaveProperty("movies");
+      expect(result.dataConnectResult()).toHaveProperty("ref");
+      expect(result.dataConnectResult()).toHaveProperty("source");
+      expect(result.dataConnectResult()).toHaveProperty("fetchTime");
+      expect(result.data()).toHaveProperty("movies");
       expect(Array.isArray(result.data()?.movies)).toBe(true);
       expect(result.data()?.movies.length).toBeGreaterThanOrEqual(0);
     });
-
   });
 
   test("returns correct data", async () => {
-    const result = TestBed.runInInjectionContext(() => injectDataConnectQuery(listMoviesRef(dc)));
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(listMoviesRef(dc))
+    );
 
     await createMovie({
       title: "tanstack query firebase",
@@ -110,9 +123,9 @@ describe("injectDataConnectQuery", () => {
     expect(result.data()?.movies).toBeDefined();
     expect(Array.isArray(result.data()?.movies)).toBe(true);
 
-    const movie = result.data()?.movies.find(
-      (m) => m.title === "tanstack query firebase",
-    );
+    const movie = result
+      .data()
+      ?.movies.find((m) => m.title === "tanstack query firebase");
 
     expect(movie).toBeDefined();
     expect(movie).toHaveProperty("title", "tanstack query firebase");
@@ -121,7 +134,9 @@ describe("injectDataConnectQuery", () => {
   });
 
   test("returns the correct data properties", async () => {
-    const result = TestBed.runInInjectionContext(() => injectDataConnectQuery(listMoviesRef(dc)));
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(listMoviesRef(dc))
+    );
 
     await createMovie({
       title: "tanstack query firebase",
@@ -148,8 +163,8 @@ describe("injectDataConnectQuery", () => {
 
     const movieId = createdMovie?.data?.movie_insert?.id;
 
-    const result = TestBed.runInInjectionContext(
-      () => injectDataConnectQuery(getMovieByIdRef({ id: movieId })),
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(getMovieByIdRef({ id: movieId }))
     );
 
     await waitFor(() => {
@@ -161,16 +176,18 @@ describe("injectDataConnectQuery", () => {
   });
 
   test("returns flattened data including ref, source, and fetchTime", async () => {
-    const result = TestBed.runInInjectionContext(() => injectDataConnectQuery(listMoviesRef(dc)));
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(listMoviesRef(dc))
+    );
 
     expect(result.isLoading()).toBe(true);
 
     await waitFor(() => expect(result.isSuccess()).toBe(true));
 
     expect(result.data()).toBeDefined();
-    expect(result).toHaveProperty("ref");
-    expect(result).toHaveProperty("source");
-    expect(result).toHaveProperty("fetchTime");
+    expect(result.dataConnectResult()).toHaveProperty("ref");
+    expect(result.dataConnectResult()).toHaveProperty("source");
+    expect(result.dataConnectResult()).toHaveProperty("fetchTime");
   });
 
   test("returns flattened data including ref, source, and fetchTime for queries with unique identifier", async () => {
@@ -183,9 +200,8 @@ describe("injectDataConnectQuery", () => {
 
     const movieId = createdMovie?.data?.movie_insert?.id;
 
-    const result = TestBed.runInInjectionContext(
-      () => injectDataConnectQuery(getMovieByIdRef({ id: movieId }))
-      
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(getMovieByIdRef({ id: movieId }))
     );
 
     expect(result.isPending()).toBe(true);
@@ -197,7 +213,7 @@ describe("injectDataConnectQuery", () => {
     expect(result.dataConnectResult()).toHaveProperty("source");
     expect(result.dataConnectResult()).toHaveProperty("fetchTime");
   });
-  test.only("Effect is properly computed", async () => {
+  test("Effect is properly computed", async () => {
     const movieData = {
       title: "tanstack query firebase",
       genre: "library",
@@ -207,9 +223,8 @@ describe("injectDataConnectQuery", () => {
 
     const movieId = createdMovie?.data?.movie_insert?.id;
 
-    const result = TestBed.runInInjectionContext(
-      () => injectDataConnectQuery(getMovieByIdRef({ id: movieId }))
-      
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(getMovieByIdRef({ id: movieId }))
     );
 
     expect(result.isPending()).toBe(true);

@@ -1,12 +1,16 @@
 import { dehydrate } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { DataConnect, executeQuery, queryRef, QueryRef } from "firebase/data-connect";
+import { executeQuery } from "firebase/data-connect";
 import { beforeEach, describe, expect, test } from "vitest";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { DataConnectQueryClient } from "./query-client";
 import { useDataConnectQuery } from "./useDataConnectQuery";
-import { addMeta, createMovie, deleteMeta, getMetaRef, getMovieByIdRef, listMoviesRef } from "@/dataconnect/default-connector";
+import {
+  createMovie,
+  getMovieByIdRef,
+  listMoviesRef,
+} from "@/dataconnect/default-connector";
 
 // initialize firebase app
 firebaseApp;
@@ -52,12 +56,12 @@ describe("useDataConnectQuery", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toBeDefined();
-      expect(result.current).toHaveProperty("ref");
-      expect(result.current).toHaveProperty("source");
-      expect(result.current).toHaveProperty("fetchTime");
+      expect(result.current.dataConnectResult).toHaveProperty("ref");
+      expect(result.current.dataConnectResult).toHaveProperty("source");
+      expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
     });
 
-    const initialFetchTime = result.current?.fetchTime;
+    const initialFetchTime = result.current?.dataConnectResult?.fetchTime;
 
     await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay before refetching
 
@@ -68,15 +72,15 @@ describe("useDataConnectQuery", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toBeDefined();
-      expect(result.current).toHaveProperty("ref");
-      expect(result.current).toHaveProperty("source");
-      expect(result.current).toHaveProperty("fetchTime");
+      expect(result.current?.dataConnectResult).toHaveProperty("ref");
+      expect(result.current?.dataConnectResult).toHaveProperty("source");
+      expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
       expect(result.current.data).toHaveProperty("movies");
       expect(Array.isArray(result.current.data?.movies)).toBe(true);
       expect(result.current.data?.movies.length).toBeGreaterThanOrEqual(0);
     });
 
-    const refetchTime = result.current?.fetchTime;
+    const refetchTime = result.current?.dataConnectResult?.fetchTime;
   });
 
   test("returns correct data", async () => {
@@ -139,7 +143,7 @@ describe("useDataConnectQuery", () => {
       () => useDataConnectQuery(getMovieByIdRef({ id: movieId })),
       {
         wrapper,
-      },
+      }
     );
 
     await waitFor(() => {
@@ -160,9 +164,9 @@ describe("useDataConnectQuery", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toBeDefined();
-    expect(result.current).toHaveProperty("ref");
-    expect(result.current).toHaveProperty("source");
-    expect(result.current).toHaveProperty("fetchTime");
+    expect(result.current.dataConnectResult).toHaveProperty("ref");
+    expect(result.current.dataConnectResult).toHaveProperty("source");
+    expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
   });
 
   test("returns flattened data including ref, source, and fetchTime for queries with unique identifier", async () => {
@@ -179,7 +183,7 @@ describe("useDataConnectQuery", () => {
       () => useDataConnectQuery(getMovieByIdRef({ id: movieId })),
       {
         wrapper,
-      },
+      }
     );
 
     expect(result.current.isPending).toBe(true);
@@ -187,9 +191,9 @@ describe("useDataConnectQuery", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toBeDefined();
-    expect(result.current).toHaveProperty("ref");
-    expect(result.current).toHaveProperty("source");
-    expect(result.current).toHaveProperty("fetchTime");
+    expect(result.current.dataConnectResult).toHaveProperty("ref");
+    expect(result.current.dataConnectResult).toHaveProperty("source");
+    expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
   });
 
   test("avails the data immediately when QueryResult is passed", async () => {
@@ -206,9 +210,9 @@ describe("useDataConnectQuery", () => {
     expect(result.current.isSuccess).toBe(true);
 
     expect(result.current.data).toBeDefined();
-    expect(result.current).toHaveProperty("ref");
-    expect(result.current).toHaveProperty("source");
-    expect(result.current).toHaveProperty("fetchTime");
+    expect(result.current.dataConnectResult).toHaveProperty("ref");
+    expect(result.current.dataConnectResult).toHaveProperty("source");
+    expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
   });
 
   test("a query with no variables has null as the second query key argument", async () => {
@@ -235,7 +239,7 @@ describe("useDataConnectQuery", () => {
     const queryClient = new DataConnectQueryClient();
 
     await queryClient.prefetchDataConnectQuery(
-      getMovieByIdRef({ id: movieId }),
+      getMovieByIdRef({ id: movieId })
     );
 
     const dehydrated = dehydrate(queryClient);
@@ -246,4 +250,3 @@ describe("useDataConnectQuery", () => {
     ]);
   });
 });
-

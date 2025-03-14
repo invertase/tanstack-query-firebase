@@ -12,7 +12,7 @@ import {
   QueryResultRequiredRef,
   UseDataConnectQuery,
 } from "./types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export type useDataConnectQueryOptions<
   TData = {},
@@ -53,7 +53,6 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   });
   return {
     ...useQueryResult,
-    ...dataConnectResult,
-    originalResult: useQueryResult
+    dataConnectResult
   }
 }

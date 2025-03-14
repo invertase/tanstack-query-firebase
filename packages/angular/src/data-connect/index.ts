@@ -40,12 +40,7 @@ function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
 }
 export interface CreateDataConnectQueryOptions<Data, Variables>
   extends Omit<
-    CreateQueryOptions<
-      Data,
-      FirebaseError,
-      Data,
-      QueryKey
-    >,
+    CreateQueryOptions<Data, FirebaseError, Data, QueryKey>,
     "queryFn" | "queryKey"
   > {
   queryFn: () => QueryRef<Data, Variables>;
@@ -63,7 +58,9 @@ export function injectDataConnectQuery<Data, Variables>(
   injector?: Injector,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
 ): CreateDataConnectQueryResult<Data, Variables> {
-  const dataConnectResult = signal<Partial<QueryResult<Data, Variables>> | undefined>(undefined);
+  const dataConnectResult = signal<
+    Partial<QueryResult<Data, Variables>> | undefined
+  >(undefined);
   const finalInjector = injector || inject(EnvironmentInjector);
   const queryKey = signal<QueryKey>([]);
 
@@ -73,9 +70,7 @@ export function injectDataConnectQuery<Data, Variables>(
         ? queryRefOrOptionsFn()
         : undefined;
 
-    const modifiedFn = async (): Promise<
-      Data
-    > => {
+    const modifiedFn = async (): Promise<Data> => {
       const ref: QueryRef<Data, Variables> =
         passedInOptions?.queryFn() ||
         (queryRefOrOptionsFn as QueryRef<Data, Variables>);
@@ -97,8 +92,8 @@ export function injectDataConnectQuery<Data, Variables>(
   const originalResult = injectQuery(fdcOptionsFn, finalInjector);
   return {
     ...originalResult,
-    dataConnectResult
-  }
+    dataConnectResult,
+  };
 }
 
 export type GeneratedSignature<Data, Variables> = (
@@ -134,11 +129,7 @@ export function injectDataConnectMutation<Data, Variables, Arguments>(
     Variables,
     Arguments
   >
-): CreateDataConnectMutationResult<
-  Data,
-  FirebaseError,
-  Arguments
->;
+): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 export function injectDataConnectMutation<
   Data,
   Variables,
@@ -150,11 +141,7 @@ export function injectDataConnectMutation<
     FirebaseError,
     Variables
   >
-): CreateDataConnectMutationResult<
-  Data,
-  FirebaseError,
-  Arguments
->;
+): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 
 export function injectDataConnectMutation<
   Data,
@@ -167,11 +154,7 @@ export function injectDataConnectMutation<
     FirebaseError,
     Variables
   >
-): CreateDataConnectMutationResult<
-  Data,
-  FirebaseError,
-  Arguments
->;
+): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 export function injectDataConnectMutation<
   Data,
   Variables extends undefined,
@@ -183,11 +166,7 @@ export function injectDataConnectMutation<
     FirebaseError,
     Arguments
   >
-): CreateDataConnectMutationResult<
-  Data,
-  FirebaseError,
-  Arguments
->;
+): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 export function injectDataConnectMutation<
   Data,
   Variables,
@@ -199,11 +178,7 @@ export function injectDataConnectMutation<
     FirebaseError,
     Arguments
   >
-): CreateDataConnectMutationResult<
-  Data,
-  FirebaseError,
-  Arguments
->;
+): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 /**
  * injectDataConnectMutation takes a mutation ref factory function and returns a tanstack wrapper around `injectMutation`
  * @example injectDataConnectMutation(createMovieRef);
@@ -234,22 +209,22 @@ export function injectDataConnectMutation<
   const finalInjector = injector || inject(EnvironmentInjector);
   const dataConnect = finalInjector.get(DataConnect);
   const queryClient = finalInjector.get(QueryClient);
-  const dataConnectResult = signal<Partial<MutationResult<Data, Variables>> | undefined>(undefined);
+  const dataConnectResult = signal<
+    Partial<MutationResult<Data, Variables>> | undefined
+  >(undefined);
 
   const injectCb = () => {
     const providedOptions = optionsFn?.();
-    const modifiedFn = async (
-      args: Arguments
-    ): Promise<Data> => {
+    const modifiedFn = async (args: Arguments): Promise<Data> => {
       const ref =
         (providedOptions &&
           "mutationFn" in providedOptions! &&
           providedOptions!.mutationFn(args)) ||
         factoryFn!(dataConnect, args as Variables);
-        dataConnectResult.update(val => ({
-          ...val,
-          ref
-        }));
+      dataConnectResult.update((val) => ({
+        ...val,
+        ref,
+      }));
       // @ts-expect-error function is hidden under `DataConnect`.
       ref.dataConnect._setCallerSdkType(_callerSdkType);
       const response = await executeMutation(ref);
@@ -283,6 +258,6 @@ export function injectDataConnectMutation<
   const originalResult = injectMutation(injectCb, finalInjector);
   return {
     ...originalResult,
-    dataConnectResult
-  }
+    dataConnectResult,
+  };
 }

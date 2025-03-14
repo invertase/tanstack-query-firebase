@@ -1,5 +1,5 @@
 import { TestBed } from "@angular/core/testing";
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from "@angular/common/http";
 
 import {
   createMovieRef,
@@ -13,7 +13,7 @@ import {
   addMeta,
   deleteMetaRef,
 } from "@/dataconnect/default-connector";
-import { waitFor } from '@testing-library/angular';
+import { waitFor } from "@testing-library/angular";
 import { beforeEach, afterEach, describe, expect, test, vi } from "vitest";
 import { injectDataConnectMutation } from "./index";
 import {
@@ -28,10 +28,16 @@ import {
 } from "@angular/fire/data-connect";
 
 import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
-import { inject, isSignal, provideExperimentalZonelessChangeDetection, Signal, untracked } from "@angular/core";
+import {
+  inject,
+  isSignal,
+  provideExperimentalZonelessChangeDetection,
+  Signal,
+  untracked,
+} from "@angular/core";
 
 // initialize firebase app
-initializeApp({projectId: 'p'});
+initializeApp({ projectId: "p" });
 
 describe("injectDataConnectMutation", () => {
   let queryClient: QueryClient = new QueryClient();
@@ -63,7 +69,7 @@ describe("injectDataConnectMutation", () => {
   afterEach(() => {
     window.MutationObserver = oldMutationObserver;
     vi.restoreAllMocks();
-    vi.useRealTimers()
+    vi.useRealTimers();
   });
 
   test("returns initial state correctly for create mutation", () => {
@@ -112,11 +118,11 @@ describe("injectDataConnectMutation", () => {
     await waitFor(() => {
       expect(mutation.isSuccess()).toBe(true);
       expect(mutation.data()).toBeDefined();
-      expect(mutation.data()).toHaveProperty("ref");
-      expect(mutation.data()).toHaveProperty("source");
-      expect(mutation.data()).toHaveProperty("fetchTime");
+      expect(mutation.dataConnectResult()).toHaveProperty("ref");
+      expect(mutation.dataConnectResult()).toHaveProperty("source");
+      expect(mutation.dataConnectResult()).toHaveProperty("fetchTime");
       expect(mutation.data()).toHaveProperty("movie_insert");
-      expect(mutation.data()?.ref?.variables).toMatchObject(movie);
+      expect(mutation.dataConnectResult()?.ref?.variables).toMatchObject(movie);
     });
   });
 
@@ -154,9 +160,11 @@ describe("injectDataConnectMutation", () => {
     await waitFor(() => {
       expect(upsertMutationResult.isSuccess()).toBe(true);
       expect(upsertMutationResult.data()).toBeDefined();
-      expect(upsertMutationResult.data()).toHaveProperty("ref");
-      expect(upsertMutationResult.data()).toHaveProperty("source");
-      expect(upsertMutationResult.data()).toHaveProperty("fetchTime");
+      expect(upsertMutationResult.dataConnectResult()).toHaveProperty("ref");
+      expect(upsertMutationResult.dataConnectResult()).toHaveProperty("source");
+      expect(upsertMutationResult.dataConnectResult()).toHaveProperty(
+        "fetchTime"
+      );
       expect(upsertMutationResult.data()).toHaveProperty("movie_upsert");
       expect(upsertMutationResult.data()?.movie_upsert.id).toBe(movieId);
     });
@@ -195,9 +203,11 @@ describe("injectDataConnectMutation", () => {
     await waitFor(() => {
       expect(deleteMutationResult.isSuccess()).toBe(true);
       expect(deleteMutationResult.data()).toBeDefined();
-      expect(deleteMutationResult.data()).toHaveProperty("ref");
-      expect(deleteMutationResult.data()).toHaveProperty("source");
-      expect(deleteMutationResult.data()).toHaveProperty("fetchTime");
+      expect(deleteMutationResult.dataConnectResult()).toHaveProperty("ref");
+      expect(deleteMutationResult.dataConnectResult()).toHaveProperty("source");
+      expect(deleteMutationResult.dataConnectResult()).toHaveProperty(
+        "fetchTime"
+      );
       expect(deleteMutationResult.data()).toHaveProperty("movie_delete");
       expect(deleteMutationResult.data()?.movie_delete?.id).toBe(movieId);
     });
@@ -385,7 +395,7 @@ describe("injectDataConnectMutation", () => {
   test("invalidates queries specified in the invalidate option for create mutations with non-variable refs", async () => {
     const result = TestBed.runInInjectionContext(() =>
       injectDataConnectMutation(createMovieRef, () => ({
-        invalidate: [listMoviesRef()]
+        invalidate: [listMoviesRef()],
       }))
     );
     const movie = {
@@ -492,7 +502,6 @@ describe("injectDataConnectMutation", () => {
       ])
     );
   });
-  
 
   test("invalidates queries specified in the invalidate option for upsert mutations with non-variable refs", async () => {
     const movie = {
@@ -501,44 +510,43 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
     const createMutationResult = TestBed.runInInjectionContext(() =>
-      injectDataConnectMutation(
-        createMovieRef
-      )
+      injectDataConnectMutation(createMovieRef)
     );
-
 
     await createMutationResult.mutateAsync(movie);
 
-    
     await waitFor(() => {
       expect(createMutationResult.isSuccess()).to.be.true;
     });
-    
 
     expect(createMutationResult.data()).toHaveProperty("movie_insert");
 
     const movieId = createMutationResult.data()?.movie_insert.id!;
-    
 
-    const  upsertMutationResult  = TestBed.runInInjectionContext(
-      () =>
-        injectDataConnectMutation((_: DataConnect, vars: UpsertMovieVariables) => upsertMovieRef(vars), () => ({
-          invalidate: [ listMoviesRef()],
-        })),
+    const upsertMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(
+        (_: DataConnect, vars: UpsertMovieVariables) => upsertMovieRef(vars),
+        () => ({
+          invalidate: [listMoviesRef()],
+        })
+      )
     );
 
-      await upsertMutationResult.mutateAsync({
-        id: movieId,
-        imageUrl: "https://updated-image-url.com/",
-        title: "TanStack Query Firebase - updated",
-      });
-      upsertMutationResult.data()
+    await upsertMutationResult.mutateAsync({
+      id: movieId,
+      imageUrl: "https://updated-image-url.com/",
+      title: "TanStack Query Firebase - updated",
+    });
+    upsertMutationResult.data();
 
-    await waitFor(() => {
-      expect(upsertMutationResult.isSuccess()).toBe(true);
-      expect(upsertMutationResult.data()).toHaveProperty("movie_upsert");
-      expect(upsertMutationResult.data()?.movie_upsert.id).toBe(movieId);
-    }, { timeout: 10000});
+    await waitFor(
+      () => {
+        expect(upsertMutationResult.isSuccess()).toBe(true);
+        expect(upsertMutationResult.data()).toHaveProperty("movie_upsert");
+        expect(upsertMutationResult.data()?.movie_upsert.id).toBe(movieId);
+      },
+      { timeout: 10000 }
+    );
 
     expect(invalidateQueriesSpy.mock.calls).toHaveLength(1);
     expect(invalidateQueriesSpy).toHaveBeenCalledWith(
@@ -549,8 +557,8 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("invalidates queries specified in the invalidate option for upsert mutations with variable refs", async () => {
-    const createMutationResult = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(createMovieRef),
+    const createMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(createMovieRef)
     );
 
     expect(createMutationResult.isIdle()).toBe(true);
@@ -570,18 +578,17 @@ describe("injectDataConnectMutation", () => {
 
     const movieId = createMutationResult.data()?.movie_insert.id!;
 
-    const  upsertMutationResult = TestBed.runInInjectionContext(
-      () =>
-        injectDataConnectMutation(upsertMovieRef, () => ({
-          invalidate: [getMovieByIdRef({ id: movieId })],
-        })),
+    const upsertMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(upsertMovieRef, () => ({
+        invalidate: [getMovieByIdRef({ id: movieId })],
+      }))
     );
 
-      await upsertMutationResult.mutateAsync({
-        id: movieId,
-        imageUrl: "https://updated-image-url.com/",
-        title: "TanStack Query Firebase - updated",
-      });
+    await upsertMutationResult.mutateAsync({
+      id: movieId,
+      imageUrl: "https://updated-image-url.com/",
+      title: "TanStack Query Firebase - updated",
+    });
 
     await waitFor(() => {
       expect(upsertMutationResult.isSuccess()).toBe(true);
@@ -599,8 +606,8 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("invalidates queries specified in the invalidate option for upsert mutations with both variable and non-variable refs", async () => {
-    const  createMutationResult = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(createMovieRef),
+    const createMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(createMovieRef)
     );
 
     expect(createMutationResult.isIdle()).toBe(true);
@@ -611,7 +618,7 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
 
-      await createMutationResult.mutateAsync(movie);
+    await createMutationResult.mutateAsync(movie);
 
     await waitFor(() => {
       expect(createMutationResult.isSuccess()).toBe(true);
@@ -620,18 +627,17 @@ describe("injectDataConnectMutation", () => {
 
     const movieId = createMutationResult.data()?.movie_insert.id!;
 
-    const  upsertMutationResult  = TestBed.runInInjectionContext(
-      () =>
-        injectDataConnectMutation(upsertMovieRef, () => ({
-          invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
-        })),
+    const upsertMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(upsertMovieRef, () => ({
+        invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
+      }))
     );
 
-      await upsertMutationResult.mutateAsync({
-        id: movieId,
-        imageUrl: "https://updated-image-url.com/",
-        title: "TanStack Query Firebase - updated",
-      });
+    await upsertMutationResult.mutateAsync({
+      id: movieId,
+      imageUrl: "https://updated-image-url.com/",
+      title: "TanStack Query Firebase - updated",
+    });
 
     await waitFor(() => {
       expect(upsertMutationResult.isSuccess()).toBe(true);
@@ -658,8 +664,8 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("invalidates queries specified in the invalidate option for delete mutations with non-variable refs", async () => {
-    const createMutationResult = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(createMovieRef),
+    const createMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(createMovieRef)
     );
 
     expect(createMutationResult.isIdle()).toBe(true);
@@ -670,7 +676,7 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
 
-      await createMutationResult.mutateAsync(movie);
+    await createMutationResult.mutateAsync(movie);
 
     await waitFor(() => {
       expect(createMutationResult.isSuccess()).toBe(true);
@@ -679,17 +685,15 @@ describe("injectDataConnectMutation", () => {
 
     const movieId = createMutationResult.data()?.movie_insert.id!;
 
-    const deleteMutationResult = TestBed.runInInjectionContext(
-      () =>
-        injectDataConnectMutation(deleteMovieRef, () => ({
-          invalidate: [listMoviesRef()],
-        })),
-      
+    const deleteMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(deleteMovieRef, () => ({
+        invalidate: [listMoviesRef()],
+      }))
     );
 
-      await deleteMutationResult.mutateAsync({
-        id: movieId,
-      });
+    await deleteMutationResult.mutateAsync({
+      id: movieId,
+    });
 
     await waitFor(() => {
       expect(deleteMutationResult.isSuccess()).toBe(true);
@@ -706,9 +710,8 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("invalidates queries specified in the invalidate option for delete mutations with variable refs", async () => {
-    const createMutationResult = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(createMovieRef),
-      
+    const createMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(createMovieRef)
     );
 
     expect(createMutationResult.isIdle()).toBe(true);
@@ -719,7 +722,7 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
 
-      await createMutationResult.mutateAsync(movie);
+    await createMutationResult.mutateAsync(movie);
 
     await waitFor(() => {
       expect(createMutationResult.isSuccess()).toBe(true);
@@ -728,16 +731,15 @@ describe("injectDataConnectMutation", () => {
 
     const movieId = createMutationResult.data()?.movie_insert.id!;
 
-    const deleteMutationResult  = TestBed.runInInjectionContext(
-      () =>
-        injectDataConnectMutation(deleteMovieRef, () => ({
-          invalidate: [getMovieByIdRef({ id: movieId })],
-        })),
+    const deleteMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(deleteMovieRef, () => ({
+        invalidate: [getMovieByIdRef({ id: movieId })],
+      }))
     );
 
-      await deleteMutationResult.mutateAsync({
-        id: movieId,
-      });
+    await deleteMutationResult.mutateAsync({
+      id: movieId,
+    });
 
     await waitFor(() => {
       expect(deleteMutationResult.isSuccess()).toBe(true);
@@ -755,9 +757,8 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("invalidates queries specified in the invalidate option for delete mutations with both variable and non-variable refs", async () => {
-    const createMutationResult = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(createMovieRef),
-      
+    const createMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(createMovieRef)
     );
 
     expect(createMutationResult.isIdle()).toBe(true);
@@ -768,7 +769,7 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
 
-      await createMutationResult.mutateAsync(movie);
+    await createMutationResult.mutateAsync(movie);
 
     await waitFor(() => {
       expect(createMutationResult.isSuccess()).toBe(true);
@@ -777,16 +778,15 @@ describe("injectDataConnectMutation", () => {
 
     const movieId = createMutationResult.data()?.movie_insert.id!;
 
-    const deleteMutationResult = TestBed.runInInjectionContext(
-      () =>
-        injectDataConnectMutation(deleteMovieRef, () => ({
-          invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
-        })),
+    const deleteMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(deleteMovieRef, () => ({
+        invalidate: [listMoviesRef(), getMovieByIdRef({ id: movieId })],
+      }))
     );
 
-      await deleteMutationResult.mutateAsync({
-        id: movieId,
-      });
+    await deleteMutationResult.mutateAsync({
+      id: movieId,
+    });
 
     await waitFor(() => {
       expect(deleteMutationResult.isSuccess()).toBe(true);
@@ -813,8 +813,8 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("calls onSuccess callback after successful create mutation", async () => {
-    const result = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(createMovieRef, () =>  ({ onSuccess })),
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(createMovieRef, () => ({ onSuccess }))
     );
 
     const movie = {
@@ -823,7 +823,7 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
 
-      await result.mutateAsync(movie);
+    await result.mutateAsync(movie);
 
     await waitFor(() => {
       expect(onSuccess).toHaveBeenCalled();
@@ -833,9 +833,8 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("calls onSuccess callback after successful upsert mutation", async () => {
-    const createMutationResult  = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(createMovieRef),
-      
+    const createMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(createMovieRef)
     );
 
     expect(createMutationResult.isIdle()).toBe(true);
@@ -846,7 +845,7 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
 
-      await createMutationResult.mutateAsync(movie);
+    await createMutationResult.mutateAsync(movie);
 
     await waitFor(() => {
       expect(createMutationResult.isSuccess()).toBe(true);
@@ -855,15 +854,15 @@ describe("injectDataConnectMutation", () => {
 
     const movieId = createMutationResult.data()?.movie_insert.id!;
 
-    const  upsertMutationResult = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(upsertMovieRef, () => ({ onSuccess })),
+    const upsertMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(upsertMovieRef, () => ({ onSuccess }))
     );
 
-      await upsertMutationResult.mutateAsync({
-        id: movieId,
-        imageUrl: "https://updated-image-url.com/",
-        title: "TanStack Query Firebase - updated",
-      });
+    await upsertMutationResult.mutateAsync({
+      id: movieId,
+      imageUrl: "https://updated-image-url.com/",
+      title: "TanStack Query Firebase - updated",
+    });
 
     await waitFor(() => {
       expect(upsertMutationResult.isSuccess()).toBe(true);
@@ -874,8 +873,8 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("calls onSuccess callback after successful delete mutation", async () => {
-    const createMutationResult = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(createMovieRef),
+    const createMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(createMovieRef)
     );
 
     expect(createMutationResult.isIdle()).toBe(true);
@@ -886,7 +885,7 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
 
-      await createMutationResult.mutateAsync(movie);
+    await createMutationResult.mutateAsync(movie);
 
     await waitFor(() => {
       expect(createMutationResult.isSuccess()).toBe(true);
@@ -895,14 +894,13 @@ describe("injectDataConnectMutation", () => {
 
     const movieId = createMutationResult.data()?.movie_insert.id!;
 
-    const deleteMutationResult = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(deleteMovieRef, () => ({ onSuccess })),
-      
+    const deleteMutationResult = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(deleteMovieRef, () => ({ onSuccess }))
     );
 
-      await deleteMutationResult.mutateAsync({
-        id: movieId,
-      });
+    await deleteMutationResult.mutateAsync({
+      id: movieId,
+    });
 
     await waitFor(() => {
       expect(deleteMutationResult.isSuccess()).toBe(true);
@@ -919,17 +917,16 @@ describe("injectDataConnectMutation", () => {
       imageUrl: "https://test-image-url.com/",
     };
 
-    const result = TestBed.runInInjectionContext(
-      () => injectDataConnectMutation(() => createMovieRef(movie)),
-      
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(() => createMovieRef(movie))
     );
 
-      await result.mutateAsync();
+    await result.mutateAsync();
 
     await waitFor(() => {
       expect(result.isSuccess()).toBe(true);
       expect(result.data()).toHaveProperty("movie_insert");
-      expect(result.data()?.ref.variables).toMatchObject({
+      expect(result.dataConnectResult()?.ref?.variables).toMatchObject({
         title: movie.title,
         genre: movie.genre,
         imageUrl: movie.imageUrl,
@@ -938,28 +935,25 @@ describe("injectDataConnectMutation", () => {
   });
 
   test("executes mutation successfully with function ref that accepts variables", async () => {
-    const result = TestBed.runInInjectionContext(
-      () =>
-        injectDataConnectMutation(null, () =>
-        ({
-          mutationFn: (title: string) => createMovieRef({
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(null, () => ({
+        mutationFn: (title: string) =>
+          createMovieRef({
             title,
             genre: "library",
             imageUrl: "https://test-image-url.com/",
-          })
-        })
-          
-        ),
+          }),
+      }))
     );
 
     const movieTitle = "TanStack Query Firebase";
 
-      await result.mutateAsync(movieTitle);
+    await result.mutateAsync(movieTitle);
 
     await waitFor(() => {
       expect(result.isSuccess()).toBe(true);
       expect(result.data()).toHaveProperty("movie_insert");
-      expect(result.data()?.ref.variables).toMatchObject({
+      expect(result.dataConnectResult()?.ref?.variables).toMatchObject({
         title: movieTitle,
         genre: "library",
         imageUrl: "https://test-image-url.com/",
@@ -968,11 +962,13 @@ describe("injectDataConnectMutation", () => {
   });
   test("stores valid properties in resultMeta", async () => {
     const metaResult = await addMeta();
-    const result = TestBed.runInInjectionContext(() =>   injectDataConnectMutation(deleteMetaRef));
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectMutation(deleteMetaRef)
+    );
     await result.mutateAsync({ id: metaResult.data.ref.id });
     await waitFor(() => {
       expect(result.isSuccess()).toBe(true);
     });
-    expect(result.data()?.resultMeta.ref).to.deep.eq(metaResult.data.ref)
+    expect(result.data()?.ref).to.deep.eq(metaResult.data.ref);
   });
 });

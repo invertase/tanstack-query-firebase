@@ -13,9 +13,7 @@ import {
   QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import {
-  UseDataConnectMutation,
-} from "./types";
+import { UseDataConnectMutation } from "./types";
 import { useState } from "react";
 
 export type useDataConnectMutationOptions<
@@ -50,20 +48,14 @@ export function useDataConnectMutation<
     : never
 >(
   ref: Fn,
-  options?: useDataConnectMutationOptions<
-    Data,
-    FirebaseError,
-    Variables
-  >,
+  options?: useDataConnectMutationOptions<Data, FirebaseError, Variables>,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
 ): UseDataConnectMutation<Data, Variables> {
   const queryClient = useQueryClient();
-  const [dataConnectResult, setDataConnectResult] = useState<MutationResult<Data, Variables> | undefined>(undefined);
-  const originalResult = useMutation<
-    Data,
-    FirebaseError,
-    Variables
-  >({
+  const [dataConnectResult, setDataConnectResult] = useState<
+    MutationResult<Data, Variables> | undefined
+  >(undefined);
+  const originalResult = useMutation<Data, FirebaseError, Variables>({
     ...options,
     onSuccess(...args) {
       if (options?.invalidate?.length) {
@@ -97,8 +89,7 @@ export function useDataConnectMutation<
     },
   });
   return {
-    ...dataConnectResult,
+    dataConnectResult,
     ...originalResult,
-    originalResult
-  }
+  };
 }
