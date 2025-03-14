@@ -193,9 +193,9 @@ describe("injectDataConnectQuery", () => {
     await waitFor(() => expect(result.isSuccess()).toBe(true));
 
     expect(result.data()).toBeDefined();
-    expect(result).toHaveProperty("ref");
-    expect(result).toHaveProperty("source");
-    expect(result).toHaveProperty("fetchTime");
+    expect(result.dataConnectResult()).toHaveProperty("ref");
+    expect(result.dataConnectResult()).toHaveProperty("source");
+    expect(result.dataConnectResult()).toHaveProperty("fetchTime");
   });
   test.only("Effect is properly computed", async () => {
     const movieData = {
@@ -216,7 +216,7 @@ describe("injectDataConnectQuery", () => {
 
     await waitFor(() => expect(result.isSuccess()).toBe(true));
     expect(result.data()).toBeDefined();
-    expect(result.ref).toBeDefined();
+    expect(result.dataConnectResult()?.ref).toBeDefined();
     // // const r = await TestBed.runInInjectionContext(async () => {
 
     // //   return new Promise((resolve, reject) => {

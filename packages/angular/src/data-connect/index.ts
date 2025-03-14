@@ -1,8 +1,6 @@
 import {
   type CreateMutationOptions,
-  type CreateMutationResult,
   type CreateQueryOptions,
-  type CreateQueryResult,
   injectMutation,
   injectQuery,
   QueryClient,
@@ -12,7 +10,6 @@ import {
 import type { FirebaseError } from "firebase/app";
 
 import {
-  effect,
   EnvironmentInjector,
   inject,
   type Injector,
@@ -32,7 +29,6 @@ import {
 import {
   CreateDataConnectMutationResult,
   CreateDataConnectQueryResult,
-  ResultDataOmitted,
 } from "./types";
 
 function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
@@ -67,10 +63,7 @@ export function injectDataConnectQuery<Data, Variables>(
   injector?: Injector,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
 ): CreateDataConnectQueryResult<Data, Variables> {
-  const extraFieldsSignal = signal<Partial<ResultDataOmitted<QueryResult<Data, Variables>>>>(
-    { ref: undefined, source: undefined, fetchTime: undefined },
-    
-  );
+  const dataConnectResult = signal<Partial<QueryResult<Data, Variables>> | undefined>(undefined);
   const finalInjector = injector || inject(EnvironmentInjector);
   const queryKey = signal<QueryKey>([]);
 
@@ -86,12 +79,12 @@ export function injectDataConnectQuery<Data, Variables>(
       const ref: QueryRef<Data, Variables> =
         passedInOptions?.queryFn() ||
         (queryRefOrOptionsFn as QueryRef<Data, Variables>);
-      extraFieldsSignal.set({ ref});
+      dataConnectResult.set({ ref });
       // @ts-expect-error function is hidden under `DataConnect`.
       ref.dataConnect._setCallerSdkType(_callerSdkType);
       queryKey.set([ref.name, ref.variables]);
       const response = await executeQuery(ref);
-      extraFieldsSignal.set(response);
+      dataConnectResult.set(response);
       return response.data;
     };
     return {
@@ -103,9 +96,8 @@ export function injectDataConnectQuery<Data, Variables>(
 
   const originalResult = injectQuery(fdcOptionsFn, finalInjector);
   return {
-    originalResult,
     ...originalResult,
-    ...extraFieldsSignal()
+    dataConnectResult
   }
 }
 
@@ -242,7 +234,7 @@ export function injectDataConnectMutation<
   const finalInjector = injector || inject(EnvironmentInjector);
   const dataConnect = finalInjector.get(DataConnect);
   const queryClient = finalInjector.get(QueryClient);
-  const extraFieldsSignal = signal<Partial<MutationResult<Data, Variables>>>({});
+  const dataConnectResult = signal<Partial<MutationResult<Data, Variables>> | undefined>(undefined);
 
   const injectCb = () => {
     const providedOptions = optionsFn?.();
@@ -254,7 +246,7 @@ export function injectDataConnectMutation<
           "mutationFn" in providedOptions! &&
           providedOptions!.mutationFn(args)) ||
         factoryFn!(dataConnect, args as Variables);
-        extraFieldsSignal.update(val => ({
+        dataConnectResult.update(val => ({
           ...val,
           ref
         }));
@@ -278,7 +270,7 @@ export function injectDataConnectMutation<
           }
         }
       }
-      extraFieldsSignal.set(response);
+      dataConnectResult.set(response);
       return response.data;
     };
 
@@ -289,8 +281,8 @@ export function injectDataConnectMutation<
   };
 
   const originalResult = injectMutation(injectCb, finalInjector);
-  const result = extraFieldsSignal()
-  return Object.assign(result, originalResult, {
-    originalResult,
-  });
+  return {
+    ...originalResult,
+    dataConnectResult
+  }
 }
