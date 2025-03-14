@@ -7,14 +7,14 @@ export type QueryResultRequiredRef<Data, Variables> = Partial<
 > &
   Required<Pick<QueryResult<Data, Variables>, "ref">>;
 
-export type UseDataConnectQuery<Data, Variables> = UseQueryResult<
+export type UseDataConnectQueryResult<Data, Variables> = UseQueryResult<
   Data,
   FirebaseError
 > & {
   dataConnectResult?: QueryResultRequiredRef<Data, Variables>;
 };
 
-export type UseDataConnectMutation<Data, Variables> = UseMutationResult<
+export type UseDataConnectMutationResult<Data, Variables> = UseMutationResult<
   Data,
   FirebaseError,
   Variables
