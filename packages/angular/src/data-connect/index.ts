@@ -12,6 +12,7 @@ import {
 import type { FirebaseError } from "firebase/app";
 
 import {
+  effect,
   EnvironmentInjector,
   inject,
   type Injector,
@@ -26,18 +27,12 @@ import {
   type MutationRef,
   type MutationResult,
   type QueryRef,
+  QueryResult,
 } from "@angular/fire/data-connect";
 import {
-  FlattenedMutationResult,
-  FlattenedQueryResult,
-  MutationResultMeta,
-  MutationResultMetaObject,
-  QueryResultMeta,
-  QueryResultMetaObject,
-  RESERVED_MUTATION_FIELDS,
-  RESERVED_QUERY_FIELDS,
-  ReservedMutationKeys,
-  ReservedQueryKeys,
+  CreateDataConnectMutationResult,
+  CreateDataConnectQueryResult,
+  ResultDataOmitted,
 } from "./types";
 
 function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
@@ -50,9 +45,9 @@ function getQueryKey(queryRef: QueryRef<unknown, unknown>) {
 export interface CreateDataConnectQueryOptions<Data, Variables>
   extends Omit<
     CreateQueryOptions<
-      FlattenedQueryResult<Data, Variables>,
+      Data,
       FirebaseError,
-      FlattenedQueryResult<Data, Variables>,
+      Data,
       QueryKey
     >,
     "queryFn" | "queryKey"
@@ -71,7 +66,11 @@ export function injectDataConnectQuery<Data, Variables>(
     | (() => CreateDataConnectQueryOptions<Data, Variables>),
   injector?: Injector,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
-): CreateQueryResult<FlattenedQueryResult<Data, Variables>, FirebaseError> {
+): CreateDataConnectQueryResult<Data, Variables> {
+  const extraFieldsSignal = signal<Partial<ResultDataOmitted<QueryResult<Data, Variables>>>>(
+    { ref: undefined, source: undefined, fetchTime: undefined },
+    
+  );
   const finalInjector = injector || inject(EnvironmentInjector);
   const queryKey = signal<QueryKey>([]);
 
@@ -82,31 +81,18 @@ export function injectDataConnectQuery<Data, Variables>(
         : undefined;
 
     const modifiedFn = async (): Promise<
-      FlattenedQueryResult<Data, Variables>
+      Data
     > => {
       const ref: QueryRef<Data, Variables> =
         passedInOptions?.queryFn() ||
         (queryRefOrOptionsFn as QueryRef<Data, Variables>);
+      extraFieldsSignal.set({ ref});
       // @ts-expect-error function is hidden under `DataConnect`.
       ref.dataConnect._setCallerSdkType(_callerSdkType);
       queryKey.set([ref.name, ref.variables]);
-      const { data, ...rest } = await executeQuery(ref);
-      let intersectionInfo: QueryResultMetaObject<Data> =
-        {} as QueryResultMetaObject<Data>;
-      RESERVED_QUERY_FIELDS.forEach((reserved: ReservedQueryKeys) => {
-        if (reserved in (data as Object)) {
-          intersectionInfo![reserved as keyof QueryResultMetaObject<Data>] =
-            data[reserved as keyof QueryResultMetaObject<Data>];
-        }
-      });
-      const resultMeta: QueryResultMeta<Data> = (
-        Object.keys(intersectionInfo).length ? intersectionInfo : undefined
-      ) as QueryResultMeta<Data>;
-      return {
-        ...data,
-        ...rest,
-        resultMeta,
-      };
+      const response = await executeQuery(ref);
+      extraFieldsSignal.set(response);
+      return response.data;
     };
     return {
       queryKey: queryKey(),
@@ -115,7 +101,12 @@ export function injectDataConnectQuery<Data, Variables>(
     };
   }
 
-  return injectQuery(fdcOptionsFn, finalInjector);
+  const originalResult = injectQuery(fdcOptionsFn, finalInjector);
+  return {
+    originalResult,
+    ...originalResult,
+    ...extraFieldsSignal()
+  }
 }
 
 export type GeneratedSignature<Data, Variables> = (
@@ -151,8 +142,8 @@ export function injectDataConnectMutation<Data, Variables, Arguments>(
     Variables,
     Arguments
   >
-): CreateMutationResult<
-  FlattenedMutationResult<Data, Variables>,
+): CreateDataConnectMutationResult<
+  Data,
   FirebaseError,
   Arguments
 >;
@@ -167,8 +158,8 @@ export function injectDataConnectMutation<
     FirebaseError,
     Variables
   >
-): CreateMutationResult<
-  FlattenedMutationResult<Data, Variables>,
+): CreateDataConnectMutationResult<
+  Data,
   FirebaseError,
   Arguments
 >;
@@ -184,8 +175,8 @@ export function injectDataConnectMutation<
     FirebaseError,
     Variables
   >
-): CreateMutationResult<
-  FlattenedMutationResult<Data, Variables>,
+): CreateDataConnectMutationResult<
+  Data,
   FirebaseError,
   Arguments
 >;
@@ -200,8 +191,8 @@ export function injectDataConnectMutation<
     FirebaseError,
     Arguments
   >
-): CreateMutationResult<
-  FlattenedMutationResult<Data, Variables>,
+): CreateDataConnectMutationResult<
+  Data,
   FirebaseError,
   Arguments
 >;
@@ -216,8 +207,8 @@ export function injectDataConnectMutation<
     FirebaseError,
     Arguments
   >
-): CreateMutationResult<
-  FlattenedMutationResult<Data, Variables>,
+): CreateDataConnectMutationResult<
+  Data,
   FirebaseError,
   Arguments
 >;
@@ -247,45 +238,29 @@ export function injectDataConnectMutation<
       >,
   injector?: Injector,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
-): CreateMutationResult<
-  FlattenedMutationResult<Data, Variables>,
-  FirebaseError,
-  Arguments
-> {
+): CreateDataConnectMutationResult<Data, Variables, Arguments> {
   const finalInjector = injector || inject(EnvironmentInjector);
   const dataConnect = finalInjector.get(DataConnect);
   const queryClient = finalInjector.get(QueryClient);
+  const extraFieldsSignal = signal<Partial<MutationResult<Data, Variables>>>({});
 
   const injectCb = () => {
     const providedOptions = optionsFn?.();
     const modifiedFn = async (
       args: Arguments
-    ): Promise<FlattenedMutationResult<Data, Variables>> => {
+    ): Promise<Data> => {
       const ref =
         (providedOptions &&
           "mutationFn" in providedOptions! &&
           providedOptions!.mutationFn(args)) ||
         factoryFn!(dataConnect, args as Variables);
+        extraFieldsSignal.update(val => ({
+          ...val,
+          ref
+        }));
       // @ts-expect-error function is hidden under `DataConnect`.
       ref.dataConnect._setCallerSdkType(_callerSdkType);
-      const { data, ...rest } = await executeMutation(ref);
-      let intersectionInfo: MutationResultMetaObject<Data> =
-        {} as MutationResultMetaObject<Data>;
-      RESERVED_MUTATION_FIELDS.forEach((reserved: ReservedMutationKeys) => {
-        intersectionInfo![
-          reserved as keyof MutationResultMetaObject<Data> & string
-        ] = data[reserved as keyof MutationResultMetaObject<Data> & string];
-      });
-      const resultMeta: MutationResultMeta<Data> = (
-        Object.keys(intersectionInfo).length ? intersectionInfo : undefined
-      ) as MutationResultMeta<Data>;
-      const ret: FlattenedMutationResult<Data, Variables> = {
-        ...data,
-        fetchTime: rest.fetchTime,
-        ref: rest.ref,
-        source: rest.source,
-        resultMeta,
-      };
+      const response = await executeMutation(ref);
 
       if (providedOptions?.invalidate) {
         for (const qk of providedOptions.invalidate) {
@@ -303,7 +278,8 @@ export function injectDataConnectMutation<
           }
         }
       }
-      return ret;
+      extraFieldsSignal.set(response);
+      return response.data;
     };
 
     return {
@@ -312,5 +288,9 @@ export function injectDataConnectMutation<
     };
   };
 
-  return injectMutation(injectCb, finalInjector);
+  const originalResult = injectMutation(injectCb, finalInjector);
+  const result = extraFieldsSignal()
+  return Object.assign(result, originalResult, {
+    originalResult,
+  });
 }

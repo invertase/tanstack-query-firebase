@@ -14,12 +14,9 @@ import {
   executeMutation,
 } from "firebase/data-connect";
 import {
-  RESERVED_MUTATION_FIELDS,
-  ReservedMutationKeys,
-  MutationResultMeta,
-  MutationResultMetaObject,
-  FlattenedMutationResult,
+  UseDataConnectMutation,
 } from "./types";
+import { useState } from "react";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
@@ -54,15 +51,16 @@ export function useDataConnectMutation<
 >(
   ref: Fn,
   options?: useDataConnectMutationOptions<
-    FlattenedMutationResult<Data, Variables>,
+    Data,
     FirebaseError,
     Variables
   >,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
-) {
+): UseDataConnectMutation<Data, Variables> {
   const queryClient = useQueryClient();
-  return useMutation<
-    FlattenedMutationResult<Data, Variables>,
+  const [dataConnectResult, setDataConnectResult] = useState<MutationResult<Data, Variables> | undefined>(undefined);
+  const originalResult = useMutation<
+    Data,
     FirebaseError,
     Variables
   >({
@@ -91,30 +89,16 @@ export function useDataConnectMutation<
       // @ts-expect-error function is hidden under `DataConnect`.
       mutationRef.dataConnect._setCallerSdkType(_callerSdkType);
       const response = await executeMutation<Data, Variables>(mutationRef);
-      const resultMeta: MutationResultMeta<Data> = getResultMeta(response);
 
+      setDataConnectResult(response);
       return {
         ...response.data,
-        ref: response.ref,
-        source: response.source,
-        fetchTime: response.fetchTime,
-        resultMeta,
       };
     },
   });
-}
-
-export function getResultMeta<Data, Variables>(
-  response: MutationResult<Data, Variables>
-) {
-  let intersectionInfo: MutationResultMetaObject<Data> =
-    {} as MutationResultMetaObject<Data>;
-  RESERVED_MUTATION_FIELDS.forEach((reserved: ReservedMutationKeys) => {
-    intersectionInfo![reserved as keyof MutationResultMetaObject<Data>] =
-      response.data[reserved as keyof MutationResultMetaObject<Data>];
-  });
-  const resultMeta: MutationResultMeta<Data> = (
-    Object.keys(intersectionInfo).length ? intersectionInfo : undefined
-  ) as MutationResultMeta<Data>;
-  return resultMeta;
+  return {
+    ...dataConnectResult,
+    ...originalResult,
+    originalResult
+  }
 }

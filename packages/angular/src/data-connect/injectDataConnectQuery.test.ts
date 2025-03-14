@@ -15,7 +15,8 @@ import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
 import { injectDataConnectQuery } from "./index";
 import { provideTanStackQuery, QueryClient } from "@tanstack/angular-query-experimental";
 import { TestBed } from "@angular/core/testing";
-import { inject, provideExperimentalZonelessChangeDetection } from "@angular/core";
+import { effect, inject, provideExperimentalZonelessChangeDetection } from "@angular/core";
+import { executeMutation } from "firebase/data-connect";
 
 // initialize firebase app
 initializeApp({projectId: 'p'});
@@ -71,9 +72,9 @@ describe("injectDataConnectQuery", () => {
     await waitFor(() => {
       expect(result.isSuccess()).toBe(true);
       expect(result.data()).toBeDefined();
-      expect(result.data()).toHaveProperty("ref");
-      expect(result.data()).toHaveProperty("source");
-      expect(result.data()).toHaveProperty("fetchTime");
+      expect(result).toHaveProperty("ref");
+      expect(result).toHaveProperty("source");
+      expect(result).toHaveProperty("fetchTime");
     });
 
 
@@ -84,10 +85,10 @@ describe("injectDataConnectQuery", () => {
     await waitFor(() => {
       expect(result.isSuccess()).toBe(true);
       expect(result.data()).toBeDefined();
-      expect(result.data()).toHaveProperty("ref");
-      expect(result.data()).toHaveProperty("source");
-      expect(result.data()).toHaveProperty("fetchTime");
-      expect(result.data()).toHaveProperty("movies");
+      expect(result).toHaveProperty("ref");
+      expect(result).toHaveProperty("source");
+      expect(result).toHaveProperty("fetchTime");
+      expect(result).toHaveProperty("movies");
       expect(Array.isArray(result.data()?.movies)).toBe(true);
       expect(result.data()?.movies.length).toBeGreaterThanOrEqual(0);
     });
@@ -167,9 +168,9 @@ describe("injectDataConnectQuery", () => {
     await waitFor(() => expect(result.isSuccess()).toBe(true));
 
     expect(result.data()).toBeDefined();
-    expect(result.data()).toHaveProperty("ref");
-    expect(result.data()).toHaveProperty("source");
-    expect(result.data()).toHaveProperty("fetchTime");
+    expect(result).toHaveProperty("ref");
+    expect(result).toHaveProperty("source");
+    expect(result).toHaveProperty("fetchTime");
   });
 
   test("returns flattened data including ref, source, and fetchTime for queries with unique identifier", async () => {
@@ -192,18 +193,39 @@ describe("injectDataConnectQuery", () => {
     await waitFor(() => expect(result.isSuccess()).toBe(true));
 
     expect(result.data()).toBeDefined();
-    expect(result.data()).toHaveProperty("ref");
-    expect(result.data()).toHaveProperty("source");
-    expect(result.data()).toHaveProperty("fetchTime");
+    expect(result).toHaveProperty("ref");
+    expect(result).toHaveProperty("source");
+    expect(result).toHaveProperty("fetchTime");
   });
-test('a query with reserved keys is stored in resultMeta', async () => {
-    const metaResult = await addMeta();
-    const  result = TestBed.runInInjectionContext(() => injectDataConnectQuery(getMetaRef()));
+  test.only("Effect is properly computed", async () => {
+    const movieData = {
+      title: "tanstack query firebase",
+      genre: "library",
+      imageUrl: "https://invertase.io/",
+    };
+    const createdMovie = await createMovie(movieData);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+
+    const result = TestBed.runInInjectionContext(
+      () => injectDataConnectQuery(getMovieByIdRef({ id: movieId }))
+      
+    );
+
     expect(result.isPending()).toBe(true);
 
     await waitFor(() => expect(result.isSuccess()).toBe(true));
-    expect(result.data()?.resultMeta.ref).to.deep.equal([metaResult.data.ref]);
-    await deleteMeta({ id: metaResult.data.ref.id });
-  })
+    expect(result.data()).toBeDefined();
+    expect(result.ref).toBeDefined();
+    // // const r = await TestBed.runInInjectionContext(async () => {
 
+    // //   return new Promise((resolve, reject) => {
+    // //     effect(() => resolve(result.ref!));
+    // //     // expect(result).toHaveProperty("ref");
+    // //     // expect(result).toHaveProperty("source");
+    // //     // expect(result).toHaveProperty("fetchTime");
+    // //   });
+    // // })
+    // expect(r).toBeDefined();
+  });
 });

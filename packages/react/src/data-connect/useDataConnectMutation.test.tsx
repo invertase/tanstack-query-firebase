@@ -1,6 +1,5 @@
 import {
   addMeta,
-  addMetaRef,
   createMovie,
   createMovieRef,
   deleteMetaRef,
@@ -86,11 +85,11 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toBeDefined();
-      expect(result.current.data).toHaveProperty("ref");
-      expect(result.current.data).toHaveProperty("source");
-      expect(result.current.data).toHaveProperty("fetchTime");
+      expect(result.current).toHaveProperty("ref");
+      expect(result.current).toHaveProperty("source");
+      expect(result.current).toHaveProperty("fetchTime");
       expect(result.current.data).toHaveProperty("movie_insert");
-      expect(result.current.data?.ref.variables).toMatchObject(movie);
+      expect(result.current?.ref?.variables).toMatchObject(movie);
     });
   });
 
@@ -138,9 +137,9 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(upsertMutationResult.current.isSuccess).toBe(true);
       expect(upsertMutationResult.current.data).toBeDefined();
-      expect(upsertMutationResult.current.data).toHaveProperty("ref");
-      expect(upsertMutationResult.current.data).toHaveProperty("source");
-      expect(upsertMutationResult.current.data).toHaveProperty("fetchTime");
+      expect(upsertMutationResult.current).toHaveProperty("ref");
+      expect(upsertMutationResult.current).toHaveProperty("source");
+      expect(upsertMutationResult.current).toHaveProperty("fetchTime");
       expect(upsertMutationResult.current.data).toHaveProperty("movie_upsert");
       expect(upsertMutationResult.current.data?.movie_upsert.id).toBe(movieId);
     });
@@ -189,9 +188,9 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(deleteMutationResult.current.isSuccess).toBe(true);
       expect(deleteMutationResult.current.data).toBeDefined();
-      expect(deleteMutationResult.current.data).toHaveProperty("ref");
-      expect(deleteMutationResult.current.data).toHaveProperty("source");
-      expect(deleteMutationResult.current.data).toHaveProperty("fetchTime");
+      expect(deleteMutationResult.current).toHaveProperty("ref");
+      expect(deleteMutationResult.current).toHaveProperty("source");
+      expect(deleteMutationResult.current).toHaveProperty("fetchTime");
       expect(deleteMutationResult.current.data).toHaveProperty("movie_delete");
       expect(deleteMutationResult.current.data?.movie_delete?.id).toBe(movieId);
     });
@@ -1040,7 +1039,7 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toHaveProperty("movie_insert");
-      expect(result.current.data?.ref.variables).toMatchObject({
+      expect(result.current.ref?.variables).toMatchObject({
         title: movie.title,
         genre: movie.genre,
         imageUrl: movie.imageUrl,
@@ -1072,7 +1071,7 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toHaveProperty("movie_insert");
-      expect(result.current.data?.ref.variables).toMatchObject({
+      expect(result.current.ref?.variables).toMatchObject({
         title: movieTitle,
         genre: "library",
         imageUrl: "https://test-image-url.com/",
@@ -1090,6 +1089,6 @@ describe("useDataConnectMutation", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
     });
-    expect(result.current.data?.resultMeta.ref).to.deep.eq(metaResult.data.ref)
+    expect(result.current.data?.ref).to.deep.eq(metaResult.data.ref)
   });
 });

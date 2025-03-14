@@ -52,12 +52,12 @@ describe("useDataConnectQuery", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toBeDefined();
-      expect(result.current.data).toHaveProperty("ref");
-      expect(result.current.data).toHaveProperty("source");
-      expect(result.current.data).toHaveProperty("fetchTime");
+      expect(result.current).toHaveProperty("ref");
+      expect(result.current).toHaveProperty("source");
+      expect(result.current).toHaveProperty("fetchTime");
     });
 
-    const initialFetchTime = result.current.data?.fetchTime;
+    const initialFetchTime = result.current?.fetchTime;
 
     await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay before refetching
 
@@ -68,15 +68,15 @@ describe("useDataConnectQuery", () => {
     await waitFor(() => {
       expect(result.current.isSuccess).toBe(true);
       expect(result.current.data).toBeDefined();
-      expect(result.current.data).toHaveProperty("ref");
-      expect(result.current.data).toHaveProperty("source");
-      expect(result.current.data).toHaveProperty("fetchTime");
+      expect(result.current).toHaveProperty("ref");
+      expect(result.current).toHaveProperty("source");
+      expect(result.current).toHaveProperty("fetchTime");
       expect(result.current.data).toHaveProperty("movies");
       expect(Array.isArray(result.current.data?.movies)).toBe(true);
       expect(result.current.data?.movies.length).toBeGreaterThanOrEqual(0);
     });
 
-    const refetchTime = result.current.data?.fetchTime;
+    const refetchTime = result.current?.fetchTime;
   });
 
   test("returns correct data", async () => {
@@ -160,9 +160,9 @@ describe("useDataConnectQuery", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toBeDefined();
-    expect(result.current.data).toHaveProperty("ref");
-    expect(result.current.data).toHaveProperty("source");
-    expect(result.current.data).toHaveProperty("fetchTime");
+    expect(result.current).toHaveProperty("ref");
+    expect(result.current).toHaveProperty("source");
+    expect(result.current).toHaveProperty("fetchTime");
   });
 
   test("returns flattened data including ref, source, and fetchTime for queries with unique identifier", async () => {
@@ -187,9 +187,9 @@ describe("useDataConnectQuery", () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.data).toBeDefined();
-    expect(result.current.data).toHaveProperty("ref");
-    expect(result.current.data).toHaveProperty("source");
-    expect(result.current.data).toHaveProperty("fetchTime");
+    expect(result.current).toHaveProperty("ref");
+    expect(result.current).toHaveProperty("source");
+    expect(result.current).toHaveProperty("fetchTime");
   });
 
   test("avails the data immediately when QueryResult is passed", async () => {
@@ -206,9 +206,9 @@ describe("useDataConnectQuery", () => {
     expect(result.current.isSuccess).toBe(true);
 
     expect(result.current.data).toBeDefined();
-    expect(result.current.data).toHaveProperty("ref");
-    expect(result.current.data).toHaveProperty("source");
-    expect(result.current.data).toHaveProperty("fetchTime");
+    expect(result.current).toHaveProperty("ref");
+    expect(result.current).toHaveProperty("source");
+    expect(result.current).toHaveProperty("fetchTime");
   });
 
   test("a query with no variables has null as the second query key argument", async () => {
@@ -245,16 +245,5 @@ describe("useDataConnectQuery", () => {
       { id: movieId },
     ]);
   });
-  test('a query with reserved keys is stored in resultMeta', async () => {
-    const metaResult = await addMeta();
-    const { result } = renderHook(() => useDataConnectQuery(getMetaRef()), {
-          wrapper,
-    });
-    expect(result.current.isPending).toBe(true);
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data?.resultMeta.ref).to.deep.equal([metaResult.data.ref]);
-    await deleteMeta({ id: metaResult.data.ref.id });
-  })
 });
 
