@@ -11,9 +11,7 @@ describe("validateReactArgs", () => {
 	const dataConnect = getDataConnect(connectorConfig);
 
 	const emptyObjectVars = {};
-	const strictlyRequiredArgs = { limit: 5 };
-	const strictlyOptionalVars = { title: "a" };
-	const allArgs = { limit: 5, title: "a" };
+	const nonEmptyVars = { limit: 5 };
 
 	const options = { meta: { hasOptions: true } };
 
@@ -104,10 +102,10 @@ describe("validateReactArgs", () => {
 		},
 		{
 			argsDescription: "only vars are provided",
-			dcOrVarsOrOptions: strictlyOptionalVars,
+			dcOrVarsOrOptions: nonEmptyVars,
 			varsOrOptions: undefined,
 			options: undefined,
-			expectedInputVars: strictlyOptionalVars,
+			expectedInputVars: nonEmptyVars,
 			expectedInputOpts: undefined,
 		},
 		{
@@ -121,9 +119,9 @@ describe("validateReactArgs", () => {
 		{
 			argsDescription: "dataconnect and vars are provided",
 			dcOrVarsOrOptions: dataConnect,
-			varsOrOptions: strictlyOptionalVars,
+			varsOrOptions: nonEmptyVars,
 			options: undefined,
-			expectedInputVars: strictlyOptionalVars,
+			expectedInputVars: nonEmptyVars,
 			expectedInputOpts: undefined,
 		},
 		{
@@ -137,9 +135,9 @@ describe("validateReactArgs", () => {
 		{
 			argsDescription: "dataconnect and vars and options are provided",
 			dcOrVarsOrOptions: dataConnect,
-			varsOrOptions: strictlyOptionalVars,
+			varsOrOptions: nonEmptyVars,
 			options: options,
-			expectedInputVars: strictlyOptionalVars,
+			expectedInputVars: nonEmptyVars,
 			expectedInputOpts: options,
 		},
 	])(
@@ -183,34 +181,34 @@ describe("validateReactArgs", () => {
 	test.each([
 		{
 			argsDescription: "only vars are provided",
-			dcOrVarsOrOptions: strictlyRequiredArgs,
+			dcOrVarsOrOptions: nonEmptyVars,
 			varsOrOptions: undefined,
 			options: undefined,
-			expectedInputVars: strictlyRequiredArgs,
+			expectedInputVars: nonEmptyVars,
 			expectedInputOpts: undefined,
 		},
 		{
 			argsDescription: "dataconnect and vars are provided",
 			dcOrVarsOrOptions: dataConnect,
-			varsOrOptions: strictlyRequiredArgs,
+			varsOrOptions: nonEmptyVars,
 			options: undefined,
-			expectedInputVars: strictlyRequiredArgs,
+			expectedInputVars: nonEmptyVars,
 			expectedInputOpts: undefined,
 		},
 		{
 			argsDescription: "vars and options are provided",
-			dcOrVarsOrOptions: strictlyRequiredArgs,
+			dcOrVarsOrOptions: nonEmptyVars,
 			varsOrOptions: options,
 			options: undefined,
-			expectedInputVars: strictlyRequiredArgs,
+			expectedInputVars: nonEmptyVars,
 			expectedInputOpts: options,
 		},
 		{
 			argsDescription: "dataconnect and vars and options are provided",
 			dcOrVarsOrOptions: dataConnect,
-			varsOrOptions: strictlyRequiredArgs,
+			varsOrOptions: nonEmptyVars,
 			options: options,
-			expectedInputVars: strictlyRequiredArgs,
+			expectedInputVars: nonEmptyVars,
 			expectedInputOpts: options,
 		},
 	])(
