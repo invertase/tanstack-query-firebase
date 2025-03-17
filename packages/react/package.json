@@ -36,10 +36,6 @@
 		"email": "oss@invertase.io",
 		"url": "https://github.com/invertase/tanstack-query-firebase"
 	},
-	"files": [
-		"dist",
-		"README.md"
-	],
 	"license": "Apache-2.0",
 	"devDependencies": {
 		"@dataconnect/default-connector": "workspace:*",
