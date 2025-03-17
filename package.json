@@ -24,12 +24,6 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
-    "@angular/fire": "^19.0.0",
-    "default-connector": "link:../../../../../../Library/pnpm/global/5/node_modules/dataconnect-sdk/js/default-connector"
-  },
-  "pnpm": {
-    "overrides": {
-      "default-connector": "link:../../../../../../Library/pnpm/global/5/node_modules/dataconnect-sdk/js/default-connector"
-    }
+    "@angular/fire": "^19.0.0"
   }
 }
