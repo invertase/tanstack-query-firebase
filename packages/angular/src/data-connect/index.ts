@@ -49,7 +49,7 @@ export interface CreateDataConnectQueryOptions<Data, Variables>
 /**
  * injectDataConnectQuery takes a query ref and returns a wrapper function around Tanstack's `injectQuery`
  * @param queryRefOrOptionsFn Query Ref or callback function for calling a new query
- * @returns {CreateQueryResult<FlattenedQueryResult<Data, Variables>>}
+ * @returns {CreateDataConnectQueryResult<Data, Variables>}
  */
 export function injectDataConnectQuery<Data, Variables>(
   queryRefOrOptionsFn:
@@ -114,11 +114,6 @@ export type DataConnectMutationOptionsUndefinedMutationFn<
   ReturnType<DataConnectMutationOptionsFn<Data, Error, Variables, Variables>>,
   "mutationFn"
 >;
-export type FlattenedMResult<Data, Variables> = Omit<
-  MutationResult<Data, Variables>,
-  "data" | "toJSON"
-> &
-  Data;
 
 type EmptyFactoryFn<Data, Variables> = () => MutationRef<Data, Variables>;
 export function injectDataConnectMutation<Data, Variables, Arguments>(
@@ -184,7 +179,7 @@ export function injectDataConnectMutation<
  * @example injectDataConnectMutation(createMovieRef);
  * @param factoryFn generated SDK factory function
  * @param optionsFn options function to create a new mutation
- * @returns {CreateMutationResult<FlattenedMutationResult<Data, Variables>, FirebaseError, Arguments>}
+ * @returns {CreateDataConnectMutationResult<Data, Variables, Arguments>}
  */
 export function injectDataConnectMutation<
   Data,
