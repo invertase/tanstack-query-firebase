@@ -68,7 +68,6 @@ export interface UpsertMovieVariables {
   imageUrl: string;
 }
 
-
 /* Allow users to create refs without passing in DataConnect */
 export function createMovieRef(vars: CreateMovieVariables): MutationRef<CreateMovieData, CreateMovieVariables>;
 /* Allow users to pass in custom DataConnect instances */
@@ -76,7 +75,6 @@ export function createMovieRef(dc: DataConnect, vars: CreateMovieVariables): Mut
 
 export function createMovie(vars: CreateMovieVariables): MutationPromise<CreateMovieData, CreateMovieVariables>;
 export function createMovie(dc: DataConnect, vars: CreateMovieVariables): MutationPromise<CreateMovieData, CreateMovieVariables>;
-
 
 /* Allow users to create refs without passing in DataConnect */
 export function upsertMovieRef(vars: UpsertMovieVariables): MutationRef<UpsertMovieData, UpsertMovieVariables>;
@@ -86,7 +84,6 @@ export function upsertMovieRef(dc: DataConnect, vars: UpsertMovieVariables): Mut
 export function upsertMovie(vars: UpsertMovieVariables): MutationPromise<UpsertMovieData, UpsertMovieVariables>;
 export function upsertMovie(dc: DataConnect, vars: UpsertMovieVariables): MutationPromise<UpsertMovieData, UpsertMovieVariables>;
 
-
 /* Allow users to create refs without passing in DataConnect */
 export function deleteMovieRef(vars: DeleteMovieVariables): MutationRef<DeleteMovieData, DeleteMovieVariables>;
 /* Allow users to pass in custom DataConnect instances */
@@ -95,7 +92,6 @@ export function deleteMovieRef(dc: DataConnect, vars: DeleteMovieVariables): Mut
 export function deleteMovie(vars: DeleteMovieVariables): MutationPromise<DeleteMovieData, DeleteMovieVariables>;
 export function deleteMovie(dc: DataConnect, vars: DeleteMovieVariables): MutationPromise<DeleteMovieData, DeleteMovieVariables>;
 
-
 /* Allow users to create refs without passing in DataConnect */
 export function listMoviesRef(): QueryRef<ListMoviesData, undefined>;
 /* Allow users to pass in custom DataConnect instances */
@@ -103,7 +99,6 @@ export function listMoviesRef(dc: DataConnect): QueryRef<ListMoviesData, undefin
 
 export function listMovies(): QueryPromise<ListMoviesData, undefined>;
 export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData, undefined>;
-
 
 /* Allow users to create refs without passing in DataConnect */
 export function getMovieByIdRef(vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
