@@ -1,4 +1,7 @@
-export { DataConnectQueryClient, type DataConnectQueryOptions } from "./query-client";
+export {
+  DataConnectQueryClient,
+  type DataConnectQueryOptions,
+} from "./query-client";
 export {
   useDataConnectQuery,
   type useDataConnectQueryOptions,
