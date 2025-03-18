@@ -256,3 +256,4 @@ export function injectDataConnectMutation<
     dataConnectResult,
   };
 }
+export { CreateDataConnectMutationResult, CreateDataConnectQueryResult } from './types';
