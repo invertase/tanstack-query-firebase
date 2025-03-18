@@ -9,10 +9,12 @@ import {
   CallerSdkTypeEnum,
   type DataConnect,
   type MutationRef,
-  type QueryRef,
+  MutationResult,
+  QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import { type FlattenedMutationResult } from "./types";
+import { UseDataConnectMutationResult } from "./types";
+import { useState } from "react";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
@@ -29,7 +31,7 @@ export function useDataConnectMutation<
     | (() => MutationRef<any, any>)
     | ((vars: any) => MutationRef<any, any>),
   Data = ReturnType<
-    Fn extends (() => MutationRef<infer D, any>)
+    Fn extends () => MutationRef<infer D, any>
       ? () => MutationRef<D, any>
       : Fn extends (vars: any) => MutationRef<infer D, any>
       ? (vars: any) => MutationRef<D, any>
@@ -46,19 +48,14 @@ export function useDataConnectMutation<
     : never
 >(
   ref: Fn,
-  options?: useDataConnectMutationOptions<
-    FlattenedMutationResult<Data, Variables>,
-    FirebaseError,
-    Variables
-  >,
+  options?: useDataConnectMutationOptions<Data, FirebaseError, Variables>,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
-) {
+): UseDataConnectMutationResult<Data, Variables> {
   const queryClient = useQueryClient();
-  return useMutation<
-    FlattenedMutationResult<Data, Variables>,
-    FirebaseError,
-    Variables
-  >({
+  const [dataConnectResult, setDataConnectResult] = useState<
+    MutationResult<Data, Variables> | undefined
+  >(undefined);
+  const originalResult = useMutation<Data, FirebaseError, Variables>({
     ...options,
     onSuccess(...args) {
       if (options?.invalidate?.length) {
@@ -85,12 +82,14 @@ export function useDataConnectMutation<
       mutationRef.dataConnect._setCallerSdkType(_callerSdkType);
       const response = await executeMutation<Data, Variables>(mutationRef);
 
+      setDataConnectResult(response);
       return {
         ...response.data,
-        ref: response.ref,
-        source: response.source,
-        fetchTime: response.fetchTime,
       };
     },
   });
+  return {
+    dataConnectResult,
+    ...originalResult,
+  };
 }

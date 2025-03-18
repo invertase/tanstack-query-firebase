@@ -1,15 +1,23 @@
 import type { MutationResult, QueryResult } from "firebase/data-connect";
+import type { FirebaseError } from "firebase/app";
+import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 
-// Flattens a QueryResult data down into a single object.
-// This is to prevent query.data.data, and also expose additional properties.
-export type FlattenedQueryResult<Data, Variables> = Omit<
-  QueryResult<Data, Variables>,
-  "data" | "toJSON"
+export type QueryResultRequiredRef<Data, Variables> = Partial<
+  QueryResult<Data, Variables>
 > &
-  Data;
+  Required<Pick<QueryResult<Data, Variables>, "ref">>;
 
-export type FlattenedMutationResult<Data, Variables> = Omit<
-  MutationResult<Data, Variables>,
-  "data" | "toJSON"
-> &
-  Data;
+export type UseDataConnectQueryResult<Data, Variables> = UseQueryResult<
+  Data,
+  FirebaseError
+> & {
+  dataConnectResult?: QueryResultRequiredRef<Data, Variables>;
+};
+
+export type UseDataConnectMutationResult<Data, Variables> = UseMutationResult<
+  Data,
+  FirebaseError,
+  Variables
+> & {
+  dataConnectResult?: Partial<MutationResult<Data, Variables>>;
+};
