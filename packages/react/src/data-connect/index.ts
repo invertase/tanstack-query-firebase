@@ -1,4 +1,3 @@
-import { ReservedQueryKeys } from "./types";
 
 export {
   DataConnectQueryClient,
@@ -12,4 +11,4 @@ export {
   useDataConnectMutation,
   type useDataConnectMutationOptions,
 } from "./useDataConnectMutation";
-export type { FlattenedQueryResult, FlattenedMutationResult } from "./types";
+export type { QueryResultRequiredRef, UseDataConnectMutationResult, UseDataConnectQueryResult } from "./types";
