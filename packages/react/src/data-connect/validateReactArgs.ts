@@ -3,11 +3,16 @@ import {
 	DataConnect,
 	getDataConnect,
 } from "firebase/data-connect";
+import { useDataConnectQueryOptions } from "./useDataConnectQuery";
 
-interface ParsedReactArgs<Variables, Options> {
+type DataConnectOptions =
+	| useDataConnectQueryOptions
+	| useDataConnectQueryOptions;
+
+interface ParsedReactArgs<Variables> {
 	dc: DataConnect;
 	vars: Variables;
-	options: Options;
+	options: DataConnectOptions;
 }
 
 /**
@@ -24,39 +29,36 @@ interface ParsedReactArgs<Variables, Options> {
  * @returns parsed DataConnect, Variables, and Options for the operation
  * @internal
  */
-export function validateReactArgs<
-	Variables extends object,
-	Options extends object
->(
+export function validateReactArgs<Variables extends object>(
 	connectorConfig: ConnectorConfig,
-	dcOrVarsOrOptions?: DataConnect | Variables | Options,
-	varsOrOptions?: Variables | Options,
-	options?: Options,
+	dcOrVarsOrOptions?: DataConnect | Variables | DataConnectOptions,
+	varsOrOptions?: Variables | DataConnectOptions,
+	options?: DataConnectOptions,
 	hasVars?: boolean,
 	validateVars?: boolean
-): ParsedReactArgs<Variables, Options> {
+): ParsedReactArgs<Variables> {
 	let dcInstance: DataConnect;
 	let realVars: Variables;
-	let realOptions: Options;
+	let realOptions: DataConnectOptions;
 
 	if (dcOrVarsOrOptions && "enableEmulator" in dcOrVarsOrOptions) {
 		dcInstance = dcOrVarsOrOptions as DataConnect;
 		if (hasVars) {
 			realVars = varsOrOptions as Variables;
-			realOptions = options as Options;
+			realOptions = options as DataConnectOptions;
 		} else {
 			realVars = undefined as unknown as Variables;
-			realOptions = varsOrOptions as Options;
+			realOptions = varsOrOptions as DataConnectOptions;
 		}
 	} else {
 		dcInstance = getDataConnect(connectorConfig);
 		if (hasVars) {
 			realVars = dcOrVarsOrOptions as Variables;
-			realOptions = varsOrOptions as Options;
+			realOptions = varsOrOptions as DataConnectOptions;
 		} else {
 			realVars = undefined as unknown as Variables;
-			realOptions = dcOrVarsOrOptions as Options;
-        }
+			realOptions = dcOrVarsOrOptions as DataConnectOptions;
+		}
 	}
 
 	if (!dcInstance || (!realVars && validateVars)) {

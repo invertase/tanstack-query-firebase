@@ -60,18 +60,8 @@ describe("validateReactArgs", () => {
 			);
 
 			expect(dcInstance).toBe(dataConnect);
-
-			if (expectedInputVars) {
-				expect(inputVars).toBe(expectedInputVars);
-			} else {
-				expect(inputVars).toBeUndefined();
-			}
-
-			if (expectedInputOpts) {
-				expect(inputOpts).toBe(expectedInputOpts);
-			} else {
-				expect(inputOpts).toBeUndefined();
-			}
+			expect(inputVars).toBe(expectedInputVars);
+			expect(inputOpts).toBe(expectedInputOpts)
 		}
 	);
 
@@ -163,18 +153,8 @@ describe("validateReactArgs", () => {
 			);
 
 			expect(dcInstance).toBe(dataConnect);
-
-			if (expectedInputVars) {
-				expect(inputVars).toBe(expectedInputVars);
-			} else {
-				expect(inputVars).toBeUndefined();
-			}
-
-			if (expectedInputOpts) {
-				expect(inputOpts).toBe(expectedInputOpts);
-			} else {
-				expect(inputOpts).toBeUndefined();
-			}
+			expect(inputVars).toBe(expectedInputVars);
+			expect(inputOpts).toBe(expectedInputOpts)
 		}
 	);
 
@@ -234,18 +214,8 @@ describe("validateReactArgs", () => {
 			);
 
 			expect(dcInstance).toBe(dataConnect);
-
-			if (expectedInputVars) {
-				expect(inputVars).toBe(expectedInputVars);
-			} else {
-				expect(inputVars).toBeUndefined();
-			}
-
-			if (expectedInputOpts) {
-				expect(inputOpts).toBe(expectedInputOpts);
-			} else {
-				expect(inputOpts).toBeUndefined();
-			}
+			expect(inputVars).toBe(expectedInputVars);
+			expect(inputOpts).toBe(expectedInputOpts)
 		}
 	);
 
