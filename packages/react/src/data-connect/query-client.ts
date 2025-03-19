@@ -11,12 +11,7 @@ import {
 } from "firebase/data-connect";
 
 export type DataConnectQueryOptions<Data, Variables> = Omit<
-  FetchQueryOptions<
-    Data,
-    FirebaseError,
-    Data,
-    QueryKey
-  >,
+  FetchQueryOptions<Data, FirebaseError, Data, QueryKey>,
   "queryFn" | "queryKey"
 > & {
   queryRef: QueryRef<Data, Variables>;
@@ -43,12 +38,7 @@ export class DataConnectQueryClient extends QueryClient {
       queryRef = refOrResult;
     }
 
-    return this.prefetchQuery<
-      Data,
-      FirebaseError,
-      Data,
-      QueryKey
-    >({
+    return this.prefetchQuery<Data, FirebaseError, Data, QueryKey>({
       ...options,
       initialData,
       queryKey: options?.queryKey ?? [
