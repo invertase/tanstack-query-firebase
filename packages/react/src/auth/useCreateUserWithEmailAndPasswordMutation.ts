@@ -9,7 +9,7 @@ import {
 type AuthUseMutationOptions<
   TData = unknown,
   TError = Error,
-  TVariables = void
+  TVariables = void,
 > = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;
 
 export function useCreateUserWithEmailAndPasswordMutation(
@@ -18,7 +18,7 @@ export function useCreateUserWithEmailAndPasswordMutation(
     UserCredential,
     AuthError,
     { email: string; password: string }
-  >
+  >,
 ) {
   return useMutation<
     UserCredential,

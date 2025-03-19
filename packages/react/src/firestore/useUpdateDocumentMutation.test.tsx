@@ -1,7 +1,7 @@
-import { renderHook, waitFor, act } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import {
-  doc,
   type DocumentReference,
+  doc,
   getDoc,
   setDoc,
 } from "firebase/firestore";
@@ -88,7 +88,7 @@ describe("useUpdateDocumentMutation", () => {
     const docRef = doc(
       firestore,
       "tests",
-      "typedDoc"
+      "typedDoc",
     ) as DocumentReference<TestDoc>;
 
     await setDoc(docRef, { foo: "initial", num: 1 });
@@ -117,7 +117,7 @@ describe("useUpdateDocumentMutation", () => {
 
     const { result } = renderHook(
       () => useUpdateDocumentMutation(nonExistentDocRef),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate(updateData));
@@ -135,7 +135,7 @@ describe("useUpdateDocumentMutation", () => {
 
     const { result } = renderHook(
       () => useUpdateDocumentMutation(restrictedDocRef),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate(updateData));
@@ -161,7 +161,7 @@ describe("useUpdateDocumentMutation", () => {
             callbackCalled = true;
           },
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate(updateData));

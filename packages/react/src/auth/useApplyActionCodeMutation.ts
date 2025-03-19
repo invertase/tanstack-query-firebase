@@ -4,12 +4,12 @@ import { type Auth, type AuthError, applyActionCode } from "firebase/auth";
 type AuthUseMutationOptions<
   TData = unknown,
   TError = Error,
-  TVariables = void
+  TVariables = void,
 > = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;
 
 export function useApplyActionCodeMutation(
   auth: Auth,
-  options?: AuthUseMutationOptions<void, AuthError, string>
+  options?: AuthUseMutationOptions<void, AuthError, string>,
 ) {
   return useMutation<void, AuthError, string>({
     ...options,

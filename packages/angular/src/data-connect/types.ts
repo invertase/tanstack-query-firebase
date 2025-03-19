@@ -1,10 +1,10 @@
-import type { MutationResult, QueryResult } from "firebase/data-connect";
-import type { FirebaseError } from "firebase/app";
-import {
+import type { Signal } from "@angular/core";
+import type {
   CreateMutationResult,
   CreateQueryResult,
 } from "@tanstack/angular-query-experimental";
-import type { Signal } from "@angular/core";
+import type { FirebaseError } from "firebase/app";
+import type { MutationResult, QueryResult } from "firebase/data-connect";
 
 export type CreateDataConnectQueryResult<Data, Variables> = CreateQueryResult<
   Data,
