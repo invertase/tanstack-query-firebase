@@ -29,7 +29,7 @@ import {
 initializeApp({ projectId: "p" });
 
 describe("injectDataConnectQuery", () => {
-  let queryClient: QueryClient = new QueryClient();
+  const queryClient: QueryClient = new QueryClient();
   let dc: DataConnect;
   beforeEach(async () => {
     queryClient.clear();
