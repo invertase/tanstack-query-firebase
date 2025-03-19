@@ -13,3 +13,4 @@ export {
   type useDataConnectMutationOptions,
 } from "./useDataConnectMutation";
 export type { FlattenedQueryResult, FlattenedMutationResult } from "./types";
+export { validateReactArgs } from "./validateReactArgs";
