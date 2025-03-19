@@ -41,6 +41,8 @@ jobs:
       - name: Verify Running Emulators
         run: |
           curl --silent http://localhost:4400/emulators | jq 'keys[]'
+      - name: Check formatting
+        run: pnpm check
 
       # Determine which packages have changed
       - name: Determine changed packages

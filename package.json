@@ -6,7 +6,8 @@
     "serve:coverage": "npx serve coverage",
     "emulator": "firebase emulators:start --project test-project",
     "emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9",
-    "check": "pnpm biome check --write ./packages/react/src ./packages/angular/src"
+    "check": "pnpm biome check  ./packages/react/src ./packages/angular/src",
+    "format": "pnpm biome check ./packages/react/src ./packages/angular/src"
   },
   "devDependencies": {
     "@angular/core": "^19.1.8",
