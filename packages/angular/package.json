@@ -1,6 +1,6 @@
 {
   "name": "@tanstack-query-firebase/angular",
-  "version": "0.0.1-alpha.7",
+  "version": "1.0.0",
   "description": "TanStack Query bindings for Firebase and Angular",
   "type": "module",
   "scripts": {

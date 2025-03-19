@@ -8,51 +8,51 @@ import {
   CallerSdkTypeEnum,
 } from "firebase/data-connect";
 import type { PartialBy } from "../../utils";
-import { FlattenedQueryResult } from "./types";
-import { listMoviesRef } from "@/dataconnect/default-connector";
+import {
+  QueryResultRequiredRef,
+  UseDataConnectQuery,
+} from "./types";
+import { useState } from "react";
 
 export type useDataConnectQueryOptions<
-  TData = unknown,
-  TError = FirebaseError,
+  TData = {},
+  TError = FirebaseError
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   refOrResult: QueryRef<Data, Variables>
     | QueryResult<Data, Variables>,
   options?: useDataConnectQueryOptions<
-    FlattenedQueryResult<Data, Variables>,
+    Data,
     FirebaseError
   >,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
-) {
-  let queryRef: QueryRef<Data, Variables>;
-  let initialData: FlattenedQueryResult<Data, Variables> | undefined;
+): UseDataConnectQuery<Data, Variables> {
+  const [dataConnectResult, setDataConnectResult] = useState<QueryResultRequiredRef<Data, Variables>>('ref' in refOrResult ? refOrResult : { ref: refOrResult });
+  let initialData: Data | undefined;
+  const { ref } = dataConnectResult;
 
   if ("ref" in refOrResult) {
-    queryRef = refOrResult.ref;
     initialData = {
       ...refOrResult.data,
-      ref: refOrResult.ref,
-      source: refOrResult.source,
-      fetchTime: refOrResult.fetchTime,
     };
-  } else {
-    queryRef = refOrResult;
   }
+
   // @ts-expect-error function is hidden under `DataConnect`.
-  queryRef.dataConnect._setCallerSdkType(_callerSdkType);
-  return useQuery<FlattenedQueryResult<Data, Variables>, FirebaseError>({
+  ref.dataConnect._setCallerSdkType(_callerSdkType);
+  const useQueryResult = useQuery<Data, FirebaseError>({
     ...options,
     initialData,
-    queryKey: options?.queryKey ?? [queryRef.name, queryRef.variables || null],
+    queryKey: options?.queryKey ?? [ref.name, ref.variables || null],
     queryFn: async () => {
-      const response = await executeQuery<Data, Variables>(queryRef);
-
+      const response = await executeQuery<Data, Variables>(ref);
+      setDataConnectResult(response);
       return {
         ...response.data,
-        ref: response.ref,
-        source: response.source,
-        fetchTime: response.fetchTime,
       };
     },
   });
+  return {
+    ...useQueryResult,
+    dataConnectResult
+  }
 }
