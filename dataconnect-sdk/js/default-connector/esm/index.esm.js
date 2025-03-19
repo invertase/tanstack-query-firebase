@@ -7,7 +7,7 @@ export const connectorConfig = {
 };
 
 export function createMovieRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
   return mutationRef(dcInstance, 'CreateMovie', inputVars);
 }
@@ -17,7 +17,7 @@ export function createMovie(dcOrVars, vars) {
 }
 
 export function upsertMovieRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
   return mutationRef(dcInstance, 'UpsertMovie', inputVars);
 }
@@ -27,7 +27,7 @@ export function upsertMovie(dcOrVars, vars) {
 }
 
 export function deleteMovieRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
   return mutationRef(dcInstance, 'DeleteMovie', inputVars);
 }
@@ -37,7 +37,7 @@ export function deleteMovie(dcOrVars, vars) {
 }
 
 export function addMetaRef(dc) {
-  const { dc: dcInstance } = validateArgs(connectorConfig, dc, undefined);
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
   return mutationRef(dcInstance, 'AddMeta');
 }
@@ -47,7 +47,7 @@ export function addMeta(dc) {
 }
 
 export function deleteMetaRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
   return mutationRef(dcInstance, 'DeleteMeta', inputVars);
 }
@@ -57,7 +57,7 @@ export function deleteMeta(dcOrVars, vars) {
 }
 
 export function listMoviesRef(dc) {
-  const { dc: dcInstance } = validateArgs(connectorConfig, dc, undefined);
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
   return queryRef(dcInstance, 'ListMovies');
 }
@@ -67,7 +67,7 @@ export function listMovies(dc) {
 }
 
 export function getMovieByIdRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars } = validateArgs(connectorConfig, dcOrVars, vars, true);
+  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
   dcInstance._useGeneratedSdk();
   return queryRef(dcInstance, 'GetMovieById', inputVars);
 }
@@ -77,7 +77,7 @@ export function getMovieById(dcOrVars, vars) {
 }
 
 export function getMetaRef(dc) {
-  const { dc: dcInstance } = validateArgs(connectorConfig, dc, undefined);
+  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
   return queryRef(dcInstance, 'GetMeta');
 }
