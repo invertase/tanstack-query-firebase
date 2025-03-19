@@ -214,6 +214,24 @@ describe("useDataConnectQuery", () => {
     expect(result.current.dataConnectResult).toHaveProperty("source");
     expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
   });
+  test("avails the data immediately when initialData is passed", async () => {
+    const queryResult = await executeQuery(listMoviesRef());
+
+    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef(), { initialData: queryResult.data }), {
+      wrapper,
+    });
+
+    // Should not enter a loading state
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isPending).toBe(false);
+
+    expect(result.current.isSuccess).toBe(true);
+
+    expect(result.current.data).toBeDefined();
+    expect(result.current.dataConnectResult).toHaveProperty("ref");
+    expect(result.current.dataConnectResult).toHaveProperty("source");
+    expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
+  });
 
   test("a query with no variables has null as the second query key argument", async () => {
     const queryClient = new DataConnectQueryClient();
