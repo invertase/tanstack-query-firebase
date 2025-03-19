@@ -1,6 +1,6 @@
 import type { MutationResult, QueryResult } from "firebase/data-connect";
 import type { FirebaseError } from "firebase/app";
-import {
+import type {
   CreateMutationResult,
   CreateQueryResult,
 } from "@tanstack/angular-query-experimental";

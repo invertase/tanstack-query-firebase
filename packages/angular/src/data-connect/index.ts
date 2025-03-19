@@ -24,9 +24,9 @@ import {
   type MutationRef,
   type MutationResult,
   type QueryRef,
-  QueryResult,
+  type QueryResult,
 } from "@angular/fire/data-connect";
-import {
+import type {
   CreateDataConnectMutationResult,
   CreateDataConnectQueryResult,
 } from "./types";
@@ -256,4 +256,5 @@ export function injectDataConnectMutation<
     dataConnectResult,
   };
 }
-export { CreateDataConnectMutationResult, CreateDataConnectQueryResult } from './types';
+
+export type { CreateDataConnectMutationResult, CreateDataConnectQueryResult } from './types';
