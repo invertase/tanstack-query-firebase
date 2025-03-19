@@ -61,7 +61,7 @@ describe("validateReactArgs", () => {
 
 			expect(dcInstance).toBe(dataConnect);
 			expect(inputVars).toBe(expectedInputVars);
-			expect(inputOpts).toBe(expectedInputOpts)
+			expect(inputOpts).toBe(expectedInputOpts);
 		}
 	);
 
@@ -154,7 +154,7 @@ describe("validateReactArgs", () => {
 
 			expect(dcInstance).toBe(dataConnect);
 			expect(inputVars).toBe(expectedInputVars);
-			expect(inputOpts).toBe(expectedInputOpts)
+			expect(inputOpts).toBe(expectedInputOpts);
 		}
 	);
 
@@ -215,7 +215,7 @@ describe("validateReactArgs", () => {
 
 			expect(dcInstance).toBe(dataConnect);
 			expect(inputVars).toBe(expectedInputVars);
-			expect(inputOpts).toBe(expectedInputOpts)
+			expect(inputOpts).toBe(expectedInputOpts);
 		}
 	);
 
