@@ -1,4 +1,4 @@
-import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { InitialDataFunction, type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
   type QueryRef,
@@ -10,7 +10,7 @@ import {
 import type { PartialBy } from "../../utils";
 import {
   QueryResultRequiredRef,
-  UseDataConnectQuery,
+  UseDataConnectQueryResult,
 } from "./types";
 import { useState } from "react";
 
@@ -26,15 +26,18 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
     FirebaseError
   >,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
-): UseDataConnectQuery<Data, Variables> {
+): UseDataConnectQueryResult<Data, Variables> {
   const [dataConnectResult, setDataConnectResult] = useState<QueryResultRequiredRef<Data, Variables>>('ref' in refOrResult ? refOrResult : { ref: refOrResult });
-  let initialData: Data | undefined;
+  // TODO(mtewani): in the future we should allow for users to pass in `QueryResult` objects into `initialData`.
+  let initialData: Data | InitialDataFunction<Data> | undefined;
   const { ref } = dataConnectResult;
 
   if ("ref" in refOrResult) {
     initialData = {
       ...refOrResult.data,
     };
+  } else {
+    initialData = options?.initialData;
   }
 
   // @ts-expect-error function is hidden under `DataConnect`.

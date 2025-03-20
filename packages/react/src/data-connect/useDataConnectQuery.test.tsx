@@ -110,16 +110,15 @@ describe("useDataConnectQuery", () => {
   });
 
   test("returns the correct data properties", async () => {
-    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
-      wrapper,
-    });
-
     await createMovie({
       title: "tanstack query firebase",
       genre: "library",
       imageUrl: "https://invertase.io/",
     });
-
+    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
+      wrapper,
+    });
+    
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     result.current.data?.movies.forEach((i) => {
@@ -213,6 +212,23 @@ describe("useDataConnectQuery", () => {
     expect(result.current.dataConnectResult).toHaveProperty("ref");
     expect(result.current.dataConnectResult).toHaveProperty("source");
     expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
+  });
+  test("avails the data immediately when initialData is passed", async () => {
+    const queryResult = await executeQuery(listMoviesRef());
+
+    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef(), { initialData: queryResult.data }), {
+      wrapper,
+    });
+
+    // Should not enter a loading state
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isPending).toBe(false);
+
+    expect(result.current.isSuccess).toBe(true);
+
+    expect(result.current.data).toBeDefined();
+    expect(result.current.data).to.deep.eq(queryResult.data);
+    expect(result.current.dataConnectResult).toHaveProperty("ref");
   });
 
   test("a query with no variables has null as the second query key argument", async () => {
