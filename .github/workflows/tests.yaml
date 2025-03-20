@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies (pnpm)
         run: pnpm install
       - name: Check formatting
-        run: pnpm format:check
+        run: pnpm format:ci
       - name: Start Firebase Emulator Suite
         uses: invertase/firebase-emulator-action@v1.0.1
         with:
