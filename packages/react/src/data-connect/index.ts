@@ -1,4 +1,3 @@
-
 export {
   DataConnectQueryClient,
   type DataConnectQueryOptions,
