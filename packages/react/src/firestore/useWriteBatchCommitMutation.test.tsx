@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { doc, getDoc, setDoc, writeBatch } from "firebase/firestore";
-import React, { type ReactNode } from "react";
+import type React from "react";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, test } from "vitest";
 import { firestore, wipeFirestore } from "~/testing-utils";
 import { useWriteBatchCommitMutation } from "./useWriteBatchCommitMutation";

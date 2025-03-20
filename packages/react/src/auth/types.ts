@@ -1,7 +1,7 @@
-import { UseMutationOptions } from "@tanstack/react-query";
+import type { UseMutationOptions } from "@tanstack/react-query";
 
 export type AuthMutationOptions<
   TData = unknown,
   TError = Error,
-  TVariables = void
+  TVariables = void,
 > = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;

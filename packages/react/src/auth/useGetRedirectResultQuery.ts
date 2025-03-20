@@ -2,9 +2,9 @@ import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
   type Auth,
   type AuthError,
-  getRedirectResult,
   type PopupRedirectResolver,
   type UserCredential,
+  getRedirectResult,
 } from "firebase/auth";
 
 type AuthUseQueryOptions<TData = unknown, TError = Error> = Omit<
@@ -14,7 +14,7 @@ type AuthUseQueryOptions<TData = unknown, TError = Error> = Omit<
 
 export function useGetRedirectResultQuery(
   auth: Auth,
-  options: AuthUseQueryOptions<UserCredential | null, AuthError>
+  options: AuthUseQueryOptions<UserCredential | null, AuthError>,
 ) {
   const { auth: authOptions, ...queryOptions } = options;
   const resolver = authOptions?.resolver;

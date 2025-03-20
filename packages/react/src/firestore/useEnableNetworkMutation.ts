@@ -12,7 +12,7 @@ type FirestoreUseMutationOptions<TData = unknown, TError = Error> = Omit<
 
 export function useEnableNetworkMutation(
   firestore: Firestore,
-  options?: FirestoreUseMutationOptions<void, FirestoreError>
+  options?: FirestoreUseMutationOptions<void, FirestoreError>,
 ) {
   return useMutation<void, FirestoreError>({
     ...options,

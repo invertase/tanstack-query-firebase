@@ -1,17 +1,17 @@
-import { useMutation, type UseMutationOptions } from "@tanstack/react-query";
+import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
+  type CollectionReference,
+  type DocumentData,
   type DocumentReference,
   type FirestoreError,
   type WithFieldValue,
-  type CollectionReference,
-  type DocumentData,
   addDoc,
 } from "firebase/firestore";
 
 type FirestoreUseMutationOptions<
   TData = unknown,
   TError = Error,
-  AppModelType extends DocumentData = DocumentData
+  AppModelType extends DocumentData = DocumentData,
 > = Omit<
   UseMutationOptions<TData, TError, WithFieldValue<AppModelType>>,
   "mutationFn"
@@ -19,14 +19,14 @@ type FirestoreUseMutationOptions<
 
 export function useAddDocumentMutation<
   AppModelType extends DocumentData = DocumentData,
-  DbModelType extends DocumentData = DocumentData
+  DbModelType extends DocumentData = DocumentData,
 >(
   collectionRef: CollectionReference<AppModelType, DbModelType>,
   options?: FirestoreUseMutationOptions<
     DocumentReference<AppModelType, DbModelType>,
     FirestoreError,
     AppModelType
-  >
+  >,
 ) {
   return useMutation<
     DocumentReference<AppModelType, DbModelType>,

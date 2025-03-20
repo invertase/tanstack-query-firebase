@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import {
-  doc,
   disableNetwork,
+  doc,
   getDocFromServer,
   setDoc,
 } from "firebase/firestore";
@@ -11,9 +11,9 @@ import {
   firestore,
   wipeFirestore,
 } from "~/testing-utils";
-import { useEnableNetworkMutation } from "./useEnableNetworkMutation";
 import { queryClient } from "../../utils";
 import { wrapper } from "../../utils";
+import { useEnableNetworkMutation } from "./useEnableNetworkMutation";
 
 describe("useEnableNetworkMutation", () => {
   beforeEach(async () => {
@@ -52,7 +52,7 @@ describe("useEnableNetworkMutation", () => {
           onSuccess: onSuccessMock,
           onError: onErrorMock,
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());

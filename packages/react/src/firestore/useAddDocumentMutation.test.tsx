@@ -1,20 +1,20 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import {
-  collection,
   type CollectionReference,
   type DocumentReference,
+  collection,
   getDoc,
 } from "firebase/firestore";
 import { beforeEach, describe, expect, test } from "vitest";
 import { useAddDocumentMutation } from "./useAddDocumentMutation";
 
+import { act } from "react";
 import {
   expectFirestoreError,
   firestore,
   wipeFirestore,
 } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
-import { act } from "react";
 
 describe("useAddDocumentMutation", () => {
   beforeEach(async () => {
@@ -54,7 +54,7 @@ describe("useAddDocumentMutation", () => {
 
     const collectionRef = collection(
       firestore,
-      "tests"
+      "tests",
     ) as CollectionReference<TestDoc>;
     const testData: TestDoc = { foo: "test", num: 123 };
 
@@ -77,13 +77,13 @@ describe("useAddDocumentMutation", () => {
   test("handles errors when adding to restricted collection", async () => {
     const restrictedCollectionRef = collection(
       firestore,
-      "restrictedCollection"
+      "restrictedCollection",
     );
     const testData = { foo: "bar" };
 
     const { result } = renderHook(
       () => useAddDocumentMutation(restrictedCollectionRef),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate(testData));
@@ -107,7 +107,7 @@ describe("useAddDocumentMutation", () => {
             callbackDocRef = docRef;
           },
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate(testData));

@@ -4,7 +4,7 @@ import { type Auth, type AuthError, confirmPasswordReset } from "firebase/auth";
 type AuthUseMutationOptions<
   TData = unknown,
   TError = Error,
-  TVariables = void
+  TVariables = void,
 > = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;
 
 export function useConfirmPasswordResetMutation(
@@ -13,7 +13,7 @@ export function useConfirmPasswordResetMutation(
     void,
     AuthError,
     { oobCode: string; newPassword: string }
-  >
+  >,
 ) {
   return useMutation<void, AuthError, { oobCode: string; newPassword: string }>(
     {
@@ -21,6 +21,6 @@ export function useConfirmPasswordResetMutation(
       mutationFn: ({ oobCode, newPassword }) => {
         return confirmPasswordReset(auth, oobCode, newPassword);
       },
-    }
+    },
   );
 }

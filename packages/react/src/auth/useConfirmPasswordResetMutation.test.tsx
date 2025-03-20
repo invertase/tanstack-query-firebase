@@ -5,9 +5,9 @@ import {
 } from "firebase/auth";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, expectFirebaseError, wipeAuth } from "~/testing-utils";
+import { queryClient, wrapper } from "../../utils";
 import { useConfirmPasswordResetMutation } from "./useConfirmPasswordResetMutation";
 import { waitForPasswordResetCode } from "./utils";
-import { queryClient, wrapper } from "../../utils";
 
 describe("useConfirmPasswordResetMutation", () => {
   const email = "tqf@invertase.io";
@@ -85,7 +85,7 @@ describe("useConfirmPasswordResetMutation", () => {
 
     const { result } = renderHook(
       () => useConfirmPasswordResetMutation(auth, { onSuccess }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {
@@ -101,7 +101,7 @@ describe("useConfirmPasswordResetMutation", () => {
 
     const { result } = renderHook(
       () => useConfirmPasswordResetMutation(auth, { onError }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {

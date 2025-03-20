@@ -1,30 +1,30 @@
 import {
   type CreateMutationOptions,
   type CreateQueryOptions,
-  injectMutation,
-  injectQuery,
   QueryClient,
   type QueryKey,
+  injectMutation,
+  injectQuery,
 } from "@tanstack/angular-query-experimental";
 
 import type { FirebaseError } from "firebase/app";
 
 import {
   EnvironmentInjector,
-  inject,
   type Injector,
+  inject,
   signal,
 } from "@angular/core";
 import {
   type CallerSdkType,
   CallerSdkTypeEnum,
   DataConnect,
-  executeMutation,
-  executeQuery,
   type MutationRef,
   type MutationResult,
   type QueryRef,
   type QueryResult,
+  executeMutation,
+  executeQuery,
 } from "@angular/fire/data-connect";
 import type {
   CreateDataConnectMutationResult,
@@ -56,7 +56,7 @@ export function injectDataConnectQuery<Data, Variables>(
     | QueryRef<Data, Variables>
     | (() => CreateDataConnectQueryOptions<Data, Variables>),
   injector?: Injector,
-  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore,
 ): CreateDataConnectQueryResult<Data, Variables> {
   const dataConnectResult = signal<
     Partial<QueryResult<Data, Variables>> | undefined
@@ -98,7 +98,7 @@ export function injectDataConnectQuery<Data, Variables>(
 
 export type GeneratedSignature<Data, Variables> = (
   dc: DataConnect,
-  vars: Variables
+  vars: Variables,
 ) => MutationRef<Data, Variables>;
 export type DataConnectMutationOptionsFn<Data, Error, Variables, Arguments> =
   () => Omit<CreateMutationOptions<Data, Error, Arguments>, "mutationFn"> & {
@@ -109,7 +109,7 @@ export type DataConnectMutationOptionsFn<Data, Error, Variables, Arguments> =
 export type DataConnectMutationOptionsUndefinedMutationFn<
   Data,
   Error,
-  Variables
+  Variables,
 > = () => Omit<
   ReturnType<DataConnectMutationOptionsFn<Data, Error, Variables, Variables>>,
   "mutationFn"
@@ -123,56 +123,56 @@ export function injectDataConnectMutation<Data, Variables, Arguments>(
     FirebaseError,
     Variables,
     Arguments
-  >
+  >,
 ): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 export function injectDataConnectMutation<
   Data,
   Variables,
-  Arguments = void | undefined
+  Arguments = void | undefined,
 >(
   factoryFn: EmptyFactoryFn<Data, Variables>,
   options?: DataConnectMutationOptionsUndefinedMutationFn<
     Data,
     FirebaseError,
     Variables
-  >
+  >,
 ): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 
 export function injectDataConnectMutation<
   Data,
   Variables extends undefined,
-  Arguments = void | undefined
+  Arguments = void | undefined,
 >(
   factoryFn: EmptyFactoryFn<Data, Variables>,
   options?: DataConnectMutationOptionsUndefinedMutationFn<
     Data,
     FirebaseError,
     Variables
-  >
+  >,
 ): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 export function injectDataConnectMutation<
   Data,
   Variables extends undefined,
-  Arguments = Variables
+  Arguments = Variables,
 >(
   factoryFn: GeneratedSignature<Data, Variables>,
   optionsFn?: DataConnectMutationOptionsUndefinedMutationFn<
     Data,
     FirebaseError,
     Arguments
-  >
+  >,
 ): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 export function injectDataConnectMutation<
   Data,
   Variables,
-  Arguments extends Variables
+  Arguments extends Variables,
 >(
   factoryFn: GeneratedSignature<Data, Variables>,
   optionsFn?: DataConnectMutationOptionsUndefinedMutationFn<
     Data,
     FirebaseError,
     Arguments
-  >
+  >,
 ): CreateDataConnectMutationResult<Data, FirebaseError, Arguments>;
 /**
  * injectDataConnectMutation takes a mutation ref factory function and returns a tanstack wrapper around `injectMutation`
@@ -184,7 +184,7 @@ export function injectDataConnectMutation<
 export function injectDataConnectMutation<
   Data,
   Variables,
-  Arguments extends Variables
+  Arguments extends Variables,
 >(
   factoryFn:
     | GeneratedSignature<Data, Variables>
@@ -199,7 +199,7 @@ export function injectDataConnectMutation<
         Variables
       >,
   injector?: Injector,
-  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackAngularCore,
 ): CreateDataConnectMutationResult<Data, Variables, Arguments> {
   const finalInjector = injector || inject(EnvironmentInjector);
   const dataConnect = finalInjector.get(DataConnect);
@@ -256,5 +256,3 @@ export function injectDataConnectMutation<
     dataConnectResult,
   };
 }
-
-export type { CreateDataConnectMutationResult, CreateDataConnectQueryResult } from './types';

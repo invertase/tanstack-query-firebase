@@ -1,7 +1,7 @@
-import { renderHook, waitFor, act } from "@testing-library/react";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import {
-  doc,
   type DocumentReference,
+  doc,
   getDoc,
   setDoc,
 } from "firebase/firestore";
@@ -55,7 +55,7 @@ describe("useDeleteDocumentMutation", () => {
     const docRef = doc(
       firestore,
       "tests",
-      "typedDoc"
+      "typedDoc",
     ) as DocumentReference<TestDoc>;
     await setDoc(docRef, { foo: "test", num: 123 });
 
@@ -78,7 +78,7 @@ describe("useDeleteDocumentMutation", () => {
 
     const { result } = renderHook(
       () => useDeleteDocumentMutation(restrictedDocRef),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());
@@ -103,7 +103,7 @@ describe("useDeleteDocumentMutation", () => {
             callbackCalled = true;
           },
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());
@@ -122,7 +122,7 @@ describe("useDeleteDocumentMutation", () => {
 
     const { result } = renderHook(
       () => useDeleteDocumentMutation(nonExistentDocRef),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate());

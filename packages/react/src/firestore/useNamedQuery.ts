@@ -1,10 +1,10 @@
-import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
+  type DocumentData,
+  type Firestore,
   type FirestoreError,
   type Query,
-  type DocumentData,
   namedQuery,
-  type Firestore,
 } from "firebase/firestore";
 
 type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
@@ -14,11 +14,11 @@ type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
 
 export function useNamedQuery<
   AppModelType = DocumentData,
-  DbModelType extends DocumentData = DocumentData
+  DbModelType extends DocumentData = DocumentData,
 >(
   firestore: Firestore,
   name: string,
-  options: FirestoreUseQueryOptions<Query | null, FirestoreError>
+  options: FirestoreUseQueryOptions<Query | null, FirestoreError>,
 ) {
   return useQuery<Query | null, FirestoreError>({
     ...options,

@@ -1,5 +1,5 @@
-import { renderHook, waitFor, act } from "@testing-library/react";
-import { doc, type DocumentReference, getDoc } from "firebase/firestore";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { type DocumentReference, doc, getDoc } from "firebase/firestore";
 import { beforeEach, describe, expect, test } from "vitest";
 import { useSetDocumentMutation } from "./useSetDocumentMutation";
 
@@ -58,7 +58,7 @@ describe("useSetDocumentMutation", () => {
 
     const { result: result2 } = renderHook(
       () => useSetDocumentMutation(docRef),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result2.current.mutate(newData));
@@ -80,7 +80,7 @@ describe("useSetDocumentMutation", () => {
     const docRef = doc(
       firestore,
       "tests",
-      "typedDoc"
+      "typedDoc",
     ) as DocumentReference<TestDoc>;
     const testData: TestDoc = { foo: "test", num: 123 };
 
@@ -106,7 +106,7 @@ describe("useSetDocumentMutation", () => {
 
     const { result } = renderHook(
       () => useSetDocumentMutation(restrictedDocRef),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate(testData));
@@ -130,7 +130,7 @@ describe("useSetDocumentMutation", () => {
             callbackCalled = true;
           },
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(() => result.current.mutate(testData));

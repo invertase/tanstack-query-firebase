@@ -1,13 +1,13 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { describe, expect, test, vi, beforeEach, afterEach } from "vitest";
 import {
-  type UserCredential,
   type PopupRedirectResolver,
+  type UserCredential,
   getRedirectResult,
 } from "firebase/auth";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, wipeAuth } from "~/testing-utils";
-import { useGetRedirectResultQuery } from "./useGetRedirectResultQuery";
 import { queryClient, wrapper } from "../../utils";
+import { useGetRedirectResultQuery } from "./useGetRedirectResultQuery";
 
 vi.mock("firebase/auth", async () => {
   const actual = await vi.importActual("firebase/auth");
@@ -44,7 +44,7 @@ describe("useGetRedirectResultQuery", () => {
         useGetRedirectResultQuery(auth, {
           queryKey: ["redirectResult"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isLoading).toBe(true);
@@ -74,7 +74,7 @@ describe("useGetRedirectResultQuery", () => {
           queryKey: ["redirectResult"],
           auth: { resolver: mockResolver },
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {
@@ -103,7 +103,7 @@ describe("useGetRedirectResultQuery", () => {
         useGetRedirectResultQuery(auth, {
           queryKey: ["redirectResult", "config1"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // Render second hook with different key
@@ -112,7 +112,7 @@ describe("useGetRedirectResultQuery", () => {
         useGetRedirectResultQuery(auth, {
           queryKey: ["redirectResult", "config2"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {
@@ -138,7 +138,7 @@ describe("useGetRedirectResultQuery", () => {
           queryKey: ["redirectResult"],
           enabled: false,
         }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isLoading).toBe(false);
@@ -158,7 +158,7 @@ describe("useGetRedirectResultQuery", () => {
         useGetRedirectResultQuery(auth, {
           queryKey: ["redirectResult"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     // Render second instance with same key
@@ -167,7 +167,7 @@ describe("useGetRedirectResultQuery", () => {
         useGetRedirectResultQuery(auth, {
           queryKey: ["redirectResult"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {
@@ -192,7 +192,7 @@ describe("useGetRedirectResultQuery", () => {
           queryKey: ["redirectResult"],
           staleTime: 1000,
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {
