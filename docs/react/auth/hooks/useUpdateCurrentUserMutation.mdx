@@ -2,4 +2,89 @@
 title: useUpdateCurrentUserMutation
 ---
 
-This hook is implemented, but the documentation is a work in progress, check back soon.
+The `useUpdateCurrentUserMutation` hook is designed to update the current authenticated user using Firebase Authentication. 
+It integrates Firebase's `updateCurrentUser` method with TanStack Query’s mutation lifecycle for easy state management and error handling.
+
+
+## Features
+
+- **Firebase Authentication Integration**: Simplifies updating the current authenticated user using Firebase's `-zupdateCurrentUser` method.
+- **Built-in State Management**: Tracks the mutation lifecycle (`idle`, `loading`, `success`, `error`).
+- **Customizable Callbacks**: Supports `onSuccess`, `onError`, and other TanStack Query mutation options.
+- **Type-Safe Handling**: Ensures type safety with TanStack Query and Firebase types.
+
+## Installation
+
+Ensure you have the necessary Firebase, TanStack Query and TanStack Query Firebase packages installed:
+
+```bash
+npm install firebase @tanstack/react-query @tanstack-query-firebase/react
+```
+
+## Usage
+
+```jsx
+import { useUpdateCurrentUserMutation } from "./useUpdateCurrentUserMutation";
+
+function UpdateUserComponent() {
+  const { mutate, isPending, isSuccess, isError, error } = useUpdateCurrentUserMutation(auth);
+
+  const handleUpdateUser = (newUser) => {
+    mutate(newUser); // Trigger the user update mutation
+  };
+
+  return (
+    <div>
+      {isPending && <p>Updating user...</p>}
+      {isSuccess && <p>User updated successfully!</p>}
+      {isError && <p>Error: {error?.message}</p>}
+
+      <button onClick={() => handleUpdateUser(newUser)} disabled={isLoading}>
+        Update User
+      </button>
+    </div>
+  );
+}
+```
+
+## API Reference
+
+`useUpdateCurrentUserMutation(auth, options?)`
+
+### Parameters
+
+- `auth`: The Firebase `Auth` instance used to manage authentication.
+- `options` (optional):  
+  An object for customizing the mutation behavior. Accepts all options supported by TanStack Query's `useMutation`, such as:
+  - `onSuccess`: Callback fired when the mutation succeeds.
+  - `onError`: Callback fired when the mutation fails.
+  - `onSettled`: Callback fired after the mutation finishes, regardless of success or failure.
+
+For a full list of supported options, see the TanStack Query [useMutation documentation](https://tanstack.com/query/latest/docs/react/reference/useMutation)
+
+### Returns
+
+The hook returns the following properties, provided by TanStack Query's [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation):
+
+- `mutate({ email, password })`: Function to trigger the user update mutation with the provided `user` object. Pass `null` to sign out the user.
+
+```ts
+mutate(user: User | null): void;
+```
+
+- `isPending`:
+  Boolean indicating if the mutation is in progress (alias for `isLoading`).
+
+- `isSuccess`:
+  Boolean indicating if the mutation has successfully completed.
+
+- `isError`:
+  Boolean indicating if the mutation has failed.
+
+- `error`:
+  The error object, if the mutation failed.
+
+- `data`:
+  The result of the mutation, which is typically `undefined` for user updates.
+
+For a complete list of returned properties, see the official TanStack Query [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation) documentation.
