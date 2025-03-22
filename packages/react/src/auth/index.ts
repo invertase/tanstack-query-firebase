@@ -48,6 +48,7 @@ export { useDeleteUserMutation } from "./useDeleteUserMutation";
 // useReauthenticateWithPhoneNumberMutation
 // useReauthenticateWithCredentialMutation
 // useReauthenticateWithPopupMutation
+export { useReauthenticateWithPopupMutation } from "./useReauthenticateWithPopupMutation";
 // useReauthenticateWithRedirectMutation
 export { useReloadMutation } from "./useReloadMutation";
 // useSendEmailVerificationMutation
