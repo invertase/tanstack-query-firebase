@@ -9,13 +9,12 @@ import {
   type QueryResult,
   executeQuery,
 } from "firebase/data-connect";
-import type { FlattenedQueryResult } from "./types";
 
 export type DataConnectQueryOptions<Data, Variables> = Omit<
   FetchQueryOptions<
-    FlattenedQueryResult<Data, Variables>,
+    Data,
     FirebaseError,
-    FlattenedQueryResult<Data, Variables>,
+    Data,
     QueryKey
   >,
   "queryFn" | "queryKey"
@@ -30,7 +29,7 @@ export class DataConnectQueryClient extends QueryClient {
     options?: DataConnectQueryOptions<Data, Variables>,
   ) {
     let queryRef: QueryRef<Data, Variables>;
-    let initialData: FlattenedQueryResult<Data, Variables> | undefined;
+    let initialData: Data | undefined;
 
     if ("ref" in refOrResult) {
       queryRef = refOrResult.ref;
@@ -45,9 +44,9 @@ export class DataConnectQueryClient extends QueryClient {
     }
 
     return this.prefetchQuery<
-      FlattenedQueryResult<Data, Variables>,
+      Data,
       FirebaseError,
-      FlattenedQueryResult<Data, Variables>,
+      Data,
       QueryKey
     >({
       ...options,
