@@ -11,7 +11,7 @@ import path from "node:path";
 async function getCodeFromLogs(
   email: string,
   logPattern: RegExp,
-  extractCodeFn: (line: string) => string | null
+  extractCodeFn: (line: string) => string | null,
 ): Promise<string | null> {
   try {
     // Read the firebase-debug.log file
@@ -51,7 +51,7 @@ async function waitForCode(
   logPattern: RegExp,
   extractCodeFn: (line: string) => string | null,
   timeout = 5000,
-  interval = 100
+  interval = 100,
 ): Promise<string | null> {
   const startTime = Date.now();
 
@@ -72,18 +72,20 @@ async function waitForCode(
  * @returns The oobCode or null if not found.
  */
 function extractOobCode(line: string): string | null {
-  const url = line.match(/http:\/\/127\.0\.0\.1:9099\/emulator\/action\?.*?$/)?.[0];
+  const url = line.match(
+    /http:\/\/127\.0\.0\.1:9099\/emulator\/action\?.*?$/,
+  )?.[0];
   return url ? new URL(url).searchParams.get("oobCode") : null;
 }
 
 export async function waitForPasswordResetCode(
   email: string,
   timeout = 5000,
-  interval = 100
+  interval = 100,
 ): Promise<string | null> {
   const logPattern = new RegExp(
     `To reset the password for ${email.replace(".", "\\.")}.*?http://127\\.0\\.0\\.1:9099.*`,
-    "i"
+    "i",
   );
   return waitForCode(email, logPattern, extractOobCode, timeout, interval);
 }
@@ -91,11 +93,11 @@ export async function waitForPasswordResetCode(
 export async function waitForVerificationCode(
   email: string,
   timeout = 5000,
-  interval = 100
+  interval = 100,
 ): Promise<string | null> {
   const logPattern = new RegExp(
     `To verify the email address ${email.replace(".", "\\.")}.*?http://127\\.0\\.0\\.1:9099.*`,
-    "i"
+    "i",
   );
   return waitForCode(email, logPattern, extractOobCode, timeout, interval);
 }

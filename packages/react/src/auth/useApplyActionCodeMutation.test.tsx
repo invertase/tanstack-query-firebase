@@ -5,9 +5,9 @@ import {
 } from "firebase/auth";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, expectFirebaseError, wipeAuth } from "~/testing-utils";
+import { queryClient, wrapper } from "../../utils";
 import { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
 import { waitForVerificationCode } from "./utils";
-import { queryClient, wrapper } from "../../utils";
 
 describe("useApplyActionCodeMutation", () => {
   const email = "tqf@invertase.io";
@@ -84,7 +84,7 @@ describe("useApplyActionCodeMutation", () => {
 
     const { result } = renderHook(
       () => useApplyActionCodeMutation(auth, { onSuccess }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {
@@ -100,7 +100,7 @@ describe("useApplyActionCodeMutation", () => {
 
     const { result } = renderHook(
       () => useApplyActionCodeMutation(auth, { onError }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {

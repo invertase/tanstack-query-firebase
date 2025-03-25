@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { doc, enableNetwork, getDocFromServer } from "firebase/firestore";
-import React, { type ReactNode } from "react";
+import type React from "react";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import {
   expectFirestoreError,

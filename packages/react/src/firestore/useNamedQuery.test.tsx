@@ -1,15 +1,14 @@
-import { describe, expect, test, beforeEach, vi } from "vitest";
-import { useNamedQuery } from "./useNamedQuery";
 import { renderHook, waitFor } from "@testing-library/react";
 import type * as FirestoreTypes from "firebase/firestore";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { firestore, wipeFirestore } from "~/testing-utils";
-import { wrapper, queryClient } from "../../utils";
+import { queryClient, wrapper } from "../../utils";
+import { useNamedQuery } from "./useNamedQuery";
 
 // Mock the entire firebase/firestore module
 vi.mock("firebase/firestore", async () => {
-  const actual = await vi.importActual<typeof FirestoreTypes>(
-    "firebase/firestore"
-  );
+  const actual =
+    await vi.importActual<typeof FirestoreTypes>("firebase/firestore");
   return {
     collection: actual?.collection,
     query: actual?.query,
@@ -21,7 +20,7 @@ vi.mock("firebase/firestore", async () => {
 });
 
 // Import after mock definition
-import { namedQuery, collection, query, where } from "firebase/firestore";
+import { collection, namedQuery, query, where } from "firebase/firestore";
 
 describe("useNamedQuery", () => {
   beforeEach(async () => {
@@ -33,7 +32,7 @@ describe("useNamedQuery", () => {
   test("returns correct data for an existing named query", async () => {
     const mockQuery = query(
       collection(firestore, "test"),
-      where("field", "==", "value")
+      where("field", "==", "value"),
     );
     vi.mocked(namedQuery).mockResolvedValue(mockQuery);
 
@@ -42,7 +41,7 @@ describe("useNamedQuery", () => {
         useNamedQuery(firestore, "existingQuery", {
           queryKey: ["named", "existing"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isLoading).toBe(true);
@@ -66,7 +65,7 @@ describe("useNamedQuery", () => {
         useNamedQuery(firestore, "nonExistentQuery", {
           queryKey: ["named", "nonexistent"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {
@@ -87,7 +86,7 @@ describe("useNamedQuery", () => {
         useNamedQuery(firestore, "errorQuery", {
           queryKey: ["named", "error"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {
@@ -109,7 +108,7 @@ describe("useNamedQuery", () => {
           queryKey: ["named", "options"],
           enabled: false,
         }),
-      { wrapper }
+      { wrapper },
     );
 
     expect(result.current.isLoading).toBe(false);
@@ -126,7 +125,7 @@ describe("useNamedQuery", () => {
         useNamedQuery(firestore, "refetchQuery", {
           queryKey: ["named", "refetch"],
         }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => {

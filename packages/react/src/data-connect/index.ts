@@ -1,4 +1,3 @@
-
 export {
   DataConnectQueryClient,
   type DataConnectQueryOptions,
@@ -11,5 +10,9 @@ export {
   useDataConnectMutation,
   type useDataConnectMutationOptions,
 } from "./useDataConnectMutation";
+export type {
+  QueryResultRequiredRef,
+  UseDataConnectMutationResult,
+  UseDataConnectQueryResult,
+} from "./types";
 export { validateReactArgs } from "./validateReactArgs";
-export type { QueryResultRequiredRef, UseDataConnectMutationResult, UseDataConnectQueryResult } from "./types";

@@ -1,18 +1,18 @@
 import {
-	ConnectorConfig,
-	DataConnect,
-	getDataConnect,
+  type ConnectorConfig,
+  type DataConnect,
+  getDataConnect,
 } from "firebase/data-connect";
-import { useDataConnectQueryOptions } from "./useDataConnectQuery";
+import type { useDataConnectQueryOptions } from "./useDataConnectQuery";
 
 type DataConnectOptions =
-	| useDataConnectQueryOptions
-	| useDataConnectQueryOptions;
+  | useDataConnectQueryOptions
+  | useDataConnectQueryOptions;
 
 interface ParsedReactArgs<Variables> {
-	dc: DataConnect;
-	vars: Variables;
-	options: DataConnectOptions;
+  dc: DataConnect;
+  vars: Variables;
+  options: DataConnectOptions;
 }
 
 /**
@@ -30,39 +30,39 @@ interface ParsedReactArgs<Variables> {
  * @internal
  */
 export function validateReactArgs<Variables extends object>(
-	connectorConfig: ConnectorConfig,
-	dcOrVarsOrOptions?: DataConnect | Variables | DataConnectOptions,
-	varsOrOptions?: Variables | DataConnectOptions,
-	options?: DataConnectOptions,
-	hasVars?: boolean,
-	validateVars?: boolean
+  connectorConfig: ConnectorConfig,
+  dcOrVarsOrOptions?: DataConnect | Variables | DataConnectOptions,
+  varsOrOptions?: Variables | DataConnectOptions,
+  options?: DataConnectOptions,
+  hasVars?: boolean,
+  validateVars?: boolean,
 ): ParsedReactArgs<Variables> {
-	let dcInstance: DataConnect;
-	let realVars: Variables;
-	let realOptions: DataConnectOptions;
+  let dcInstance: DataConnect;
+  let realVars: Variables;
+  let realOptions: DataConnectOptions;
 
-	if (dcOrVarsOrOptions && "enableEmulator" in dcOrVarsOrOptions) {
-		dcInstance = dcOrVarsOrOptions as DataConnect;
-		if (hasVars) {
-			realVars = varsOrOptions as Variables;
-			realOptions = options as DataConnectOptions;
-		} else {
-			realVars = undefined as unknown as Variables;
-			realOptions = varsOrOptions as DataConnectOptions;
-		}
-	} else {
-		dcInstance = getDataConnect(connectorConfig);
-		if (hasVars) {
-			realVars = dcOrVarsOrOptions as Variables;
-			realOptions = varsOrOptions as DataConnectOptions;
-		} else {
-			realVars = undefined as unknown as Variables;
-			realOptions = dcOrVarsOrOptions as DataConnectOptions;
-		}
-	}
+  if (dcOrVarsOrOptions && "enableEmulator" in dcOrVarsOrOptions) {
+    dcInstance = dcOrVarsOrOptions as DataConnect;
+    if (hasVars) {
+      realVars = varsOrOptions as Variables;
+      realOptions = options as DataConnectOptions;
+    } else {
+      realVars = undefined as unknown as Variables;
+      realOptions = varsOrOptions as DataConnectOptions;
+    }
+  } else {
+    dcInstance = getDataConnect(connectorConfig);
+    if (hasVars) {
+      realVars = dcOrVarsOrOptions as Variables;
+      realOptions = varsOrOptions as DataConnectOptions;
+    } else {
+      realVars = undefined as unknown as Variables;
+      realOptions = dcOrVarsOrOptions as DataConnectOptions;
+    }
+  }
 
-	if (!dcInstance || (!realVars && validateVars)) {
-		throw new Error("invalid-argument: Variables required."); // copied from firebase error codes
-	}
-	return { dc: dcInstance, vars: realVars, options: realOptions };
+  if (!dcInstance || (!realVars && validateVars)) {
+    throw new Error("invalid-argument: Variables required."); // copied from firebase error codes
+  }
+  return { dc: dcInstance, vars: realVars, options: realOptions };
 }
