@@ -1,4 +1,8 @@
-import { InitialDataFunction, type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import {
+  type InitialDataFunction,
+  type UseQueryOptions,
+  useQuery,
+} from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
   type CallerSdkType,
@@ -20,15 +24,13 @@ export type useDataConnectQueryOptions<
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
 
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
-  refOrResult: QueryRef<Data, Variables>
-    | QueryResult<Data, Variables>,
-  options?: useDataConnectQueryOptions<
-    Data,
-    FirebaseError
-  >,
-  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
+  refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
+  options?: useDataConnectQueryOptions<Data, FirebaseError>,
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore,
 ): UseDataConnectQueryResult<Data, Variables> {
-  const [dataConnectResult, setDataConnectResult] = useState<QueryResultRequiredRef<Data, Variables>>('ref' in refOrResult ? refOrResult : { ref: refOrResult });
+  const [dataConnectResult, setDataConnectResult] = useState<
+    QueryResultRequiredRef<Data, Variables>
+  >("ref" in refOrResult ? refOrResult : { ref: refOrResult });
   // TODO(mtewani): in the future we should allow for users to pass in `QueryResult` objects into `initialData`.
   let initialData: Data | InitialDataFunction<Data> | undefined;
   const { ref } = dataConnectResult;

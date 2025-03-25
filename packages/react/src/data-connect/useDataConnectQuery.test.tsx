@@ -118,7 +118,7 @@ describe("useDataConnectQuery", () => {
     const { result } = renderHook(() => useDataConnectQuery(listMoviesRef()), {
       wrapper,
     });
-    
+
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     result.current.data?.movies.forEach((i) => {
@@ -216,9 +216,13 @@ describe("useDataConnectQuery", () => {
   test("avails the data immediately when initialData is passed", async () => {
     const queryResult = await executeQuery(listMoviesRef());
 
-    const { result } = renderHook(() => useDataConnectQuery(listMoviesRef(), { initialData: queryResult.data }), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () =>
+        useDataConnectQuery(listMoviesRef(), { initialData: queryResult.data }),
+      {
+        wrapper,
+      },
+    );
 
     // Should not enter a loading state
     expect(result.current.isLoading).toBe(false);
