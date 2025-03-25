@@ -9,7 +9,7 @@ import {
 } from "firebase/data-connect";
 import { useState } from "react";
 import type { PartialBy } from "../../utils";
-import type { QueryResultRequiredRef, UseDataConnectQuery } from "./types";
+import type { QueryResultRequiredRef, UseDataConnectQueryResult } from "./types";
 
 export type useDataConnectQueryOptions<
   TData = object,
@@ -20,7 +20,7 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
   options?: useDataConnectQueryOptions<Data, FirebaseError>,
   _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore,
-): UseDataConnectQuery<Data, Variables> {
+): UseDataConnectQueryResult<Data, Variables> {
   const [dataConnectResult, setDataConnectResult] = useState<
     QueryResultRequiredRef<Data, Variables>
   >("ref" in refOrResult ? refOrResult : { ref: refOrResult });

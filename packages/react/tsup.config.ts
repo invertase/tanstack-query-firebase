@@ -6,6 +6,7 @@ export default defineConfig({
 	format: ["esm"],
 	dts: true, // generates .d.ts files
 	outDir: "dist",
+	external: ['react'],
 	esbuildOptions(options, context) {
 		options.outbase = './src';
 	},
