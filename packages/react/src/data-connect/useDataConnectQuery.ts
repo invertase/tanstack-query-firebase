@@ -15,6 +15,7 @@ export type useDataConnectQueryOptions<
   TData = object,
   TError = FirebaseError,
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
+
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
   options?: useDataConnectQueryOptions<Data, FirebaseError>,

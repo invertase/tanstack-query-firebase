@@ -15,3 +15,4 @@ export type {
   UseDataConnectMutationResult,
   UseDataConnectQueryResult,
 } from "./types";
+export { validateReactArgs } from "./validateReactArgs";
