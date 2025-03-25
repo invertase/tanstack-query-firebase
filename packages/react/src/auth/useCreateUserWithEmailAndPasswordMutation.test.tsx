@@ -1,8 +1,8 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { afterEach, describe, expect, test, vi, beforeEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, expectFirebaseError, wipeAuth } from "~/testing-utils";
-import { useCreateUserWithEmailAndPasswordMutation } from "./useCreateUserWithEmailAndPasswordMutation";
 import { queryClient, wrapper } from "../../utils";
+import { useCreateUserWithEmailAndPasswordMutation } from "./useCreateUserWithEmailAndPasswordMutation";
 
 describe("useCreateUserWithEmailAndPasswordMutation", () => {
   const email = "tqf@invertase.io";
@@ -22,7 +22,7 @@ describe("useCreateUserWithEmailAndPasswordMutation", () => {
       () => useCreateUserWithEmailAndPasswordMutation(auth),
       {
         wrapper,
-      }
+      },
     );
 
     await act(async () => {
@@ -41,7 +41,7 @@ describe("useCreateUserWithEmailAndPasswordMutation", () => {
       () => useCreateUserWithEmailAndPasswordMutation(auth),
       {
         wrapper,
-      }
+      },
     );
 
     await act(async () => {
@@ -52,7 +52,7 @@ describe("useCreateUserWithEmailAndPasswordMutation", () => {
       () => useCreateUserWithEmailAndPasswordMutation(auth),
       {
         wrapper,
-      }
+      },
     );
 
     await act(async () => {
@@ -73,7 +73,7 @@ describe("useCreateUserWithEmailAndPasswordMutation", () => {
       () => useCreateUserWithEmailAndPasswordMutation(auth),
       {
         wrapper,
-      }
+      },
     );
 
     await act(async () => {
@@ -93,7 +93,7 @@ describe("useCreateUserWithEmailAndPasswordMutation", () => {
 
     const { result } = renderHook(
       () => useCreateUserWithEmailAndPasswordMutation(auth, { onSuccess }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {
@@ -111,7 +111,7 @@ describe("useCreateUserWithEmailAndPasswordMutation", () => {
       () => useCreateUserWithEmailAndPasswordMutation(auth),
       {
         wrapper,
-      }
+      },
     );
 
     await act(async () => {
@@ -123,7 +123,7 @@ describe("useCreateUserWithEmailAndPasswordMutation", () => {
 
     const { result } = renderHook(
       () => useCreateUserWithEmailAndPasswordMutation(auth, { onError }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {

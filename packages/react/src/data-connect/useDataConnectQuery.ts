@@ -1,23 +1,24 @@
 import { InitialDataFunction, type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
+  type CallerSdkType,
+  CallerSdkTypeEnum,
   type QueryRef,
   type QueryResult,
   executeQuery,
-  type CallerSdkType,
-  CallerSdkTypeEnum,
 } from "firebase/data-connect";
+import { useState } from "react";
 import type { PartialBy } from "../../utils";
-import {
+import type {
   QueryResultRequiredRef,
   UseDataConnectQueryResult,
 } from "./types";
-import { useState } from "react";
 
 export type useDataConnectQueryOptions<
-  TData = {},
-  TError = FirebaseError
+  TData = object,
+  TError = FirebaseError,
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
+
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   refOrResult: QueryRef<Data, Variables>
     | QueryResult<Data, Variables>,
@@ -56,6 +57,6 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   });
   return {
     ...useQueryResult,
-    dataConnectResult
-  }
+    dataConnectResult,
+  };
 }

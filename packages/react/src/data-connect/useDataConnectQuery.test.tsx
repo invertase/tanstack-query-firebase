@@ -1,3 +1,8 @@
+import {
+  createMovie,
+  getMovieByIdRef,
+  listMoviesRef,
+} from "@/dataconnect/default-connector";
 import { dehydrate } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { executeQuery } from "firebase/data-connect";
@@ -6,11 +11,6 @@ import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { DataConnectQueryClient } from "./query-client";
 import { useDataConnectQuery } from "./useDataConnectQuery";
-import {
-  createMovie,
-  getMovieByIdRef,
-  listMoviesRef,
-} from "@/dataconnect/default-connector";
 
 // initialize firebase app
 firebaseApp;
@@ -100,7 +100,7 @@ describe("useDataConnectQuery", () => {
     expect(Array.isArray(result.current.data?.movies)).toBe(true);
 
     const movie = result.current.data?.movies.find(
-      (m) => m.title === "tanstack query firebase"
+      (m) => m.title === "tanstack query firebase",
     );
 
     expect(movie).toBeDefined();
@@ -142,7 +142,7 @@ describe("useDataConnectQuery", () => {
       () => useDataConnectQuery(getMovieByIdRef({ id: movieId })),
       {
         wrapper,
-      }
+      },
     );
 
     await waitFor(() => {
@@ -182,7 +182,7 @@ describe("useDataConnectQuery", () => {
       () => useDataConnectQuery(getMovieByIdRef({ id: movieId })),
       {
         wrapper,
-      }
+      },
     );
 
     expect(result.current.isPending).toBe(true);
@@ -255,7 +255,7 @@ describe("useDataConnectQuery", () => {
     const queryClient = new DataConnectQueryClient();
 
     await queryClient.prefetchDataConnectQuery(
-      getMovieByIdRef({ id: movieId })
+      getMovieByIdRef({ id: movieId }),
     );
 
     const dehydrated = dehydrate(queryClient);

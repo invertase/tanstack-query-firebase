@@ -12,7 +12,7 @@ export function Movies() {
 	const movies = useDataConnectQuery(listMoviesRef());
 
 	const addMovie = useDataConnectMutation(createMovieRef, {
-		invalidate: [listMoviesRef],
+		invalidate: [listMoviesRef()],
 	});
 
 	if (movies.isLoading) {
@@ -39,10 +39,10 @@ export function Movies() {
 				Add Movie
 			</button>
 			<ul>
-				<li>Fetch Time: {movies.data?.fetchTime}</li>
-				<li>Source: {movies.data?.source}</li>
+				<li>Fetch Time: {movies.dataConnectResult?.fetchTime}</li>
+				<li>Source: {movies.dataConnectResult?.source}</li>
 				<li>
-					Query Key: {movies.data?.ref.name} + {movies.data?.ref.variables}
+					Query Key: {movies.dataConnectResult?.ref.name} + {movies.dataConnectResult?.ref.variables}
 				</li>
 				{movies.data!.movies.map((movie) => (
 					<li key={movie.id}>{movie.title}</li>

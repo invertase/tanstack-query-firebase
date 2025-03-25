@@ -1,6 +1,6 @@
-import type { MutationResult, QueryResult } from "firebase/data-connect";
-import type { FirebaseError } from "firebase/app";
 import type { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
+import type { FirebaseError } from "firebase/app";
+import type { MutationResult, QueryResult } from "firebase/data-connect";
 
 export type QueryResultRequiredRef<Data, Variables> = Partial<
   QueryResult<Data, Variables>

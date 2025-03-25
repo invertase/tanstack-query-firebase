@@ -1,8 +1,8 @@
-import { useRevokeAccessTokenMutation } from "./useRevokeAccessTokenMutation";
-import { Auth, revokeAccessToken } from "firebase/auth";
-import { describe, expect, test, vi, beforeEach } from "vitest";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { wrapper, queryClient, expectInitialMutationState } from "../../utils";
+import { type Auth, revokeAccessToken } from "firebase/auth";
+import { beforeEach, describe, expect, test, vi } from "vitest";
+import { expectInitialMutationState, queryClient, wrapper } from "../../utils";
+import { useRevokeAccessTokenMutation } from "./useRevokeAccessTokenMutation";
 
 vi.mock("firebase/auth", () => ({
   ...vi.importActual("firebase/auth"),
@@ -25,7 +25,7 @@ describe("useRevokeAccessTokenMutation", () => {
       () => useRevokeAccessTokenMutation(mockAuth),
       {
         wrapper,
-      }
+      },
     );
 
     act(() => {
@@ -48,7 +48,7 @@ describe("useRevokeAccessTokenMutation", () => {
       () => useRevokeAccessTokenMutation(mockAuth),
       {
         wrapper,
-      }
+      },
     );
 
     act(() => {
@@ -78,7 +78,7 @@ describe("useRevokeAccessTokenMutation", () => {
         }),
       {
         wrapper,
-      }
+      },
     );
 
     act(() => {
@@ -95,14 +95,14 @@ describe("useRevokeAccessTokenMutation", () => {
 
   test("should properly handle loading state throughout mutation lifecycle", async () => {
     vi.mocked(revokeAccessToken).mockImplementation(
-      () => new Promise((resolve) => setTimeout(resolve, 100))
+      () => new Promise((resolve) => setTimeout(resolve, 100)),
     );
 
     const { result } = renderHook(
       () => useRevokeAccessTokenMutation(mockAuth),
       {
         wrapper,
-      }
+      },
     );
 
     expect(result.current.isPending).toBe(false);
@@ -130,7 +130,7 @@ describe("useRevokeAccessTokenMutation", () => {
       () => useRevokeAccessTokenMutation(mockAuth),
       {
         wrapper,
-      }
+      },
     );
 
     act(() => {
@@ -155,7 +155,7 @@ describe("useRevokeAccessTokenMutation", () => {
     expect(revokeAccessToken).toHaveBeenCalledTimes(2);
     expect(revokeAccessToken).toHaveBeenLastCalledWith(
       mockAuth,
-      "different-token"
+      "different-token",
     );
   });
 
@@ -166,7 +166,7 @@ describe("useRevokeAccessTokenMutation", () => {
       () => useRevokeAccessTokenMutation(mockAuth),
       {
         wrapper,
-      }
+      },
     );
 
     act(() => {

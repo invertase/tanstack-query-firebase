@@ -1,14 +1,14 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import {
+  type ActionCodeInfo,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
-  type ActionCodeInfo,
 } from "firebase/auth";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, expectFirebaseError, wipeAuth } from "~/testing-utils";
+import { queryClient, wrapper } from "../../utils";
 import { useCheckActionCodeMutation } from "./useCheckActionCodeMutation";
 import { waitForPasswordResetCode } from "./utils";
-import { queryClient, wrapper } from "../../utils";
 
 describe("useCheckActionCodeMutation", () => {
   const email = "tqf@invertase.io";
@@ -97,7 +97,7 @@ describe("useCheckActionCodeMutation", () => {
 
     const { result } = renderHook(
       () => useCheckActionCodeMutation(auth, { onSuccess }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {
@@ -117,7 +117,7 @@ describe("useCheckActionCodeMutation", () => {
 
     const { result } = renderHook(
       () => useCheckActionCodeMutation(auth, { onError }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {

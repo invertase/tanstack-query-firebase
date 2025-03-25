@@ -9,17 +9,17 @@ import {
   CallerSdkTypeEnum,
   type DataConnect,
   type MutationRef,
-  MutationResult,
-  QueryRef,
+  type MutationResult,
+  type QueryRef,
   executeMutation,
 } from "firebase/data-connect";
-import { UseDataConnectMutationResult } from "./types";
 import { useState } from "react";
+import type { UseDataConnectMutationResult } from "./types";
 
 export type useDataConnectMutationOptions<
   TData = unknown,
   TError = FirebaseError,
-  Variables = unknown
+  Variables = unknown,
 > = Omit<UseMutationOptions<TData, TError, Variables>, "mutationFn"> & {
   invalidate?: ReadonlyArray<
     QueryRef<unknown, unknown> | (() => QueryRef<unknown, unknown>)
@@ -34,22 +34,22 @@ export function useDataConnectMutation<
     Fn extends () => MutationRef<infer D, any>
       ? () => MutationRef<D, any>
       : Fn extends (vars: any) => MutationRef<infer D, any>
-      ? (vars: any) => MutationRef<D, any>
-      : Fn
+        ? (vars: any) => MutationRef<D, any>
+        : Fn
   > extends MutationRef<infer D, any>
     ? D
     : never,
   Variables = Fn extends () => MutationRef<any, any>
     ? void
     : Fn extends (vars: infer V) => MutationRef<any, any>
-    ? V
-    : Fn extends (dc: DataConnect, vars: infer V) => MutationRef<any, any>
-    ? V
-    : never
+      ? V
+      : Fn extends (dc: DataConnect, vars: infer V) => MutationRef<any, any>
+        ? V
+        : never,
 >(
   ref: Fn,
   options?: useDataConnectMutationOptions<Data, FirebaseError, Variables>,
-  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore
+  _callerSdkType: CallerSdkType = CallerSdkTypeEnum.TanstackReactCore,
 ): UseDataConnectMutationResult<Data, Variables> {
   const queryClient = useQueryClient();
   const [dataConnectResult, setDataConnectResult] = useState<
