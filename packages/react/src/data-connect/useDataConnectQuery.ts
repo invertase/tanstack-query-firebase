@@ -9,7 +9,10 @@ import {
 } from "firebase/data-connect";
 import { useState } from "react";
 import type { PartialBy } from "../../utils";
-import type { QueryResultRequiredRef, UseDataConnectQueryResult } from "./types";
+import type {
+  QueryResultRequiredRef,
+  UseDataConnectQueryResult,
+} from "./types";
 
 export type useDataConnectQueryOptions<
   TData = object,
