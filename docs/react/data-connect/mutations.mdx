@@ -81,13 +81,13 @@ Along with the data, the hook will also return the `ref`, `source`, and `fetchTi
 ```tsx
 const createMovie = useDataConnectMutation(createMovieRef);
 
-const data = await createMovie.mutateAsync({
+const { dataConnectResult } = await createMovie.mutateAsync({
   title: 'John Wick',
   genre: "Action",
   imageUrl: "https://example.com/image.jpg",
 });
 
-console.log(data.ref);
-console.log(data.source);
-console.log(data.fetchTime);
+console.log(dataConnectResult.ref);
+console.log(dataConnectResult.source);
+console.log(dataConnectResult.fetchTime);
 ```

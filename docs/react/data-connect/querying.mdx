@@ -72,9 +72,9 @@ The hook will immediately have data available, and immediately refetch the data 
 Along with the data, the hook will also return the `ref`, `source`, and `fetchTime` metadata from the query.
 
 ```tsx
-const { data } = useDataConnectQuery(listMoviesRef());
+const { dataConnectResult } = useDataConnectQuery(listMoviesRef());
 
-console.log(data?.ref);
-console.log(data?.source);
-console.log(data?.fetchTime);
+console.log(dataConnectResult?.ref);
+console.log(dataConnectResult?.source);
+console.log(dataConnectResult?.fetchTime);
 ```
