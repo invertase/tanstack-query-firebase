@@ -1,7 +1,7 @@
 // useAuthStateReadyQuery (Auth)
 // useConfirmationResultConfirmMutation (ConfirmationResult)
 // useUserDeleteMutation (User)
-// userUserGetIdTokenResultMutation (User)
+export { useUserGetIdTokenResultMutation } from "./useUseGetIdTokenResultMutation";
 // useUserGetIdTokenMutation (User)
 // useUserReloadMutation (User)
 // useVerifyPhoneNumberMutation (PhoneAuthProvider)
