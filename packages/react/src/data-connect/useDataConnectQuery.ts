@@ -1,7 +1,4 @@
-import {
-  type UseQueryOptions,
-  useQuery,
-} from "@tanstack/react-query";
+import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
   type CallerSdkType,
