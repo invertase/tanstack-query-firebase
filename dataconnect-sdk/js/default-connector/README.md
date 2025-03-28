@@ -28,7 +28,7 @@ A connector is a collection of Queries and Mutations. One SDK is generated for e
 You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig } from '@dataconnect/default-connector';
 
 const dataConnect = getDataConnect(connectorConfig);
@@ -41,7 +41,7 @@ To connect to the emulator, you can use the following code.
 You can also follow the emulator instructions from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#instrument-clients).
 
 ```javascript
-import { connectDataConnectEmulator, getDataConnect, DataConnect } from 'firebase/data-connect';
+import { connectDataConnectEmulator, getDataConnect } from 'firebase/data-connect';
 import { connectorConfig } from '@dataconnect/default-connector';
 
 const dataConnect = getDataConnect(connectorConfig);
@@ -98,7 +98,7 @@ export interface ListMoviesData {
 ### Using `ListMovies`'s action shortcut function
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, listMovies } from '@dataconnect/default-connector';
 
 
@@ -122,7 +122,7 @@ listMovies().then((response) => {
 ### Using `ListMovies`'s `QueryRef` function
 
 ```javascript
-import { getDataConnect, DataConnect, executeQuery } from 'firebase/data-connect';
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, listMoviesRef } from '@dataconnect/default-connector';
 
 
@@ -185,7 +185,7 @@ export interface GetMovieByIdData {
 ### Using `GetMovieById`'s action shortcut function
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getMovieById, GetMovieByIdVariables } from '@dataconnect/default-connector';
 
 // The `GetMovieById` query requires an argument of type `GetMovieByIdVariables`:
@@ -215,7 +215,7 @@ getMovieById(getMovieByIdVars).then((response) => {
 ### Using `GetMovieById`'s `QueryRef` function
 
 ```javascript
-import { getDataConnect, DataConnect, executeQuery } from 'firebase/data-connect';
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getMovieByIdRef, GetMovieByIdVariables } from '@dataconnect/default-connector';
 
 // The `GetMovieById` query requires an argument of type `GetMovieByIdVariables`:
@@ -275,7 +275,7 @@ export interface GetMetaData {
 ### Using `GetMeta`'s action shortcut function
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, getMeta } from '@dataconnect/default-connector';
 
 
@@ -299,7 +299,7 @@ getMeta().then((response) => {
 ### Using `GetMeta`'s `QueryRef` function
 
 ```javascript
-import { getDataConnect, DataConnect, executeQuery } from 'firebase/data-connect';
+import { getDataConnect, executeQuery } from 'firebase/data-connect';
 import { connectorConfig, getMetaRef } from '@dataconnect/default-connector';
 
 
@@ -374,7 +374,7 @@ export interface CreateMovieData {
 ### Using `CreateMovie`'s action shortcut function
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, createMovie, CreateMovieVariables } from '@dataconnect/default-connector';
 
 // The `CreateMovie` mutation requires an argument of type `CreateMovieVariables`:
@@ -406,7 +406,7 @@ createMovie(createMovieVars).then((response) => {
 ### Using `CreateMovie`'s `MutationRef` function
 
 ```javascript
-import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, createMovieRef, CreateMovieVariables } from '@dataconnect/default-connector';
 
 // The `CreateMovie` mutation requires an argument of type `CreateMovieVariables`:
@@ -474,7 +474,7 @@ export interface UpsertMovieData {
 ### Using `UpsertMovie`'s action shortcut function
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, upsertMovie, UpsertMovieVariables } from '@dataconnect/default-connector';
 
 // The `UpsertMovie` mutation requires an argument of type `UpsertMovieVariables`:
@@ -506,7 +506,7 @@ upsertMovie(upsertMovieVars).then((response) => {
 ### Using `UpsertMovie`'s `MutationRef` function
 
 ```javascript
-import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, upsertMovieRef, UpsertMovieVariables } from '@dataconnect/default-connector';
 
 // The `UpsertMovie` mutation requires an argument of type `UpsertMovieVariables`:
@@ -572,7 +572,7 @@ export interface DeleteMovieData {
 ### Using `DeleteMovie`'s action shortcut function
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, deleteMovie, DeleteMovieVariables } from '@dataconnect/default-connector';
 
 // The `DeleteMovie` mutation requires an argument of type `DeleteMovieVariables`:
@@ -602,7 +602,7 @@ deleteMovie(deleteMovieVars).then((response) => {
 ### Using `DeleteMovie`'s `MutationRef` function
 
 ```javascript
-import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, deleteMovieRef, DeleteMovieVariables } from '@dataconnect/default-connector';
 
 // The `DeleteMovie` mutation requires an argument of type `DeleteMovieVariables`:
@@ -660,7 +660,7 @@ export interface AddMetaData {
 ### Using `AddMeta`'s action shortcut function
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, addMeta } from '@dataconnect/default-connector';
 
 
@@ -684,7 +684,7 @@ addMeta().then((response) => {
 ### Using `AddMeta`'s `MutationRef` function
 
 ```javascript
-import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, addMetaRef } from '@dataconnect/default-connector';
 
 
@@ -742,7 +742,7 @@ export interface DeleteMetaData {
 ### Using `DeleteMeta`'s action shortcut function
 
 ```javascript
-import { getDataConnect, DataConnect } from 'firebase/data-connect';
+import { getDataConnect } from 'firebase/data-connect';
 import { connectorConfig, deleteMeta, DeleteMetaVariables } from '@dataconnect/default-connector';
 
 // The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`:
@@ -772,7 +772,7 @@ deleteMeta(deleteMetaVars).then((response) => {
 ### Using `DeleteMeta`'s `MutationRef` function
 
 ```javascript
-import { getDataConnect, DataConnect, executeMutation } from 'firebase/data-connect';
+import { getDataConnect, executeMutation } from 'firebase/data-connect';
 import { connectorConfig, deleteMetaRef, DeleteMetaVariables } from '@dataconnect/default-connector';
 
 // The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`:
