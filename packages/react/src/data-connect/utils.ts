@@ -3,6 +3,9 @@ export function deepEqual(a: unknown, b: unknown) {
     return false;
   }
   if (typeof a === "object" && a !== null) {
+    if(a === b) {
+        return true;
+    }
     if (Array.isArray(a)) {
       if (a.length !== (b as unknown[]).length) {
         return false;
