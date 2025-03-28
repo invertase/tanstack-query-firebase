@@ -1,9 +1,7 @@
 import {
-  type InitialDataFunction,
   type UseQueryOptions,
   useQuery,
 } from "@tanstack/react-query";
-import deepEqual from "deep-equal";
 import type { FirebaseError } from "firebase/app";
 import {
   type CallerSdkType,
@@ -12,12 +10,13 @@ import {
   type QueryResult,
   executeQuery,
 } from "firebase/data-connect";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { PartialBy } from "../../utils";
 import type {
   QueryResultRequiredRef,
   UseDataConnectQueryResult,
 } from "./types";
+import { deepEqual } from "./utils";
 
 export type useDataConnectQueryOptions<
   TData = object,
@@ -48,7 +47,7 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
       const newRef = getRef(refOrResult);
       if (
         newRef.name !== oldRef.name ||
-        !deepEqual(oldRef, newRef, { strict: true })
+        !deepEqual(oldRef.variables, newRef.variables)
       ) {
         return newRef;
       }
