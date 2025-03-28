@@ -1,6 +1,6 @@
 {
 	"name": "@tanstack-query-firebase/react",
-	"version": "1.0.7",
+	"version": "2.0.8",
 	"description": "TanStack Query bindings for Firebase and React",
 	"type": "module",
 	"scripts": {
@@ -46,9 +46,5 @@
 	"peerDependencies": {
 		"@tanstack/react-query": "^5",
 		"firebase": "^11.3.0"
-	},
-	"dependencies": {
-		"@types/deep-equal": "^1.0.4",
-		"deep-equal": "^2.2.3"
 	}
 }
