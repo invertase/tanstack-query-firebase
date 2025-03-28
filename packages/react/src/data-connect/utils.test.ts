@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, test } from "vitest";
-import { deepEqual } from "./useDataConnectQuery";
+import { describe, expect, test } from "vitest";
+import { deepEqual } from "./utils";
 
 describe("utils", () => {
   test("should compare native types correctly", () => {
