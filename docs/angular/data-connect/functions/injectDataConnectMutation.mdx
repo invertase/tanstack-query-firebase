@@ -1,0 +1,42 @@
+---
+title: injectDataConnectMutation
+---
+
+`injectDataConnectMutation` is a hook designed to simplify handling mutations (creating, updating, deleting) with Firebase Data Connect.
+
+See [mutations](/react/data-connect/mutations) for more information.
+
+## Features
+
+- Simplifies mutation handling for <b>create</b>, <b>update</b>, and <b>delete</b> operations using Firebase Data Connect.
+- Provides <b>type-safe</b> handling of mutations based on your Firebase Data Connect schema.
+- Automatically manages <b>pending</b>, <b>success</b>, and <b>error</b> states for mutations.
+- Supports <b>optimistic updates</b> and <b>caching</b> to improve user experience and performance.
+
+## Usage
+
+```ts
+import { injectDataConnectMutation } from "@tanstack-query-firebase/angular/data-connect";
+import { createMovieRef } from "@your-package-name/your-connector";
+
+class AddMovieComponent() {
+  createMovie = injectDataConnectMutation(
+    createMovieRef
+  );
+  addMovie() {
+    createMovie.mutate({
+      title: 'John Wick',
+      genre: "Action",
+      imageUrl: "https://example.com/image.jpg",
+    });
+  }
+  return (
+    <button
+      disabled={createMovie.isPending()}
+      (click)="addMovie()"
+    >
+      {{createMovie.isPending() ? "Creating..." : "Create Movie"}}
+    </button>
+  );
+}
+```

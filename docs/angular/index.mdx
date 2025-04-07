@@ -1,0 +1,92 @@
+---
+title: Angular
+description: Using TanStack Query Firebase with Angular
+---
+
+To get started using TanStack Query Firebase with Angular, you will need to install the following packages:
+
+```bash
+npm i --save firebase @tanstack/angular-query-experimental @tanstack-query-firebase/angular
+```
+
+Both `@angular/fire` and `@tanstack/angular-query-experimental` are peer dependencies of `@tanstack-query-firebase/angular`.
+
+## Usage
+
+TanStack Query Firebase provides a hands-off approach to integrate with TanStack Query - you are
+still responsible for both setting up Firebase in your application and configuring TanStack Query.
+
+If you haven't already done so, [initialize your Firebase project](https://firebase.google.com/docs/web/setup)
+and [configure TanStack Query](https://tanstack.com/query/latest/docs/framework/angular/quick-start):
+
+### Automatic Setup
+To automatically set up AngularFire, just run:
+```shell
+ng add @angular/fire
+```
+
+### Manual Setup
+
+```ts
+// app.config.ts
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getDataConnect, provideDataConnect } from '@angular/fire/data-connect';
+import { connectorConfig } from '@firebasegen/movies';
+import { provideTanStackQuery, QueryClient } from '@tanstack/angular-query-experimental';
+
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    ...
+    provideFirebaseApp(() =>
+      initializeApp(/*Replace with your firebase config*/)
+    ),
+    provideDataConnect(() => getDataConnect(connectorConfig)),
+    provideTanStackQuery(new QueryClient()),
+  ],
+};
+```
+
+And be sure to add `angular: true` to your `connector.yaml`:
+
+```yaml
+generate:
+  javascriptSdk:
+    angular: true
+    outputDir: "../movies-generated"
+    package: "@movie-app/movies"
+    packageJsonDir: "../../"
+```
+
+## Example Usage
+
+Next, you can start to use injectors provided by `@tanstack-query-firebase/angular`. For example, to
+fetch a query from Data Connect:
+
+```ts
+import { injectListMovies } from '@firebasegen/movies/angular'
+
+// class
+export class MovieListComponent {
+  movies = injectListMovies();
+}
+
+// template
+@if (movies.isPending()) {
+    Loading...
+}
+@if (movies.error()) {
+    An error has occurred: {{ movies.error() }}
+}
+@if (movies.data(); as data) {
+    @for (movie of data.movies; track movie.id) {
+    <mat-card appearance="outlined">
+        <mat-card-content>{{movie.description}}</mat-card-content>
+    </mat-card>
+    } @empty {
+        <h2>No items!</h2>
+    }
+}
+```
+
+TanStack Query Firebase provides hooks for all Firebase services, supporting both mutations and queries
