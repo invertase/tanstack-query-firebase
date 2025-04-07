@@ -51,7 +51,7 @@ movies = injectListMovies(
   }
 );
 ```
-The hook extends the [`injectQuery`](https://tanstack.com/query/latest/docs/framework/angular/reference/functions/injectquery) hook, so you can learn more about the available options by reading the [Tanstack Query documentation](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery).
+The injector extends the [`injectQuery`](https://tanstack.com/query/latest/docs/framework/angular/reference/functions/injectquery) injector, so you can learn more about the available options by reading the [Tanstack Query documentation](https://tanstack.com/query/latest/docs/framework/angular/reference/functions/injectquery).
 
 ### Overriding the query key
 
@@ -69,7 +69,7 @@ Note that overriding the query key could mean your query is no longer synchroniz
 
 ### Metadata
 
-Along with the data, the hook will also return the `ref`, `source`, and `fetchTime` metadata from the query.
+Along with the data, the injector will also return the `ref`, `source`, and `fetchTime` metadata from the query.
 
 ```ts
 const movies = injectListMovies();
