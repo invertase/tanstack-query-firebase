@@ -64,7 +64,7 @@
           "href": "/angular/data-connect/mutations"
         },
         {
-          "group": "functions",
+          "group": "Functions",
           "pages": [
             {
               "title": "injectDataConnectQuery",
