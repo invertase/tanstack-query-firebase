@@ -1,6 +1,6 @@
 ---
 title: Mutations
-description: Learn how to mutate data in Firebase Data Connect using the Tanstack Query Firebase hooks.
+description: Learn how to mutate data in Firebase Data Connect using the Tanstack Query Firebase injectors.
 ---
 
 ## Mutating Data
@@ -51,25 +51,7 @@ createMovie.mutate("John Wick");
 
 ## Invalidating Queries
 
-The hook provides an additional [mutation option](https://tanstack.com/query/latest/docs/framework/angular/reference/functions/injectMutation) called `invalidate`. This option accepts a list of query references which will be automatically invalidated when the mutation is successful.
-
-```ts
-const createMovie = injectDataConnectMutation(createMovieRef, {
-  invalidate: [getMovieRef],
-});
-```
-
-### Implicit references
-
-// TODO(mtewani): Check this for Angular
-The above example provides a `getMovieRef` instance to the invalidate array. By default this will invalidate all queries that cached via the `getMovieRef` reference, for example the following query references will be invalidated:
-
-```ts
-getMovieRef({ id: "1"});
-getMovieRef({ id: "2"});
-```
-
-### Explicit references
+The function provides an additional [mutation option](https://tanstack.com/query/latest/docs/framework/angular/reference/functions/injectMutation) called `invalidate`. This option accepts a list of query references which will be automatically invalidated when the mutation is successful.
 
 You can also provide explicit references to the invalidate array, for example:
 
@@ -85,7 +67,7 @@ In this case only the query reference `getMovieRef({ id: "1" })` will be invalid
 
 ### Metadata
 
-Along with the data, the hook will also return the `ref`, `source`, and `fetchTime` metadata from the mutation.
+Along with the data, the function will also return the `ref`, `source`, and `fetchTime` metadata from the mutation.
 
 ```ts
 const createMovie = injectDataConnectMutation(createMovieRef);
