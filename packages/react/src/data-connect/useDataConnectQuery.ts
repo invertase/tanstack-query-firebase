@@ -3,7 +3,6 @@ import {
   type UseQueryOptions,
   useQuery,
 } from "@tanstack/react-query";
-import deepEqual from "deep-equal";
 import type { FirebaseError } from "firebase/app";
 import {
   type CallerSdkType,
@@ -12,7 +11,7 @@ import {
   type QueryResult,
   executeQuery,
 } from "firebase/data-connect";
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import type { PartialBy } from "../../utils";
 import type {
   QueryResultRequiredRef,
@@ -23,11 +22,6 @@ export type useDataConnectQueryOptions<
   TData = object,
   TError = FirebaseError,
 > = PartialBy<Omit<UseQueryOptions<TData, TError>, "queryFn">, "queryKey">;
-function getRef<Data, Variables>(
-  refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
-): QueryRef<Data, Variables> {
-  return "ref" in refOrResult ? refOrResult.ref : refOrResult;
-}
 
 export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   refOrResult: QueryRef<Data, Variables> | QueryResult<Data, Variables>,
@@ -37,24 +31,17 @@ export function useDataConnectQuery<Data = unknown, Variables = unknown>(
   const [dataConnectResult, setDataConnectResult] = useState<
     QueryResultRequiredRef<Data, Variables>
   >("ref" in refOrResult ? refOrResult : { ref: refOrResult });
-  const [ref, setRef] = useState(dataConnectResult.ref);
   // TODO(mtewani): in the future we should allow for users to pass in `QueryResult` objects into `initialData`.
-  const [initialData] = useState(
-    dataConnectResult.data || options?.initialData,
-  );
+  let initialData: Data | InitialDataFunction<Data> | undefined;
+  const { ref } = dataConnectResult;
 
-  useEffect(() => {
-    setRef((oldRef) => {
-      const newRef = getRef(refOrResult);
-      if (
-        newRef.name !== oldRef.name ||
-        !deepEqual(oldRef, newRef, { strict: true })
-      ) {
-        return newRef;
-      }
-      return oldRef;
-    });
-  }, [refOrResult]);
+  if ("ref" in refOrResult) {
+    initialData = {
+      ...refOrResult.data,
+    };
+  } else {
+    initialData = options?.initialData;
+  }
 
   // @ts-expect-error function is hidden under `DataConnect`.
   ref.dataConnect._setCallerSdkType(_callerSdkType);
