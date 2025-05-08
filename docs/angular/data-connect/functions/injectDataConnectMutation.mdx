@@ -19,7 +19,7 @@ See [mutations](/angular/data-connect/mutations) for more information.
 import { injectDataConnectMutation } from "@tanstack-query-firebase/angular/data-connect";
 import { createMovieRef } from "@your-package-name/your-connector";
 
-class AddMovieComponent() {
+class AddMovieComponent {
   createMovie = injectDataConnectMutation(
     createMovieRef
   );
