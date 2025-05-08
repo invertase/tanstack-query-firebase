@@ -269,4 +269,44 @@ describe("useDataConnectQuery", () => {
       { id: movieId },
     ]);
   });
+
+  test("fetches new data when variables change", async () => {
+    const movieData1 = {
+      title: "tanstack query firebase 1",
+      genre: "library 1",
+      imageUrl: "https://invertase.io/1",
+    };
+    const createdMovie = await createMovie(movieData1);
+    const movieData2 = {
+      title: "tanstack query firebase 2",
+      genre: "library 2",
+      imageUrl: "https://invertase.io/2",
+    };
+    const createdMovie2 = await createMovie(movieData2);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+    const movieId2 = createdMovie2?.data?.movie_insert?.id;
+    getMovieByIdRef({ id: movieId2 });
+    const ref = getMovieByIdRef({ id: movieId });
+    const { result } = renderHook(() => useDataConnectQuery(ref), {
+      wrapper,
+    });
+
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data?.movie?.title).toBe(movieData1?.title);
+      expect(result.current.data?.movie?.genre).toBe(movieData1?.genre);
+      expect(result.current.data?.movie?.imageUrl).toBe(movieData1?.imageUrl);
+    });
+    await act(async () => {
+      ref.variables.id = createdMovie2.data.movie_insert.id;
+      result.current.refetch();
+    });
+    await waitFor(() => {
+      expect(result.current.isSuccess).toBe(true);
+      expect(result.current.data?.movie?.title).toBe(movieData2?.title);
+      expect(result.current.data?.movie?.genre).toBe(movieData2?.genre);
+      expect(result.current.data?.movie?.imageUrl).toBe(movieData2?.imageUrl);
+    });
+  });
 });
