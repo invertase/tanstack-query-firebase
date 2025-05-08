@@ -1,0 +1,117 @@
+---
+title: Firebase Data Connect
+---
+
+Firebase Data Connect is a relational database service for mobile and web apps that lets you build and scale using a fully-managed PostgreSQL database powered by Cloud SQL. It provides secure schema, query and mutation management using GraphQL technology that integrates well with Firebase Authentication.
+
+To get started, ensure you have setup your Firebase project and have the Data Connect setup in your project. To learn more, 
+follow the [Firebase Data Connect documentation](https://firebase.google.com/docs/data-connect/quickstart).
+
+## Setup
+
+Before using the Tanstack Query Firebase injectors for Data Connect, ensure you have configured your application using your chosen connector:
+
+```ts
+// app.config.ts
+export const appConfig: ApplicationConfig = {
+  providers: [
+    ...
+    provideFirebaseApp(() =>
+      initializeApp(/*Replace with your firebase config*/)
+    ),
+    provideDataConnect(() => getDataConnect(connectorConfig)),
+    provideTanStackQuery(new QueryClient()),
+  ],
+};
+```
+
+## Importing
+
+The package exports are available via the `@tanstack-query-firebase/angular` package under the `data-connect` namespace:
+
+```ts
+import { injectDataConnectQuery } from "@tanstack-query-firebase/angular/data-connect";
+```
+
+## Basic Usage
+
+To use the Tanstack Query Firebase injectors, you can either use the generated SDKs, or the `injectDataConnectQuery` injector to fetch data from the database:
+
+### Using the Generated SDK
+
+The generated SDK reduces the boilerplate required to use Tanstack Query Firebase's injectors. Instead of having to provide a ref to `injectDataConnectQuery`, you simply need to call the generated
+injector function like so:
+
+```ts
+import { injectListMyPosts } from '@firebasegen/posts/angular'
+
+@Component({
+  ...
+  template: `
+    @if (posts.isPending()) {
+        Loading...
+    }
+    @if (posts.error()) {
+        An error has occurred: {{ posts.error() }}
+    }
+    @if (posts.data(); as data) {
+        @for (post of data.posts; track post.id) {
+        <mat-card appearance="outlined">
+            <mat-card-content>{{post.description}}</mat-card-content>
+        </mat-card>
+        } @empty {
+            <h2>No items!</h2>
+        }
+    }
+  `,
+})
+export class PostListComponent {
+  // Calls `injectDataConnectQuery` with the corresponding types.
+  posts = injectListMyPosts();
+}
+```
+
+### Using `injectDataConnectQuery`
+
+Alternatively, you can use the `injectDataConnectQuery` injector. To use this, you need to pass the Response and Data generics:
+
+```ts
+import { injectDataConnectQuery } from "@tanstack-query-firebase/angular";
+import { listMoviesRef } from "@firebasegen/posts";
+
+@Component({
+  ...
+  template: `
+    @if (posts.isPending()) {
+        Loading...
+    }
+    @if (posts.error()) {
+        An error has occurred: {{ posts.error() }}
+    }
+    @if (posts.data(); as data) {
+        @for (post of data.posts; track post.id) {
+        <mat-card appearance="outlined">
+            <mat-card-content>{{post.description}}</mat-card-content>
+        </mat-card>
+        } @empty {
+            <h2>No items!</h2>
+        }
+    }
+  `,
+})
+export class PostListComponent {
+  // Calls `injectDataConnectQuery` with the corresponding types.
+  // Alternatively:
+  // injectDataConnectQuery(queryRef<ListMoviesData, ListMoviesResponse>(dc, 'ListMovies'))
+  posts = injectDataConnectQuery(listMoviesRef());
+}
+```
+
+The injectors will automatically infer the data type from the connector and the query and automtically create a [query key](https://tanstack.com/query/latest/docs/framework/angular/guides/query-keys) for the query.
+
+## Learning more
+
+To learn more about the Data Connect functions, check out the following pages:
+
+- [Querying](/angular/data-connect/querying)
+- [Mutations](/angular/data-connect/mutations)
