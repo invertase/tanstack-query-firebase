@@ -1,3 +1,5 @@
+"use client";
+
 export {
   DataConnectQueryClient,
   type DataConnectQueryOptions,

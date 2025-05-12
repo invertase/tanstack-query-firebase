@@ -1,0 +1,85 @@
+name: Release Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Type of release'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      dry_run:
+        description: 'Dry run (no actual release)'
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run format checks
+        run: pnpm format:ci
+
+      - name: Start emulator and run tests
+        run: |
+          pnpm emulator &
+          EMULATOR_PID=$!
+          sleep 10  # Give emulator time to start
+          pnpm turbo test
+          kill $EMULATOR_PID
+
+      - name: Build packages
+        run: pnpm turbo build
+
+      # New step to create changesets if they don't exist
+      - name: Create changeset if needed
+        run: |
+          if [ -z "$(ls .changeset/*.md 2>/dev/null)" ]; then
+            echo "No changesets found. Creating changeset with ${{ inputs.release_type }} bump..."
+            pnpm changeset add --${{ inputs.release_type }}
+          else
+            echo "Existing changesets found. Using those for versioning."
+          fi
+
+      - name: Create Release Pull Request or Publish
+        if: ${{ !inputs.dry_run }}
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+          commit: "chore: version packages"
+          title: "chore: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Dry Run - Show Changes
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "This is a dry run. The following changes would be made:"
+          pnpm changeset version --dry-run

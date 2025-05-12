@@ -7,11 +7,21 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": ["dist/**"]
+		"ignore": [
+			"dist/**",
+			".next/**",
+			".turbo/**",
+			"dataconnect-sdk/**",
+			"**/node_modules/**",
+			"**/coverage/**",
+			"**/.dataconnect/**",
+			"**/*.gql"
+		]
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "space"
+		"indentStyle": "space",
+		"indentWidth": 2
 	},
 	"organizeImports": {
 		"enabled": true
@@ -21,7 +31,8 @@
 		"rules": {
 			"recommended": true,
 			"style": {
-				"noNonNullAssertion": "off"
+				"noNonNullAssertion": "off",
+				"useNodejsImportProtocol": "error"
 			},
 			"suspicious": {
 				"noExplicitAny": "off",
@@ -34,7 +45,18 @@
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "double"
+			"quoteStyle": "double",
+			"semicolons": "always"
+		}
+	},
+	"json": {
+		"parser": {
+			"allowComments": true
+		},
+		"formatter": {
+			"enabled": true,
+			"indentStyle": "space",
+			"indentWidth": 2
 		}
 	}
 }
