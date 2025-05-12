@@ -31,7 +31,9 @@
       ],
       "cache": false
     },
-    "//#format": {},
+    "//#format": {
+      "cache": false
+    },
     "//#format:fix": {
       "cache": false
     },
