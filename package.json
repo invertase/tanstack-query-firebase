@@ -3,7 +3,7 @@
   "private": true,
   "packageManager": "pnpm@8.15.4",
   "scripts": {
-    "test": "turbo test",
+    "test": "turbo test:ci",
     "serve:coverage": "npx serve coverage",
     "emulator": "firebase emulators:start --project test-project",
     "emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9",
