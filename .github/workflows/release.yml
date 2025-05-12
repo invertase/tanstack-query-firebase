@@ -43,7 +43,7 @@ jobs:
         run: pnpm install
 
       - name: Run format checks
-        run: pnpm format:ci
+        run: pnpm format
 
       - name: Start emulator and run tests
         run: |
