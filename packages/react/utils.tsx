@@ -1,7 +1,7 @@
 import {
   QueryClient,
   QueryClientProvider,
-  UseMutationResult,
+  type UseMutationResult,
 } from "@tanstack/react-query";
 import React, { type ReactNode } from "react";
 import { expect } from "vitest";

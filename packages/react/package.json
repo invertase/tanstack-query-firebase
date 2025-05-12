@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest --dom --coverage",
+    "test:ci": "vitest --dom --coverage --run",
     "build": "tsup",
     "serve:coverage": "npx serve coverage",
     "emulator": "firebase emulators:start --project test-project",
