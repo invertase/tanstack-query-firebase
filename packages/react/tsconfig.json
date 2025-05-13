@@ -1,19 +1,19 @@
 {
-	"compilerOptions": {
-		"target": "es2015",
-		"module": "esnext",
-		"moduleResolution": "node",
-		"declaration": true,
-		"jsx": "react-jsx",
-		"strict": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"types": ["vitest/globals"],
-		"paths": {
-			"~/testing-utils": ["./vitest/utils.ts"],
-			"@/dataconnect/*": ["../../dataconnect-sdk/js/*"]
-		}
-	},
-	"include": ["src", "utils.tsx"]
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "declaration": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["vitest/globals"],
+    "paths": {
+      "~/testing-utils": ["./vitest/utils.ts"],
+      "@/dataconnect/*": ["../../dataconnect-sdk/js/*"]
+    }
+  },
+  "include": ["src", "utils.tsx"]
 }

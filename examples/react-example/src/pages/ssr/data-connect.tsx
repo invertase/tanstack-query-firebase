@@ -6,23 +6,23 @@ import { DataConnectQueryClient } from "@tanstack-query-firebase/react/data-conn
 import type { InferGetStaticPropsType } from "next";
 
 export async function getStaticProps() {
-	const queryClient = new DataConnectQueryClient();
+  const queryClient = new DataConnectQueryClient();
 
-	await queryClient.prefetchDataConnectQuery(listMoviesRef());
+  await queryClient.prefetchDataConnectQuery(listMoviesRef());
 
-	return {
-		props: {
-			dehydratedState: dehydrate(queryClient),
-		},
-	};
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 }
 
 export default function MoviesRoute({
-	dehydratedState,
+  dehydratedState,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-	return (
-		<HydrationBoundary state={dehydratedState}>
-			<Movies />
-		</HydrationBoundary>
-	);
+  return (
+    <HydrationBoundary state={dehydratedState}>
+      <Movies />
+    </HydrationBoundary>
+  );
 }
