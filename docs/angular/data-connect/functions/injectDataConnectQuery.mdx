@@ -1,0 +1,43 @@
+---
+title: injectDataConnectQuery
+---
+
+`injectDataConnectQuery` is an injector designed to simplify data fetching and state management with Firebase Data Connect.
+
+See [querying](/angular/data-connect/querying) for more information.
+
+## Features
+
+- Provides <b>type-safe</b> handling of queries based on the Firebase Data Connect schema.
+- Simplifies data fetching using Firebase Data Connect.
+- Automatically manages <b>loading</b>, <b>success</b>, and <b>error</b> states.
+- Supports <b>refetching data</b> with integrated <b>caching</b>.
+
+## Usage
+
+```ts
+import { injectDataConnectQuery } from '@tanstack-query-firebase/angular/data-connect';
+import { listMoviesRef } from "@your-package-name/your-connector";
+
+// class
+export class MovieListComponent {
+  movies = injectDataConnectQuery(listMoviesRef());
+}
+
+// template
+@if (movies.isPending()) {
+    Loading...
+}
+@if (movies.error()) {
+    An error has occurred: {{ movies.error() }}
+}
+@if (movies.data(); as data) {
+    @for (movie of data.movies; track movie.id) {
+    <mat-card appearance="outlined">
+        <mat-card-content>{{movie.description}}</mat-card-content>
+    </mat-card>
+    } @empty {
+        <h2>No items!</h2>
+    }
+}
+```

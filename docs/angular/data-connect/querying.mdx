@@ -1,0 +1,81 @@
+---
+title: Querying
+description: Learn how to query data from Firebase Data Connect using the Tanstack Query Firebase injectors.
+---
+
+## Querying Data
+
+To query data from Firebase Data Connect, you can either use the generated injectors, or the `injectDataConnect` injector. This will automatically create a query key and infer the data type and variables associated with the query.
+
+```ts
+import { injectListMyPosts } from '@firebasegen/posts/angular'
+
+@Component({
+  ...
+  template: `
+    @if (movies.isPending()) {
+        Loading...
+    }
+    @if (movies.error()) {
+        An error has occurred: {{ movies.error() }}
+    }
+    @if (movies.data(); as data) {
+        @for (movie of data.movies; track movie.id) {
+        <mat-card appearance="outlined">
+            <mat-card-content>{{movie.description}}</mat-card-content>
+        </mat-card>
+        } @empty {
+            <h2>No items!</h2>
+        }
+    }
+  `,
+})
+export class PostListComponent {
+  // Calls `injectDataConnectQuery` with the respective types.
+  // Alternatively:
+  // import { injectDataConnectQuery } from '@tanstack-query-firebase/angular/data-connect';
+  // ...
+  // injectDataConnectQuery(listMoviesRef())
+  movies = injectListMovies();
+}
+```
+
+### Query Options
+
+To leverage the full power of Tanstack Query, you can pass in query options to the `injectDataConnectQuery` injector, for example to refetch the query on a interval:
+
+```ts
+movies = injectListMovies(
+  {
+    refetchInterval: 1000,
+  }
+);
+```
+The injector extends the [`injectQuery`](https://tanstack.com/query/latest/docs/framework/angular/reference/functions/injectquery) injector, so you can learn more about the available options by reading the [Tanstack Query documentation](https://tanstack.com/query/latest/docs/framework/angular/reference/functions/injectquery).
+
+### Overriding the query key
+
+To override the query key, you can pass in a custom query key to the `injectDataConnectQuery` injector:
+
+```ts
+movies = injectListMovies(
+  listMoviesRef(),
+  {
+    queryKey: ['movies', '1']
+  }
+);
+```
+Note that overriding the query key could mean your query is no longer synchronized with mutation invalidations or server side rendering pre-fetching.
+
+### Metadata
+
+Along with the data, the injector will also return the `ref`, `source`, and `fetchTime` metadata from the query.
+
+```ts
+const movies = injectListMovies();
+
+console.log(movies.dataConnectResult()?.ref);
+console.log(movies.dataConnectResult()?.source);
+console.log(movies.dataConnectResult()?.fetchTime);
+```
+

@@ -15,6 +15,11 @@
       "id": "react",
       "title": "React",
       "href": "/react"
+    },
+    {
+      "id": "angular",
+      "title": "Angular",
+      "href": "/angular"
     }
   ],
   "sidebar": [
@@ -39,6 +44,37 @@
         {
           "href": "/react",
           "title": "Introduction"
+        }
+      ]
+    },
+    {
+      "tab": "angular",
+      "group": "Data Connect",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/angular/data-connect"
+        },
+        {
+          "title": "Querying",
+          "href": "/angular/data-connect/querying"
+        },
+        {
+          "title": "Mutations",
+          "href": "/angular/data-connect/mutations"
+        },
+        {
+          "group": "Functions",
+          "pages": [
+            {
+              "title": "injectDataConnectQuery",
+              "href": "/angular/data-connect/functions/injectDataConnectQuery"
+            },
+            {
+              "title": "injectDataConnectMutation",
+              "href": "/angular/data-connect/functions/injectDataConnectMutation"
+            }
+          ]
         }
       ]
     },
