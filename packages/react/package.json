@@ -1,12 +1,11 @@
 {
 	"name": "@tanstack-query-firebase/react",
-	"version": "1.0.7",
+	"version": "2.0.0",
 	"description": "TanStack Query bindings for Firebase and React",
 	"type": "module",
 	"scripts": {
 		"test": "vitest --dom --coverage",
 		"build": "tsup",
-		"prepublishOnly": "pnpm build",
 		"serve:coverage": "npx serve coverage",
 		"emulator": "firebase emulators:start --project test-project",
 		"emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9",
