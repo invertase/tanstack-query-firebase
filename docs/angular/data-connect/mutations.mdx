@@ -1,0 +1,84 @@
+---
+title: Mutations
+description: Learn how to mutate data in Firebase Data Connect using the Tanstack Query Firebase injectors.
+---
+
+## Mutating Data
+
+To mutate data in Firebase Data Connect, you can either use the generated injectors, or use the `injectDataConnectMutation` injector.
+
+```ts
+import { injectCreateMovie } from "@firebasegen/movies/angular";
+
+@Component({
+  ...
+  template: `
+  <button
+    disabled={createMovie.isPending()}
+    (click)="addMovie()"
+  >
+    {{createMovie.isPending() ? "Creating..." : "Create Movie"}}
+  </button>
+  `
+})
+class AddMovieComponent() {
+  // Calls `injectDataConnectMutation` with the respective types.
+  // Alternatively:
+  // import { injectDataConnectMutation } from '@tanstack-query-firebase/angular/data-connect';
+  // ...
+  // createMovie = injectDataConnectMutation(createMovieRef);
+  createMovie = injectCreateMovie();
+  addMovie() {
+    createMovie.mutate({
+      title: 'John Wick',
+      genre: "Action",
+      imageUrl: "https://example.com/image.jpg",
+    });
+  }
+}
+```
+
+Additionally, you can provide a factory function to the mutation, which will be called with the mutation variables:
+
+```ts
+createMovie = injectDataConnectMutation(undefined, () => ({
+    mutationFn: (title: string) => createMovieRef({ title, reviewDate: Date.now() })
+}));
+
+// ...
+createMovie.mutate("John Wick");
+```
+
+## Invalidating Queries
+
+The function provides an additional [mutation option](https://tanstack.com/query/latest/docs/framework/angular/reference/functions/injectMutation) called `invalidate`. This option accepts a list of query references which will be automatically invalidated when the mutation is successful.
+
+You can also provide explicit references to the invalidate array, for example:
+
+```ts
+const createMovie = injectDataConnectMutation(createMovieRef, {
+  invalidate: [getMovieRef({ id: "1" })],
+});
+```
+
+In this case only the query reference `getMovieRef({ id: "1" })` will be invalidated.
+
+## Overriding the mutation key
+
+### Metadata
+
+Along with the data, the function will also return the `ref`, `source`, and `fetchTime` metadata from the mutation.
+
+```ts
+const createMovie = injectDataConnectMutation(createMovieRef);
+
+await createMovie.mutateAsync({
+  title: 'John Wick',
+  genre: "Action",
+  imageUrl: "https://example.com/image.jpg",
+});
+
+console.log(createMovie.dataConnectResult().ref);
+console.log(createMovie.dataConnectResult().source);
+console.log(createMovie.dataConnectResult().fetchTime);
+```
