@@ -25,11 +25,11 @@ describe("utils", () => {
     expect(nonEqualObjects).to.eq(false);
     const equalObjects = deepEqual({ a: "b" }, { a: "b" });
     expect(equalObjects).to.eq(true);
-    const equalObjectsWtesthOrder = deepEqual(
+    const equalObjectsWithOrder = deepEqual(
       { a: "b", b: "c" },
       { b: "c", a: "b" },
     );
-    expect(equalObjectsWtesthOrder).to.eq(true);
+    expect(equalObjectsWithOrder).to.eq(true);
     const nestedObjects = deepEqual(
       { a: { movie_insert: "b" } },
       { a: { movie_insert: "c" } },
