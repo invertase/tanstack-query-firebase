@@ -1,49 +1,49 @@
 {
-	"name": "@tanstack-query-firebase/react",
-	"version": "2.0.0",
-	"description": "TanStack Query bindings for Firebase and React",
-	"type": "module",
-	"scripts": {
-		"test": "vitest --dom --coverage",
-		"build": "tsup",
-		"serve:coverage": "npx serve coverage",
-		"emulator": "firebase emulators:start --project test-project",
-		"emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9",
-		"check": "tsc --noEmit",
-		"publish-package": "pnpm run build && cd dist && npm publish"
-	},
-	"exports": {
-		".": {
-			"import": "./index.js",
-			"types": "./index.d.ts"
-		},
-		"./auth": {
-			"import": "./auth/index.js",
-			"types": "./auth/index.d.ts"
-		},
-		"./firestore": {
-			"import": "./firestore/index.js",
-			"types": "./firestore/index.d.ts"
-		},
-		"./data-connect": {
-			"import": "./data-connect/index.js",
-			"types": "./data-connect/index.d.ts"
-		}
-	},
-	"author": {
-		"name": "Invertase",
-		"email": "oss@invertase.io",
-		"url": "https://github.com/invertase/tanstack-query-firebase"
-	},
-	"license": "Apache-2.0",
-	"devDependencies": {
-		"@dataconnect/default-connector": "workspace:*",
-		"@testing-library/react": "^16.0.1",
-		"@types/react": "^19.0.1",
-		"react": "^19.0.0"
-	},
-	"peerDependencies": {
-		"@tanstack/react-query": "^5",
-		"firebase": "^11.3.0"
-	}
+  "name": "@tanstack-query-firebase/react",
+  "version": "2.0.1",
+  "description": "TanStack Query bindings for Firebase and React",
+  "type": "module",
+  "scripts": {
+    "test": "vitest --dom --coverage",
+    "build": "tsup",
+    "serve:coverage": "npx serve coverage",
+    "emulator": "firebase emulators:start --project test-project",
+    "emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9",
+    "check": "tsc --noEmit",
+    "publish-package": "pnpm run build && cd dist && npm publish"
+  },
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    },
+    "./auth": {
+      "import": "./auth/index.js",
+      "types": "./auth/index.d.ts"
+    },
+    "./firestore": {
+      "import": "./firestore/index.js",
+      "types": "./firestore/index.d.ts"
+    },
+    "./data-connect": {
+      "import": "./data-connect/index.js",
+      "types": "./data-connect/index.d.ts"
+    }
+  },
+  "author": {
+    "name": "Invertase",
+    "email": "oss@invertase.io",
+    "url": "https://github.com/invertase/tanstack-query-firebase"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@dataconnect/default-connector": "workspace:*",
+    "@testing-library/react": "^16.0.1",
+    "@types/react": "^19.0.1",
+    "react": "^19.0.0"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5",
+    "firebase": "^11.3.0"
+  }
 }
