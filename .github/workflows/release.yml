@@ -4,16 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       release_type:
-        description: 'Type of release'
+        description: "Type of release"
         required: true
-        default: 'patch'
+        default: "patch"
         type: choice
         options:
           - patch
           - minor
           - major
       dry_run:
-        description: 'Dry run (no actual release)'
+        description: "Dry run (no actual release)"
         required: true
         default: false
         type: boolean
@@ -31,39 +31,36 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 8.15.4
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Run format checks
-        run: pnpm format
+        run: pnpm format:ci
 
-      - name: Start emulator and run tests
-        run: |
-          pnpm emulator &
-          EMULATOR_PID=$!
-          sleep 10  # Give emulator time to start
-          pnpm turbo test
-          kill $EMULATOR_PID
+      - name: Run tests with emulator
+        run: pnpm test:emulator
 
       - name: Build packages
         run: pnpm turbo build
 
-      # New step to create changesets if they don't exist
-      - name: Create changeset if needed
+      - name: Validate changesets
         run: |
           if [ -z "$(ls .changeset/*.md 2>/dev/null)" ]; then
-            echo "No changesets found. Creating changeset with ${{ inputs.release_type }} bump..."
-            pnpm changeset add --${{ inputs.release_type }}
+            echo "❌ No changesets found. Please create changesets locally with 'pnpm changeset' before releasing."
+            echo "Changesets should be created during development, not during release."
+            exit 1
           else
-            echo "Existing changesets found. Using those for versioning."
+            echo "✅ Found $(ls .changeset/*.md | wc -l) changeset(s)"
+            echo "Changesets:"
+            ls .changeset/*.md
           fi
 
       - name: Create Release Pull Request or Publish
@@ -81,5 +78,19 @@ jobs:
       - name: Dry Run - Show Changes
         if: ${{ inputs.dry_run }}
         run: |
-          echo "This is a dry run. The following changes would be made:"
+          echo "🔍 This is a dry run. The following changes would be made:"
+          echo ""
+          echo "📋 Changeset contents:"
+          for file in .changeset/*.md; do
+            if [ -f "$file" ]; then
+              echo "--- $file ---"
+              cat "$file"
+              echo ""
+            fi
+          done
+
+          echo "📦 Version changes that would be applied:"
           pnpm changeset version --dry-run
+
+          echo ""
+          echo "✅ Dry run completed successfully"

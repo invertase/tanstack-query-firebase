@@ -50,12 +50,41 @@ We use Biome for code formatting and linting. Available commands:
 
 ### Changesets
 
-We use Changesets for versioning and publishing packages. To create a new changeset:
+We use Changesets for versioning and publishing packages. Changesets should be created **during development**, not during release.
+
+#### Creating Changesets
+
+When making changes that should be released:
 
 1. Make your changes
-2. Run `pnpm changeset`
-3. Follow the prompts to describe your changes
-4. Commit the generated changeset file
+2. Run `pnpm changeset` to create a changeset:
+   ```bash
+   pnpm changeset
+   ```
+3. Follow the interactive prompts:
+   - Select which packages have changed
+   - Choose the version bump type (patch/minor/major)
+   - Write a description of your changes
+4. Commit the generated changeset file (`.changeset/*.md`)
+5. Submit a pull request
+
+#### Changeset Types
+
+- **patch**: Bug fixes and patches (e.g., `1.0.0` → `1.0.1`)
+- **minor**: New features (e.g., `1.0.0` → `1.1.0`)
+- **major**: Breaking changes (e.g., `1.0.0` → `2.0.0`)
+
+#### Example Changeset
+
+The command generates a file like `.changeset/abc123-feature-description.md`:
+```markdown
+---
+"@tanstack-query-firebase/react": minor
+"@tanstack-query-firebase/angular": patch
+---
+
+Added new authentication feature to React package and fixed bug in Angular package.
+```
 
 ## Testing
 
@@ -71,7 +100,12 @@ To run all tests through Turborepo:
 pnpm test
 ```
 
-Note: Make sure the Firebase emulator is running before executing tests.
+To run tests with Firebase emulator (recommended for CI):
+```bash
+pnpm test:emulator
+```
+
+Note: The `test:emulator` command uses `firebase emulators:exec` which automatically starts the emulator, runs tests, and shuts down the emulator when complete.
 
 ## GitHub Workflows
 
@@ -86,9 +120,10 @@ The project has two main workflows:
 
 2. **Release** (`release.yml`):
    - Manual trigger with release type selection
-   - Creates or updates changesets
+   - Validates that changesets exist (created during development)
+   - Runs tests and builds packages
    - Publishes packages to npm
-   - Supports dry runs
+   - Supports dry runs for validation
 
 ## Making Changes
 
@@ -97,8 +132,27 @@ The project has two main workflows:
 3. Add tests if applicable
 4. Run formatting: `pnpm format`
 5. Run tests: `pnpm test`
-6. Create a changeset if needed: `pnpm changeset`
-7. Submit a pull request
+6. **Create a changeset**: `pnpm changeset` (if changes should be released)
+7. Commit all changes including the changeset file
+8. Submit a pull request
+
+## Release Process
+
+### For Contributors
+1. Create changesets during development using `pnpm changeset`
+2. Ensure changesets are committed and merged to main
+3. Maintainers will handle the actual release
+
+### For Maintainers
+1. Ensure all changesets are merged to main
+2. Go to GitHub Actions → "Release Packages"
+3. Choose release type and whether to do a dry run
+4. The workflow will:
+   - Validate changesets exist
+   - Run tests and builds
+   - Create version bumps and publish to npm
+
+**Important**: Changesets must be created during development, not during release. The release workflow will fail if no changesets are found.
 
 ## Code Style
 
