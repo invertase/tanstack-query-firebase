@@ -1,5 +1,5 @@
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { type AuthError, type User, reload } from "firebase/auth";
+import { type AuthError, reload, type User } from "firebase/auth";
 
 type AuthMutationOptions<
   TData = unknown,

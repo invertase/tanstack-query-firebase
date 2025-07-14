@@ -1,6 +1,6 @@
-import { connectorConfig } from "@/dataconnect/default-connector";
 import { getDataConnect } from "firebase/data-connect";
 import { describe, expect, test } from "vitest";
+import { connectorConfig } from "@/dataconnect/default-connector";
 import { firebaseApp } from "~/testing-utils";
 import { validateReactArgs } from "./validateReactArgs";
 

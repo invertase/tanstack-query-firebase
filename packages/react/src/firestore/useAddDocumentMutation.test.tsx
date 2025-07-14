@@ -1,20 +1,19 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import {
   type CollectionReference,
-  type DocumentReference,
   collection,
+  type DocumentReference,
   getDoc,
 } from "firebase/firestore";
-import { beforeEach, describe, expect, test } from "vitest";
-import { useAddDocumentMutation } from "./useAddDocumentMutation";
-
 import { act } from "react";
+import { beforeEach, describe, expect, test } from "vitest";
 import {
   expectFirestoreError,
   firestore,
   wipeFirestore,
 } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
+import { useAddDocumentMutation } from "./useAddDocumentMutation";
 
 describe("useAddDocumentMutation", () => {
   beforeEach(async () => {

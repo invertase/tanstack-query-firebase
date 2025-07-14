@@ -1,14 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { act, renderHook, waitFor } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 import { doc, setDoc } from "firebase/firestore";
 import type React from "react";
-import type { ReactNode } from "react";
-import { beforeEach, describe, expect, test, vi } from "vitest";
-import {
-  expectFirestoreError,
-  firestore,
-  wipeFirestore,
-} from "~/testing-utils";
+import { beforeEach, describe, expect, test } from "vitest";
+import { firestore, wipeFirestore } from "~/testing-utils";
 import { useWaitForPendingWritesQuery } from "./useWaitForPendingWritesQuery";
 
 const queryClient = new QueryClient({

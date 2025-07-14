@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import type React from "react";
-import type { ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, wipeAuth } from "~/testing-utils";
 import { useSignInWithEmailAndPasswordMutation } from "./useSignInWithEmailAndPasswordMutation";

@@ -1,15 +1,4 @@
 import {
-  type CreateMutationOptions,
-  type CreateQueryOptions,
-  QueryClient,
-  type QueryKey,
-  injectMutation,
-  injectQuery,
-} from "@tanstack/angular-query-experimental";
-
-import type { FirebaseError } from "firebase/app";
-
-import {
   EnvironmentInjector,
   type Injector,
   inject,
@@ -19,13 +8,22 @@ import {
   type CallerSdkType,
   CallerSdkTypeEnum,
   DataConnect,
+  executeMutation,
+  executeQuery,
   type MutationRef,
   type MutationResult,
   type QueryRef,
   type QueryResult,
-  executeMutation,
-  executeQuery,
 } from "@angular/fire/data-connect";
+import {
+  type CreateMutationOptions,
+  type CreateQueryOptions,
+  injectMutation,
+  injectQuery,
+  QueryClient,
+  type QueryKey,
+} from "@tanstack/angular-query-experimental";
+import type { FirebaseError } from "firebase/app";
 import type {
   CreateDataConnectMutationResult,
   CreateDataConnectQueryResult,

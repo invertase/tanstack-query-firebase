@@ -1,8 +1,8 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import {
+  getRedirectResult,
   type PopupRedirectResolver,
   type UserCredential,
-  getRedirectResult,
 } from "firebase/auth";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, wipeAuth } from "~/testing-utils";

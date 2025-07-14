@@ -3,8 +3,8 @@ import {
   type DocumentData,
   type Firestore,
   type FirestoreError,
-  type Query,
   namedQuery,
+  type Query,
 } from "firebase/firestore";
 
 type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
@@ -13,8 +13,8 @@ type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<
 >;
 
 export function useNamedQuery<
-  AppModelType = DocumentData,
-  DbModelType extends DocumentData = DocumentData,
+  _AppModelType = DocumentData,
+  _DbModelType extends DocumentData = DocumentData,
 >(
   firestore: Firestore,
   name: string,

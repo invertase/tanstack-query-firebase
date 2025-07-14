@@ -8,10 +8,10 @@ import {
   type CallerSdkType,
   CallerSdkTypeEnum,
   type DataConnect,
+  executeMutation,
   type MutationRef,
   type MutationResult,
   type QueryRef,
-  executeMutation,
 } from "firebase/data-connect";
 import { useState } from "react";
 import type { UseDataConnectMutationResult } from "./types";

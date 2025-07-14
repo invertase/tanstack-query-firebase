@@ -3,8 +3,8 @@ import {
   type Auth,
   type AuthCredential,
   type AuthError,
-  type UserCredential,
   signInWithCredential,
+  type UserCredential,
 } from "firebase/auth";
 
 type AuthUseMutationOptions<TData = unknown, TError = Error> = Omit<

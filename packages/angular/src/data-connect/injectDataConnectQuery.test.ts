@@ -1,9 +1,3 @@
-import {
-  connectorConfig,
-  createMovie,
-  getMovieByIdRef,
-  listMoviesRef,
-} from "@/dataconnect/default-connector";
 import { provideHttpClient } from "@angular/common/http";
 import {
   inject,
@@ -12,17 +6,23 @@ import {
 import { TestBed } from "@angular/core/testing";
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import {
-  DataConnect,
   connectDataConnectEmulator,
+  DataConnect,
   getDataConnect,
   provideDataConnect,
 } from "@angular/fire/data-connect";
 import {
-  QueryClient,
   provideTanStackQuery,
+  QueryClient,
 } from "@tanstack/angular-query-experimental";
 import { waitFor } from "@testing-library/angular";
 import { beforeEach, describe, expect, test } from "vitest";
+import {
+  connectorConfig,
+  createMovie,
+  getMovieByIdRef,
+  listMoviesRef,
+} from "@/dataconnect/default-connector";
 import { injectDataConnectQuery } from "./index";
 
 // initialize firebase app

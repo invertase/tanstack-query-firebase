@@ -1,15 +1,15 @@
 import { type FirebaseApp, FirebaseError, initializeApp } from "firebase/app";
-import { getAuth, connectAuthEmulator, type Auth } from "firebase/auth";
-import {
-  getFirestore,
-  connectFirestoreEmulator,
-  type Firestore,
-} from "firebase/firestore";
-import { expect } from "vitest";
+import { type Auth, connectAuthEmulator, getAuth } from "firebase/auth";
 import {
   connectDataConnectEmulator,
   getDataConnect,
 } from "firebase/data-connect";
+import {
+  connectFirestoreEmulator,
+  type Firestore,
+  getFirestore,
+} from "firebase/firestore";
+import { expect } from "vitest";
 import { connectorConfig } from "@/dataconnect/default-connector";
 
 const firebaseTestingOptions = {
@@ -32,7 +32,7 @@ if (!firebaseApp) {
   connectDataConnectEmulator(
     getDataConnect(connectorConfig),
     "localhost",
-    9399
+    9399,
   );
 }
 
@@ -41,7 +41,7 @@ async function wipeFirestore() {
     "http://localhost:8080/emulator/v1/projects/test-project/databases/(default)/documents",
     {
       method: "DELETE",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -54,7 +54,7 @@ async function wipeAuth() {
     "http://localhost:9099/emulator/v1/projects/test-project/accounts",
     {
       method: "DELETE",
-    }
+    },
   );
 
   if (!response.ok) {
@@ -69,7 +69,7 @@ function expectFirestoreError(error: unknown, expectedCode: string) {
     expect(error.code).toBe(expectedCode);
   } else {
     throw new Error(
-      "Expected a Firestore error, but received a different type."
+      "Expected a Firestore error, but received a different type.",
     );
   }
 }
@@ -88,7 +88,7 @@ function expectFirebaseError(error: unknown, expectedCode: string) {
           : error,
     });
     throw new Error(
-      "Expected a Firebase error, but received a different type."
+      "Expected a Firebase error, but received a different type.",
     );
   }
 }

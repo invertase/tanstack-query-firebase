@@ -2,9 +2,9 @@ import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
   type Firestore,
   type FirestoreError,
+  runTransaction,
   type Transaction,
   type TransactionOptions,
-  runTransaction,
 } from "firebase/firestore";
 
 type RunTransactionFunction<T> = (transaction: Transaction) => Promise<T>;

@@ -5,9 +5,9 @@ import {
 } from "@tanstack/react-query";
 import type { FirebaseError } from "firebase/app";
 import {
+  executeQuery,
   type QueryRef,
   type QueryResult,
-  executeQuery,
 } from "firebase/data-connect";
 
 export type DataConnectQueryOptions<Data, Variables> = Omit<

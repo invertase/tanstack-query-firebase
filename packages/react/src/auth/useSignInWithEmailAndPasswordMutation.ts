@@ -2,8 +2,8 @@ import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
   type Auth,
   type AuthError,
-  type UserCredential,
   signInWithEmailAndPassword,
+  type UserCredential,
 } from "firebase/auth";
 
 type AuthUseMutationOptions<

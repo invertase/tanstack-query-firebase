@@ -6,13 +6,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import {
-  expectFirestoreError,
-  firestore,
-  wipeFirestore,
-} from "~/testing-utils";
-import { queryClient } from "../../utils";
-import { wrapper } from "../../utils";
+import { firestore, wipeFirestore } from "~/testing-utils";
+import { queryClient, wrapper } from "../../utils";
 import { useEnableNetworkMutation } from "./useEnableNetworkMutation";
 
 describe("useEnableNetworkMutation", () => {

@@ -3,9 +3,9 @@ import type { FirebaseError } from "firebase/app";
 import {
   type CallerSdkType,
   CallerSdkTypeEnum,
+  executeQuery,
   type QueryRef,
   type QueryResult,
-  executeQuery,
 } from "firebase/data-connect";
 import { useEffect, useState } from "react";
 import type { PartialBy } from "../../utils";

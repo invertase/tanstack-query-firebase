@@ -9,7 +9,7 @@ import {
   sum,
   where,
 } from "firebase/firestore";
-import React, { type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, test } from "vitest";
 import {
   expectFirestoreError,

@@ -9,7 +9,7 @@ import path from "node:path";
  * @returns The extracted code or null if not found.
  */
 async function getCodeFromLogs(
-  email: string,
+  _email: string,
   logPattern: RegExp,
   extractCodeFn: (line: string) => string | null,
 ): Promise<string | null> {
@@ -84,7 +84,10 @@ export async function waitForPasswordResetCode(
   interval = 100,
 ): Promise<string | null> {
   const logPattern = new RegExp(
-    `To reset the password for ${email.replace(".", "\\.")}.*?http://127\\.0\\.0\\.1:9099.*`,
+    `To reset the password for ${email.replace(
+      ".",
+      "\\.",
+    )}.*?http://127\\.0\\.0\\.1:9099.*`,
     "i",
   );
   return waitForCode(email, logPattern, extractOobCode, timeout, interval);
@@ -96,7 +99,10 @@ export async function waitForVerificationCode(
   interval = 100,
 ): Promise<string | null> {
   const logPattern = new RegExp(
-    `To verify the email address ${email.replace(".", "\\.")}.*?http://127\\.0\\.0\\.1:9099.*`,
+    `To verify the email address ${email.replace(
+      ".",
+      "\\.",
+    )}.*?http://127\\.0\\.0\\.1:9099.*`,
     "i",
   );
   return waitForCode(email, logPattern, extractOobCode, timeout, interval);
