@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.1/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -7,6 +7,17 @@
     "defaultBranch": "main"
   },
   "files": {
+    "includes": [
+      "**",
+      "!node_modules/**",
+      "!.pnpm-store/**",
+      "!dist/**",
+      "!.next/**",
+      "!.turbo/**",
+      "!dataconnect-sdk/**",
+      "!coverage/**",
+      "!.dataconnect/**"
+    ],
     "ignoreUnknown": false,
     "experimentalScannerIgnores": [
       "dist",
