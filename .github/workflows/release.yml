@@ -3,15 +3,6 @@ name: Release Packages
 on:
   workflow_dispatch:
     inputs:
-      release_type:
-        description: "Type of release"
-        required: true
-        default: "patch"
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
       dry_run:
         description: "Dry run (no actual release)"
         required: true
