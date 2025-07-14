@@ -1,8 +1,11 @@
-import { Movies } from "@/examples/data-connect";
 import { listMoviesRef } from "@dataconnect/default-connector";
-import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
-import { QueryClient } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { executeQuery } from "firebase/data-connect";
+import { Movies } from "@/examples/data-connect";
 
 import "@/firebase";
 

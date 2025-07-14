@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@angular/core": "^19.1.8",
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.1.1",
     "@changesets/cli": "^2.29.4",
     "@tanstack/angular-query-experimental": "5.66.4",
     "@tanstack/react-query": "^5.55.4",

@@ -1,8 +1,20 @@
 import { provideHttpClient } from "@angular/common/http";
+import { provideExperimentalZonelessChangeDetection } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
-
+import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import {
-  type UpsertMovieVariables,
+  connectDataConnectEmulator,
+  type DataConnect,
+  getDataConnect,
+  provideDataConnect,
+} from "@angular/fire/data-connect";
+import {
+  provideTanStackQuery,
+  QueryClient,
+} from "@tanstack/angular-query-experimental";
+import { waitFor } from "@testing-library/angular";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import {
   addMeta,
   connectorConfig,
   createMovie,
@@ -11,30 +23,10 @@ import {
   deleteMovieRef,
   getMovieByIdRef,
   listMoviesRef,
+  type UpsertMovieVariables,
   upsertMovieRef,
 } from "@/dataconnect/default-connector";
-import {
-  DataConnect,
-  connectDataConnectEmulator,
-  getDataConnect,
-  provideDataConnect,
-} from "@angular/fire/data-connect";
-import {
-  QueryClient,
-  provideTanStackQuery,
-} from "@tanstack/angular-query-experimental";
-import { waitFor } from "@testing-library/angular";
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { injectDataConnectMutation } from "./index";
-
-import {
-  Signal,
-  inject,
-  isSignal,
-  provideExperimentalZonelessChangeDetection,
-  untracked,
-} from "@angular/core";
-import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 
 // initialize firebase app
 initializeApp({ projectId: "p" });
@@ -102,9 +94,9 @@ describe("injectDataConnectMutation", () => {
     const mutation = TestBed.runInInjectionContext(() => {
       return injectDataConnectMutation(createMovieRef);
     });
-    const fdc = TestBed.runInInjectionContext(() => {
-      return inject(DataConnect);
-    });
+    // const fdc = TestBed.runInInjectionContext(() => {
+    //   return inject(DataConnect);
+    // });
 
     expect(mutation.isIdle()).toBe(true);
 
@@ -367,7 +359,7 @@ describe("injectDataConnectMutation", () => {
       injectDataConnectMutation(deleteMovieRef),
     );
 
-    const deleteData = createdMovies.map((movie, index) => ({
+    const deleteData = createdMovies.map((movie, _index) => ({
       id: movie.id,
     }));
 

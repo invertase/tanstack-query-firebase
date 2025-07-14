@@ -1,4 +1,3 @@
-import { connectorConfig } from "@/dataconnect/default-connector";
 import { type FirebaseApp, FirebaseError, initializeApp } from "firebase/app";
 import { type Auth, connectAuthEmulator, getAuth } from "firebase/auth";
 import {
@@ -6,11 +5,12 @@ import {
   getDataConnect,
 } from "firebase/data-connect";
 import {
-  type Firestore,
   connectFirestoreEmulator,
+  type Firestore,
   getFirestore,
 } from "firebase/firestore";
 import { expect } from "vitest";
+import { connectorConfig } from "@/dataconnect/default-connector";
 
 const firebaseTestingOptions = {
   projectId: "test-project",

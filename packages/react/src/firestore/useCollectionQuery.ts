@@ -2,11 +2,11 @@ import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
 import {
   type DocumentData,
   type FirestoreError,
-  type Query,
-  type QuerySnapshot,
   getDocs,
   getDocsFromCache,
   getDocsFromServer,
+  type Query,
+  type QuerySnapshot,
 } from "firebase/firestore";
 
 type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<

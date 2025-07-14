@@ -18,9 +18,7 @@ mutation DeleteMovie($id: UUID!) @auth(level: PUBLIC) {
 }
 
 mutation AddMeta @auth(level: PUBLIC) {
-  ref: meta_insert(data: {
-    ref: ""
-  })
+  ref: meta_insert(data: { ref: "" })
 }
 mutation DeleteMeta($id: UUID!) @auth(level: PUBLIC) {
   ref: meta_delete(id: $id)

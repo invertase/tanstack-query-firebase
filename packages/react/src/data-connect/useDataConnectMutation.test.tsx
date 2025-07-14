@@ -1,3 +1,5 @@
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import {
   addMeta,
   createMovie,
@@ -8,8 +10,6 @@ import {
   listMoviesRef,
   upsertMovieRef,
 } from "@/dataconnect/default-connector";
-import { act, renderHook, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, test, vi } from "vitest";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { useDataConnectMutation } from "./useDataConnectMutation";
@@ -387,7 +387,7 @@ describe("useDataConnectMutation", () => {
       },
     );
 
-    const deleteData = createdMovies.map((movie, index) => ({
+    const deleteData = createdMovies.map((movie, _index) => ({
       id: movie.id,
     }));
 

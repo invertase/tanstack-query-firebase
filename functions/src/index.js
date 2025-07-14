@@ -7,7 +7,7 @@ module.exports.test = functions.https.onCall((data) => {
   };
 });
 
-module.exports.getJoke = functions.https.onCall(async (data) => {
+module.exports.getJoke = functions.https.onCall(async (_data) => {
   return axios("https://api.icndb.com/jokes/random").then(
     (res) => res.data.value.joke,
   );

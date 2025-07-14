@@ -2,8 +2,8 @@ import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
   type Auth,
   type AuthError,
-  type User,
   deleteUser,
+  type User,
 } from "firebase/auth";
 
 type AuthUMutationOptions<
@@ -13,7 +13,7 @@ type AuthUMutationOptions<
 > = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn">;
 
 export function useDeleteUserMutation(
-  auth: Auth,
+  _auth: Auth,
   options?: AuthUMutationOptions<void, AuthError, User>,
 ) {
   return useMutation<void, AuthError, User>({

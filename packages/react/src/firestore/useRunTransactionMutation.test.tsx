@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { act, renderHook, waitFor } from "@testing-library/react";
-import { type Transaction, doc, getDoc, setDoc } from "firebase/firestore";
-import React, { type ReactNode } from "react";
+import { doc, getDoc, setDoc, type Transaction } from "firebase/firestore";
+import type { ReactNode } from "react";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { firestore, wipeFirestore } from "~/testing-utils";
 import { useRunTransactionMutation } from "./useRunTransactionMutation";

@@ -1,5 +1,6 @@
 import * as fs from "node:fs/promises";
 import { defineConfig } from "tsup";
+
 const supportedPackages = ["data-connect", "firestore", "auth"];
 export default defineConfig({
   entry: [`src/(${supportedPackages.join("|")})/index.ts`, "src/index.ts"],
@@ -7,7 +8,7 @@ export default defineConfig({
   dts: true, // generates .d.ts files
   outDir: "dist",
   external: ["react"],
-  esbuildOptions(options, context) {
+  esbuildOptions(options, _context) {
     options.outbase = "./src";
   },
   // splitting: false, // Disable code splitting to generate distinct files
