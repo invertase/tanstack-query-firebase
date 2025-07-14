@@ -39,9 +39,8 @@ export { useUpdateCurrentUserMutation } from "./useUpdateCurrentUserMutation";
 // useValidatePasswordMutation
 // useVerifyPasswordResetCodeMutation
 export { useVerifyPasswordResetCodeMutation } from "./useVerifyPasswordResetCodeMutation";
-// useDeleteUserMutation
+export { useLinkWithCredentialMutation } from "./useLinkWithCredentialMutation";
 export { useDeleteUserMutation } from "./useDeleteUserMutation";
-// useLinkWithCredentialMutation
 // useLinkWithPhoneNumberMutation
 // useLinkWithPopupMutation
 // useLinkWithRedirectMutation
