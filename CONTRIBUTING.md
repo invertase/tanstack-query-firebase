@@ -44,8 +44,7 @@ The Turborepo configuration ensures proper dependency management and caching for
 
 We use Biome for code formatting and linting. Available commands:
 
-- `pnpm format` - Format all files
-- `pnpm format:ci` - Check formatting without making changes
+- `pnpm format` - Check formatting without making changes
 - `pnpm format:fix` - Fix formatting issues
 
 ### Changesets
