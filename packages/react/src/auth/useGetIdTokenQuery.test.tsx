@@ -6,9 +6,9 @@ import {
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, wipeAuth } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
-import { useUserGetIdTokenMutation } from "./useUserGetIdTokenMutation";
+import { useGetIdTokenQuery } from "./useGetIdTokenQuery";
 
-describe("useUserGetIdTokenMutation", () => {
+describe("useGetIdTokenQuery", () => {
   const email = "tqf@invertase.io";
   const password = "TanstackQueryFirebase#123";
 
@@ -31,13 +31,10 @@ describe("useUserGetIdTokenMutation", () => {
     );
     const { user } = userCredential;
 
-    const { result } = renderHook(() => useUserGetIdTokenMutation(user), {
-      wrapper,
-    });
-
-    await act(async () => {
-      await result.current.mutateAsync(true);
-    });
+    const { result } = renderHook(
+      () => useGetIdTokenQuery(user, { auth: { forceRefresh: true } }),
+      { wrapper },
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
@@ -53,13 +50,10 @@ describe("useUserGetIdTokenMutation", () => {
     );
     const { user } = userCredential;
 
-    const { result } = renderHook(() => useUserGetIdTokenMutation(user), {
-      wrapper,
-    });
-
-    await act(async () => {
-      await result.current.mutateAsync(false);
-    });
+    const { result } = renderHook(
+      () => useGetIdTokenQuery(user, { auth: { forceRefresh: false } }),
+      { wrapper },
+    );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
@@ -67,26 +61,59 @@ describe("useUserGetIdTokenMutation", () => {
     expect(result.current.data?.length).toBeGreaterThan(0);
   });
 
-  test("executes onSuccess callback with token", async () => {
+  test("can refetch to force refresh token", async () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
       password,
     );
     const { user } = userCredential;
-    const onSuccess = vi.fn();
+
+    const { result } = renderHook(() => useGetIdTokenQuery(user), { wrapper });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // Refetch to get a new token
+    await act(async () => {
+      await result.current.refetch();
+    });
+
+    await waitFor(() => expect(result.current.isFetching).toBe(false));
+    expect(typeof result.current.data).toBe("string");
+    expect(result.current.data?.length).toBeGreaterThan(0);
+  });
+
+  test("retrieves cached token by default", async () => {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    const { user } = userCredential;
+
+    const { result } = renderHook(() => useGetIdTokenQuery(user), { wrapper });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(typeof result.current.data).toBe("string");
+    expect(result.current.data?.length).toBeGreaterThan(0);
+  });
+
+  test("respects enabled option", async () => {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    const { user } = userCredential;
 
     const { result } = renderHook(
-      () => useUserGetIdTokenMutation(user, { onSuccess }),
+      () => useGetIdTokenQuery(user, { enabled: false }),
       { wrapper },
     );
 
-    await act(async () => {
-      await result.current.mutateAsync(true);
-    });
-
-    await waitFor(() => expect(onSuccess).toHaveBeenCalled());
-    expect(typeof onSuccess.mock.calls[0][0]).toBe("string");
-    expect(onSuccess.mock.calls[0][0].length).toBeGreaterThan(0);
+    // Should not fetch when disabled
+    await waitFor(() => expect(result.current.status).toBe("pending"));
+    expect(result.current.data).toBeUndefined();
   });
 });
