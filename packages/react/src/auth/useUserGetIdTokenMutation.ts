@@ -1,10 +1,10 @@
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { type User, type AuthError, getIdToken } from "firebase/auth";
+import { type AuthError, getIdToken, type User } from "firebase/auth";
 
 type AuthUseMutationOptions<
   TData = unknown,
   TError = Error,
-  TVariables = void
+  TVariables = void,
 > = Omit<UseMutationOptions<TData, TError, TVariables>, "mutationFn"> & {
   auth?: {
     forceRefresh?: boolean;
@@ -13,7 +13,7 @@ type AuthUseMutationOptions<
 
 export function useUserGetIdTokenMutation(
   user: User,
-  options?: AuthUseMutationOptions<string, AuthError, boolean>
+  options?: AuthUseMutationOptions<string, AuthError, boolean>,
 ) {
   return useMutation<string, AuthError, boolean>({
     ...options,

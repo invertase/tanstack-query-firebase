@@ -5,8 +5,8 @@ import {
 } from "firebase/auth";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { auth, wipeAuth } from "~/testing-utils";
-import { useUserGetIdTokenMutation } from "./useUserGetIdTokenMutation";
 import { queryClient, wrapper } from "../../utils";
+import { useUserGetIdTokenMutation } from "./useUserGetIdTokenMutation";
 
 describe("useUserGetIdTokenMutation", () => {
   const email = "tqf@invertase.io";
@@ -27,7 +27,7 @@ describe("useUserGetIdTokenMutation", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const { user } = userCredential;
 
@@ -49,7 +49,7 @@ describe("useUserGetIdTokenMutation", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const { user } = userCredential;
 
@@ -71,14 +71,14 @@ describe("useUserGetIdTokenMutation", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const { user } = userCredential;
     const onSuccess = vi.fn();
 
     const { result } = renderHook(
       () => useUserGetIdTokenMutation(user, { onSuccess }),
-      { wrapper }
+      { wrapper },
     );
 
     await act(async () => {
