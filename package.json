@@ -3,7 +3,7 @@
   "private": true,
   "packageManager": "pnpm@10.10.0",
   "scripts": {
-    "test": "turbo test:ci",
+    "test": "turbo test",
     "test:emulator": "firebase emulators:exec --project test-project \"pnpm turbo test:ci\"",
     "serve:coverage": "npx serve coverage",
     "emulator": "firebase emulators:start --project test-project",

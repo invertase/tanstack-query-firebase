@@ -36,9 +36,10 @@ This project uses Turborepo for managing the monorepo. Key commands:
 
 - `pnpm turbo build` - Build all packages
 - `pnpm turbo test` - Run tests across all packages
-- `pnpm turbo dev` - Start development servers
 
 The Turborepo configuration ensures proper dependency management and caching for all tasks.
+
+> NOTE: For the `pnpm turbo test` command to work, please ensure to have the emulator running. The emulator can be started by running `pnpm emulator`.
 
 ### Biome
 
