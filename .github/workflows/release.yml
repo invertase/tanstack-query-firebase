@@ -65,6 +65,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install Firebase CLI
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 10
+          retry_wait_seconds: 60
+          max_attempts: 3
+          command: npm i -g firebase-tools@14
+
       - name: Run tests with emulator
         run: pnpm test:emulator
 
