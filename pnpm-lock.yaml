@@ -33,9 +33,6 @@ importers:
       '@vitest/coverage-istanbul':
         specifier: ^2.0.5
         version: 2.1.9(vitest@2.1.9(@types/node@20.17.19)(happy-dom@15.11.7))
-      firebase:
-        specifier: ^12.0.0
-        version: 12.0.0
       happy-dom:
         specifier: ^15.7.3
         version: 15.11.7
@@ -61,8 +58,8 @@ importers:
   dataconnect-sdk/js/default-connector:
     dependencies:
       firebase:
-        specifier: ^10.14.0 || ^11.3.0
-        version: 11.3.1
+        specifier: ^10.14.0 || ^11.3.0  || ^12.0.0
+        version: 12.0.0
 
   examples/react-example:
     dependencies:
@@ -158,9 +155,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5
         version: 5.66.9(react@19.0.0)
-      firebase:
-        specifier: ^11.3.0
-        version: 11.3.1
     devDependencies:
       '@dataconnect/default-connector':
         specifier: workspace:*
@@ -171,6 +165,9 @@ importers:
       '@types/react':
         specifier: ^19.0.1
         version: 19.0.10
+      firebase:
+        specifier: ^12.0.0
+        version: 12.0.0
       react:
         specifier: ^19.0.0
         version: 19.0.0
