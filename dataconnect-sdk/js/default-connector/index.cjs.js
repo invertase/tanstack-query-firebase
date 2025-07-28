@@ -1,87 +1,134 @@
-const { queryRef, executeQuery, mutationRef, executeMutation, validateArgs } = require('firebase/data-connect');
+const {
+  queryRef,
+  executeQuery,
+  mutationRef,
+  executeMutation,
+  validateArgs,
+} = require("firebase/data-connect");
 
 const connectorConfig = {
-  connector: 'default',
-  service: 'tanstack-query-firebase',
-  location: 'us-central1'
+  connector: "default",
+  service: "tanstack-query-firebase",
+  location: "us-central1",
 };
 exports.connectorConfig = connectorConfig;
 
-exports.createMovieRef = function createMovieRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+const createMovieRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(
+    connectorConfig,
+    dcOrVars,
+    vars,
+    true,
+  );
   dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'CreateMovie', inputVars);
-}
+  return mutationRef(dcInstance, "CreateMovie", inputVars);
+};
+createMovieRef.operationName = "CreateMovie";
+exports.createMovieRef = createMovieRef;
 
 exports.createMovie = function createMovie(dcOrVars, vars) {
   return executeMutation(createMovieRef(dcOrVars, vars));
 };
 
-exports.upsertMovieRef = function upsertMovieRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+const upsertMovieRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(
+    connectorConfig,
+    dcOrVars,
+    vars,
+    true,
+  );
   dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'UpsertMovie', inputVars);
-}
+  return mutationRef(dcInstance, "UpsertMovie", inputVars);
+};
+upsertMovieRef.operationName = "UpsertMovie";
+exports.upsertMovieRef = upsertMovieRef;
 
 exports.upsertMovie = function upsertMovie(dcOrVars, vars) {
   return executeMutation(upsertMovieRef(dcOrVars, vars));
 };
 
-exports.deleteMovieRef = function deleteMovieRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+const deleteMovieRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(
+    connectorConfig,
+    dcOrVars,
+    vars,
+    true,
+  );
   dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'DeleteMovie', inputVars);
-}
+  return mutationRef(dcInstance, "DeleteMovie", inputVars);
+};
+deleteMovieRef.operationName = "DeleteMovie";
+exports.deleteMovieRef = deleteMovieRef;
 
 exports.deleteMovie = function deleteMovie(dcOrVars, vars) {
   return executeMutation(deleteMovieRef(dcOrVars, vars));
 };
 
-exports.addMetaRef = function addMetaRef(dc) {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+const addMetaRef = (dc) => {
+  const { dc: dcInstance } = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'AddMeta');
-}
+  return mutationRef(dcInstance, "AddMeta");
+};
+addMetaRef.operationName = "AddMeta";
+exports.addMetaRef = addMetaRef;
 
 exports.addMeta = function addMeta(dc) {
   return executeMutation(addMetaRef(dc));
 };
 
-exports.deleteMetaRef = function deleteMetaRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+const deleteMetaRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(
+    connectorConfig,
+    dcOrVars,
+    vars,
+    true,
+  );
   dcInstance._useGeneratedSdk();
-  return mutationRef(dcInstance, 'DeleteMeta', inputVars);
-}
+  return mutationRef(dcInstance, "DeleteMeta", inputVars);
+};
+deleteMetaRef.operationName = "DeleteMeta";
+exports.deleteMetaRef = deleteMetaRef;
 
 exports.deleteMeta = function deleteMeta(dcOrVars, vars) {
   return executeMutation(deleteMetaRef(dcOrVars, vars));
 };
 
-exports.listMoviesRef = function listMoviesRef(dc) {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+const listMoviesRef = (dc) => {
+  const { dc: dcInstance } = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'ListMovies');
-}
+  return queryRef(dcInstance, "ListMovies");
+};
+listMoviesRef.operationName = "ListMovies";
+exports.listMoviesRef = listMoviesRef;
 
 exports.listMovies = function listMovies(dc) {
   return executeQuery(listMoviesRef(dc));
 };
 
-exports.getMovieByIdRef = function getMovieByIdRef(dcOrVars, vars) {
-  const { dc: dcInstance, vars: inputVars} = validateArgs(connectorConfig, dcOrVars, vars, true);
+const getMovieByIdRef = (dcOrVars, vars) => {
+  const { dc: dcInstance, vars: inputVars } = validateArgs(
+    connectorConfig,
+    dcOrVars,
+    vars,
+    true,
+  );
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetMovieById', inputVars);
-}
+  return queryRef(dcInstance, "GetMovieById", inputVars);
+};
+getMovieByIdRef.operationName = "GetMovieById";
+exports.getMovieByIdRef = getMovieByIdRef;
 
 exports.getMovieById = function getMovieById(dcOrVars, vars) {
   return executeQuery(getMovieByIdRef(dcOrVars, vars));
 };
 
-exports.getMetaRef = function getMetaRef(dc) {
-  const { dc: dcInstance} = validateArgs(connectorConfig, dc, undefined);
+const getMetaRef = (dc) => {
+  const { dc: dcInstance } = validateArgs(connectorConfig, dc, undefined);
   dcInstance._useGeneratedSdk();
-  return queryRef(dcInstance, 'GetMeta');
-}
+  return queryRef(dcInstance, "GetMeta");
+};
+getMetaRef.operationName = "GetMeta";
+exports.getMetaRef = getMetaRef;
 
 exports.getMeta = function getMeta(dc) {
   return executeQuery(getMetaRef(dc));

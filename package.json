@@ -1,17 +1,24 @@
 {
   "name": "@tanstack-query-firebase/root",
   "private": true,
+  "packageManager": "pnpm@10.10.0",
   "scripts": {
-    "test": "vitest --dom --coverage",
+    "test": "turbo test",
+    "test:emulator": "firebase emulators:exec --project test-project \"pnpm turbo test:ci\"",
     "serve:coverage": "npx serve coverage",
     "emulator": "firebase emulators:start --project test-project",
     "emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 | xargs kill -9",
-    "format:ci": "pnpm biome ci ./packages/react/src ./packages/angular/src",
-    "format": "pnpm biome check --write ./packages/react/src ./packages/angular/src"
+    "format": "biome check .",
+    "format:fix": "biome check . --write",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish",
+    "build": "turbo build"
   },
   "devDependencies": {
     "@angular/core": "^19.1.8",
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.1.1",
+    "@changesets/cli": "^2.29.4",
     "@tanstack/angular-query-experimental": "5.66.4",
     "@tanstack/react-query": "^5.55.4",
     "@types/jsonwebtoken": "^9.0.7",
@@ -21,6 +28,7 @@
     "jsonwebtoken": "^9.0.2",
     "react": "^19.0.0",
     "tsup": "^8.2.4",
+    "turbo": "^2.5.3",
     "typescript": "^5.6.2",
     "vitest": "^2.0.5"
   },

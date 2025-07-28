@@ -9,40 +9,56 @@ on:
       - main
 
 jobs:
-  test:
+  quality:
     runs-on: ubuntu-latest
     steps:
-      # Checkout the repository
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false # We'll do this later
-
-      # Setup Node.js with pnpm
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'pnpm'
+          node-version: "20"
 
-      # Install all dependencies at the root
-      - name: Install dependencies (pnpm)
-        run: pnpm install
-      - name: Check formatting
-        run: pnpm format:ci
-      - name: Start Firebase Emulator Suite
-        uses: invertase/firebase-emulator-action@v1.0.1
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
         with:
-          emulators: 'auth,firestore,functions,storage,database,dataconnect'
+          version: 8.15.4
 
-      - name: Verify Running Emulators
-        run: |
-          curl --silent http://localhost:4400/emulators | jq 'keys[]'
+      - name: Install dependencies
+        run: pnpm install
 
+      - name: Run format check
+        run: pnpm format
+
+  test:
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Firebase CLI
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 10
+          retry_wait_seconds: 60
+          max_attempts: 3
+          command: npm i -g firebase-tools@14
 
       # Determine which packages have changed
       - name: Determine changed packages
@@ -54,16 +70,7 @@ jobs:
               - 'packages/react/**'
             angular:
               - 'packages/angular/**'
-  
-      # Run tests for the React package if it has changed
-      - name: Run React Tests
-        if: steps.changes.outputs.react == 'true'
-        run: cd packages/react && pnpm vitest --dom
-      - name: Run Angular Tests
-        if: steps.changes.outputs.angular == 'true'
-        run: cd packages/angular && pnpm vitest --dom
 
-      # Run tests for the Vue package if it has changed
-      # - name: Run Vue Tests
-      #   if: steps.changes.outputs.vue == 'true'
-      #   run: pnpm --filter vue test
+      # Run tests with emulator for changed packages
+      - name: Run tests with emulator
+        run: pnpm test:emulator

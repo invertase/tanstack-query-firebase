@@ -1,8 +1,8 @@
 import { type UseMutationOptions, useMutation } from "@tanstack/react-query";
 import {
+  enableNetwork,
   type Firestore,
   type FirestoreError,
-  enableNetwork,
 } from "firebase/firestore";
 
 type FirestoreUseMutationOptions<TData = unknown, TError = Error> = Omit<

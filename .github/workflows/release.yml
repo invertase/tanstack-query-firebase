@@ -1,0 +1,115 @@
+name: Release Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (no actual release)"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run format check
+        run: pnpm format
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.4
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Firebase CLI
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 10
+          retry_wait_seconds: 60
+          max_attempts: 3
+          command: npm i -g firebase-tools@14
+
+      - name: Run tests with emulator
+        run: pnpm test:emulator
+
+      - name: Build packages
+        run: pnpm turbo build
+
+      - name: Validate changesets
+        run: |
+          if [ -z "$(ls .changeset/*.md 2>/dev/null)" ]; then
+            echo "❌ No changesets found. Please create changesets locally with 'pnpm changeset' before releasing."
+            echo "Changesets should be created during development, not during release."
+            exit 1
+          else
+            echo "✅ Found $(ls .changeset/*.md | wc -l) changeset(s)"
+            echo "Changesets:"
+            ls .changeset/*.md
+          fi
+
+      - name: Create Release Pull Request or Publish
+        if: ${{ !inputs.dry_run }}
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release
+          commit: "chore: version packages"
+          title: "chore: version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Dry Run - Show Changes
+        if: ${{ inputs.dry_run }}
+        run: |
+          echo "🔍 This is a dry run. The following changes would be made:"
+          echo ""
+          echo "📋 Changeset contents:"
+          for file in .changeset/*.md; do
+            if [ -f "$file" ]; then
+              echo "--- $file ---"
+              cat "$file"
+              echo ""
+            fi
+          done
+
+          echo "📦 Version changes that would be applied:"
+          pnpm changeset version --dry-run
+
+          echo ""
+          echo "✅ Dry run completed successfully"

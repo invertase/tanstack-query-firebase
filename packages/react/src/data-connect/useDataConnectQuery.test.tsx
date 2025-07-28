@@ -1,12 +1,12 @@
+import { dehydrate } from "@tanstack/react-query";
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { executeQuery } from "firebase/data-connect";
+import { beforeEach, describe, expect, test } from "vitest";
 import {
   createMovie,
   getMovieByIdRef,
   listMoviesRef,
 } from "@/dataconnect/default-connector";
-import { dehydrate } from "@tanstack/react-query";
-import { act, renderHook, waitFor } from "@testing-library/react";
-import { executeQuery } from "firebase/data-connect";
-import { beforeEach, describe, expect, test } from "vitest";
 import { firebaseApp } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
 import { DataConnectQueryClient } from "./query-client";
@@ -61,7 +61,7 @@ describe("useDataConnectQuery", () => {
       expect(result.current.dataConnectResult).toHaveProperty("fetchTime");
     });
 
-    const initialFetchTime = result.current?.dataConnectResult?.fetchTime;
+    // const initialFetchTime = result.current?.dataConnectResult?.fetchTime;
 
     await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 seconds delay before refetching
 
@@ -80,7 +80,7 @@ describe("useDataConnectQuery", () => {
       expect(result.current.data?.movies.length).toBeGreaterThanOrEqual(0);
     });
 
-    const refetchTime = result.current?.dataConnectResult?.fetchTime;
+    // const refetchTime = result.current?.dataConnectResult?.fetchTime;
   });
 
   test("returns correct data", async () => {

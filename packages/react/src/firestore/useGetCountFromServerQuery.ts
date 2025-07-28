@@ -4,8 +4,8 @@ import {
   type AggregateQuerySnapshot,
   type DocumentData,
   type FirestoreError,
-  type Query,
   getCountFromServer,
+  type Query,
 } from "firebase/firestore";
 
 type FirestoreUseQueryOptions<TData = unknown, TError = Error> = Omit<

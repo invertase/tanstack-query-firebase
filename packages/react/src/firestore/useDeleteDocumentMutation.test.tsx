@@ -6,14 +6,13 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { beforeEach, describe, expect, test } from "vitest";
-import { useDeleteDocumentMutation } from "./useDeleteDocumentMutation";
-
 import {
   expectFirestoreError,
   firestore,
   wipeFirestore,
 } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";
+import { useDeleteDocumentMutation } from "./useDeleteDocumentMutation";
 
 describe("useDeleteDocumentMutation", () => {
   beforeEach(async () => {
