@@ -67,7 +67,7 @@ The status of the following Firebase services and frameworks are as follows:
 | messaging      |        |       |       |         |        |
 | performance    |        |       |       |         |        |
 | remote-config  |        |       |       |         |        |
-| vertexai       |        |       |       |         |        |
+| ai             |        |       |       |         |        |
 
 ## License
 
