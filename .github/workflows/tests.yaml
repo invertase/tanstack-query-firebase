@@ -107,7 +107,7 @@ jobs:
 
       # Build packages before testing
       - name: Build packages
-        run: pnpm turbo build
+        run: pnpm turbo build --filter=@tanstack-query-firebase/react --filter=@tanstack-query-firebase/angular
 
       # Verify build outputs
       - name: Verify build outputs
@@ -122,7 +122,7 @@ jobs:
               fi
             fi
           done
-          
+
           if [ -n "$MISSING_BUILDS" ]; then
             echo "❌ Build outputs not found for: $MISSING_BUILDS"
             exit 1

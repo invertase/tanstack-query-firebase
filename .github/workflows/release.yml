@@ -105,7 +105,7 @@ jobs:
         run: pnpm test:emulator
 
       - name: Build packages
-        run: pnpm turbo build
+        run: pnpm turbo build --filter=@tanstack-query-firebase/react --filter=@tanstack-query-firebase/angular
 
       - name: Verify build outputs
         run: |
@@ -120,19 +120,19 @@ jobs:
               fi
             fi
           done
-          
+
           if [ -n "$MISSING_BUILDS" ]; then
             echo "❌ Build outputs missing for: $MISSING_BUILDS"
             exit 1
           fi
-          
+
           echo "✅ All build outputs verified"
 
       - name: Validate changesets
         run: |
           set -e
           CHANGESET_FILES=$(find .changeset -name "*.md" -type f ! -name "README.md" 2>/dev/null || true)
-          
+
           if [ -z "$CHANGESET_FILES" ]; then
             echo "❌ No changesets found!"
             echo ""
@@ -140,7 +140,7 @@ jobs:
             echo "Changesets should be created during development, not during release."
             exit 1
           fi
-          
+
           CHANGESET_COUNT=$(echo "$CHANGESET_FILES" | wc -l | tr -d ' ')
           echo "✅ Found $CHANGESET_COUNT changeset(s):"
           echo "$CHANGESET_FILES" | while read -r file; do
@@ -177,7 +177,7 @@ jobs:
           # Configure git user for changeset version command
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           # Save current HEAD reference before making changes
           ORIGINAL_HEAD=$(git rev-parse HEAD)
           # Create a temporary branch for dry run with unique name
@@ -185,11 +185,11 @@ jobs:
           TEMP_BRANCH="dry-run-temp-$FALLBACK_ID"
           git checkout -b "$TEMP_BRANCH"
           pnpm changeset version
-          
+
           echo ""
           echo "🔍 Changed files:"
           git diff --name-status "$ORIGINAL_HEAD"
-          
+
           echo ""
           echo "🔍 Package version changes:"
           VERSION_CHANGES=$(git diff "$ORIGINAL_HEAD" -- '**/package.json' | grep -E "^[+-]\s*\"version\"" || true)
@@ -198,10 +198,10 @@ jobs:
           else
             echo "$VERSION_CHANGES"
           fi
-          
+
           # Clean up
           git checkout -
           git branch -D "$TEMP_BRANCH"
-          
+
           echo ""
           echo "✅ Dry run completed successfully"
