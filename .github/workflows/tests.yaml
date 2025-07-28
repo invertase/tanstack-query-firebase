@@ -8,9 +8,15 @@ on:
     branches:
       - main
 
+# Cancel in-progress runs when a new run is queued on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,20 +26,36 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
         with:
-          version: 8.15.4
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install
 
       - name: Run format check
-        run: pnpm format
+        run: pnpm format --unsafe
 
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     needs: quality
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,13 +63,25 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: ${{ matrix.node-version }}
           registry-url: "https://registry.npmjs.org"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
         with:
-          version: 8.15.4
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install
@@ -70,6 +104,19 @@ jobs:
               - 'packages/react/**'
             angular:
               - 'packages/angular/**'
+
+      # Build packages before testing
+      - name: Build packages
+        run: pnpm turbo build
+
+      # Verify build outputs
+      - name: Verify build outputs
+        run: |
+          if [ ! -d "packages/react/dist" ] || [ ! -d "packages/angular/dist" ]; then
+            echo "❌ Build outputs not found!"
+            exit 1
+          fi
+          echo "✅ Build outputs verified"
 
       # Run tests with emulator for changed packages
       - name: Run tests with emulator
