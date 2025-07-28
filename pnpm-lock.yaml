@@ -58,8 +58,8 @@ importers:
   dataconnect-sdk/js/default-connector:
     dependencies:
       firebase:
-        specifier: ^10.14.0 || ^11.3.0  || ^12.0.0
-        version: 12.0.0
+        specifier: ^10.14.0 || ^11.3.0
+        version: 11.10.0
 
   examples/react-example:
     dependencies:
