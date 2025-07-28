@@ -54,6 +54,8 @@ jobs:
         run: pnpm install
 
       - name: Run format check
+        # The --unsafe flag is required in CI to bypass interactive prompts
+        # that would otherwise cause the command to hang in automated environments
         run: pnpm format --unsafe
 
   release:
@@ -130,7 +132,6 @@ jobs:
       - name: Validate changesets
         run: |
           set -e
-          
           CHANGESET_FILES=$(find .changeset -name "*.md" -type f ! -name "README.md" 2>/dev/null || true)
           
           if [ -z "$CHANGESET_FILES" ]; then
@@ -174,8 +175,9 @@ jobs:
           done
 
           echo "📦 Version changes that would be applied:"
-          # Create a temporary branch for dry run
-          git checkout -b dry-run-temp
+          # Create a temporary branch for dry run with unique name
+          TEMP_BRANCH="dry-run-temp-$(date +%s)"
+          git checkout -b "$TEMP_BRANCH"
           pnpm changeset version
           
           echo ""
@@ -188,7 +190,7 @@ jobs:
           
           # Clean up
           git checkout -
-          git branch -D dry-run-temp
+          git branch -D "$TEMP_BRANCH"
           
           echo ""
           echo "✅ Dry run completed successfully"
