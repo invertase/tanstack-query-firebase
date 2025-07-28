@@ -126,7 +126,7 @@ jobs:
           done
           
           if [ -n "$MISSING_BUILDS" ]; then
-            echo "❌ Build outputs not found for:$MISSING_BUILDS"
+            echo "❌ Build outputs not found for: $MISSING_BUILDS"
             exit 1
           fi
           echo "✅ All build outputs verified"

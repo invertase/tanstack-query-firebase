@@ -123,7 +123,7 @@ jobs:
           fi
           
           if [ -n "$MISSING_BUILDS" ]; then
-            echo "❌ Build outputs missing for:$MISSING_BUILDS"
+            echo "❌ Build outputs missing for: $MISSING_BUILDS"
             exit 1
           fi
           
@@ -178,7 +178,8 @@ jobs:
           # Save current HEAD reference before making changes
           ORIGINAL_HEAD=$(git rev-parse HEAD)
           # Create a temporary branch for dry run with unique name
-          TEMP_BRANCH="dry-run-temp-${GITHUB_RUN_ID:-$(date +%s)}"
+          FALLBACK_ID=${GITHUB_RUN_ID:-$RANDOM$RANDOM}
+          TEMP_BRANCH="dry-run-temp-$FALLBACK_ID"
           git checkout -b "$TEMP_BRANCH"
           pnpm changeset version
           
