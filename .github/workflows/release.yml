@@ -72,14 +72,15 @@ jobs:
 
       - name: Validate changesets
         run: |
-          if [ -z "$(ls .changeset/*.md 2>/dev/null)" ]; then
+          # Check if .changeset directory exists and contains .md files
+          if [ ! -d .changeset ] || [ -z "$(find .changeset -name '*.md' -type f 2>/dev/null | head -1)" ]; then
             echo "❌ No changesets found. Please create changesets locally with 'pnpm changeset' before releasing."
             echo "Changesets should be created during development, not during release."
             exit 1
           else
-            echo "✅ Found $(ls .changeset/*.md | wc -l) changeset(s)"
+            echo "✅ Found $(find .changeset -name '*.md' -type f | wc -l) changeset(s)"
             echo "Changesets:"
-            ls .changeset/*.md
+            find .changeset -name '*.md' -type f
           fi
 
       - name: Create Release Pull Request or Publish
@@ -100,13 +101,13 @@ jobs:
           echo "🔍 This is a dry run. The following changes would be made:"
           echo ""
           echo "📋 Changeset contents:"
-          for file in .changeset/*.md; do
+          while IFS= read -r -d '' file; do
             if [ -f "$file" ]; then
               echo "--- $file ---"
               cat "$file"
               echo ""
             fi
-          done
+          done < <(find .changeset -name '*.md' -type f -print0 2>/dev/null)
 
           echo "📦 Version changes that would be applied:"
           pnpm changeset version --dry-run
