@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,6 +32,46 @@ jobs:
 
       - name: Run format check
         run: pnpm format
+
+      # Determine which packages have changed
+      - name: Determine changed packages
+        id: quality-changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            react:
+              - 'packages/react/**'
+            angular:
+              - 'packages/angular/**'
+
+      - name: Check for changesets
+        run: |
+          # Check if any packages have changed
+          if [[ "${{ steps.quality-changes.outputs.react }}" == "true" ]] || [[ "${{ steps.quality-changes.outputs.angular }}" == "true" ]]; then
+            # Check if .changeset directory exists and contains .md files
+            if [ ! -d .changeset ] || [ -z "$(ls .changeset/*.md 2>/dev/null)" ]; then
+              echo "❌ Changes detected in packages but no changesets found."
+              echo ""
+              echo "Please create a changeset with 'pnpm changeset' for changes that should be released."
+              echo "If these changes don't need a release, please add a comment explaining why."
+              echo ""
+              echo "Changed packages:"
+              if [[ "${{ steps.quality-changes.outputs.react }}" == "true" ]]; then
+                echo "- React package"
+              fi
+              if [[ "${{ steps.quality-changes.outputs.angular }}" == "true" ]]; then
+                echo "- Angular package"
+              fi
+              exit 1
+            else
+              echo "✅ Found changesets for package changes"
+              echo ""
+              echo "Changesets:"
+              ls .changeset/*.md
+            fi
+          else
+            echo "ℹ️  No package changes detected, skipping changeset check"
+          fi
 
   test:
     runs-on: ubuntu-latest
