@@ -2,7 +2,7 @@
 // useConfirmationResultConfirmMutation (ConfirmationResult)
 // useUserDeleteMutation (User)
 // userUserGetIdTokenResultMutation (User)
-// useUserGetIdTokenMutation (User)
+export { useUserGetIdTokenMutation } from "./useUserGetIdTokenMutation";
 // useUserReloadMutation (User)
 // useVerifyPhoneNumberMutation (PhoneAuthProvider)
 // useMultiFactorUserEnrollMutation (MultiFactorUser)
