@@ -114,11 +114,22 @@ jobs:
       # Verify build outputs
       - name: Verify build outputs
         run: |
-          if [ ! -d "packages/react/dist" ] || [ ! -d "packages/angular/dist" ]; then
-            echo "❌ Build outputs not found!"
+          # Check all packages for dist directories
+          MISSING_BUILDS=""
+          for PKG_DIR in packages/*; do
+            if [ -d "$PKG_DIR" ] && [ -f "$PKG_DIR/package.json" ]; then
+              PKG_NAME=$(basename "$PKG_DIR")
+              if [ ! -d "$PKG_DIR/dist" ]; then
+                MISSING_BUILDS="$MISSING_BUILDS $PKG_NAME"
+              fi
+            fi
+          done
+          
+          if [ -n "$MISSING_BUILDS" ]; then
+            echo "❌ Build outputs not found for:$MISSING_BUILDS"
             exit 1
           fi
-          echo "✅ Build outputs verified"
+          echo "✅ All build outputs verified"
 
       # Run tests with emulator for changed packages
       - name: Run tests with emulator

@@ -175,18 +175,20 @@ jobs:
           done
 
           echo "📦 Version changes that would be applied:"
+          # Save current HEAD reference before making changes
+          ORIGINAL_HEAD=$(git rev-parse HEAD)
           # Create a temporary branch for dry run with unique name
-          TEMP_BRANCH="dry-run-temp-$(date +%s)"
+          TEMP_BRANCH="dry-run-temp-${GITHUB_RUN_ID:-$(date +%s)}"
           git checkout -b "$TEMP_BRANCH"
           pnpm changeset version
           
           echo ""
           echo "🔍 Changed files:"
-          git diff --name-status HEAD~1
+          git diff --name-status "$ORIGINAL_HEAD"
           
           echo ""
           echo "🔍 Package version changes:"
-          git diff HEAD~1 -- '**/package.json' | grep -E "^[+-]\s*\"version\"" || true
+          git diff "$ORIGINAL_HEAD" -- '**/package.json' | grep -E "^[+-]\s*\"version\"" || true
           
           # Clean up
           git checkout -
