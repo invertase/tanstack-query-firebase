@@ -8,7 +8,7 @@
 // useMultiFactorUserEnrollMutation (MultiFactorUser)
 // useMultiFactorUserUnenrollMutation (MultiFactorUser)
 // useMultiFactorUserGetSessionMutation (MultiFactorUser)
-// useMultiFactorResolverResolveSignInMutation (MultiFactorResolver)
+export { useMultiFactorResolverResolveSignInMutation } from "./useMultiFactorResolverResolveSignInMutation";
 // useApplyActionCodeMutation
 
 export { useApplyActionCodeMutation } from "./useApplyActionCodeMutation";
