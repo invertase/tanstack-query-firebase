@@ -9,9 +9,21 @@ on:
         default: false
         type: boolean
 
+# Ensure only one release can run at a time
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+# Minimal permissions for security
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 jobs:
   quality:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,10 +33,22 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
         with:
-          version: 8.15.4
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install
@@ -35,6 +59,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     needs: quality
     steps:
       - name: Checkout
@@ -48,10 +73,22 @@ jobs:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
         with:
-          version: 8.15.4
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install
@@ -70,17 +107,45 @@ jobs:
       - name: Build packages
         run: pnpm turbo build
 
+      - name: Verify build outputs
+        run: |
+          echo "Checking build outputs..."
+          # Check all packages for dist directories
+          MISSING_BUILDS=""
+          for PKG_DIR in packages/*; do
+            if [ -d "$PKG_DIR" ] && [ -f "$PKG_DIR/package.json" ]; then
+              PKG_NAME=$(basename "$PKG_DIR")
+              if [ ! -d "$PKG_DIR/dist" ]; then
+                MISSING_BUILDS="$MISSING_BUILDS $PKG_NAME"
+              fi
+            fi
+          done
+          
+          if [ -n "$MISSING_BUILDS" ]; then
+            echo "❌ Build outputs missing for: $MISSING_BUILDS"
+            exit 1
+          fi
+          
+          echo "✅ All build outputs verified"
+
       - name: Validate changesets
         run: |
-          if [ -z "$(ls .changeset/*.md 2>/dev/null)" ]; then
-            echo "❌ No changesets found. Please create changesets locally with 'pnpm changeset' before releasing."
+          set -e
+          CHANGESET_FILES=$(find .changeset -name "*.md" -type f ! -name "README.md" 2>/dev/null || true)
+          
+          if [ -z "$CHANGESET_FILES" ]; then
+            echo "❌ No changesets found!"
+            echo ""
+            echo "Please create changesets locally with: pnpm changeset"
             echo "Changesets should be created during development, not during release."
             exit 1
-          else
-            echo "✅ Found $(ls .changeset/*.md | wc -l) changeset(s)"
-            echo "Changesets:"
-            ls .changeset/*.md
           fi
+          
+          CHANGESET_COUNT=$(echo "$CHANGESET_FILES" | wc -l | tr -d ' ')
+          echo "✅ Found $CHANGESET_COUNT changeset(s):"
+          echo "$CHANGESET_FILES" | while read -r file; do
+            echo "  - $(basename "$file")"
+          done
 
       - name: Create Release Pull Request or Publish
         if: ${{ !inputs.dry_run }}
@@ -101,15 +166,42 @@ jobs:
           echo ""
           echo "📋 Changeset contents:"
           for file in .changeset/*.md; do
-            if [ -f "$file" ]; then
-              echo "--- $file ---"
+            if [ -f "$file" ] && [ "$(basename "$file")" != "README.md" ]; then
+              echo "--- $(basename "$file") ---"
               cat "$file"
               echo ""
             fi
           done
 
           echo "📦 Version changes that would be applied:"
-          pnpm changeset version --dry-run
-
+          # Configure git user for changeset version command
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Save current HEAD reference before making changes
+          ORIGINAL_HEAD=$(git rev-parse HEAD)
+          # Create a temporary branch for dry run with unique name
+          FALLBACK_ID=${GITHUB_RUN_ID:-$RANDOM$RANDOM}
+          TEMP_BRANCH="dry-run-temp-$FALLBACK_ID"
+          git checkout -b "$TEMP_BRANCH"
+          pnpm changeset version
+          
+          echo ""
+          echo "🔍 Changed files:"
+          git diff --name-status "$ORIGINAL_HEAD"
+          
+          echo ""
+          echo "🔍 Package version changes:"
+          VERSION_CHANGES=$(git diff "$ORIGINAL_HEAD" -- '**/package.json' | grep -E "^[+-]\s*\"version\"" || true)
+          if [ -z "$VERSION_CHANGES" ]; then
+            echo "  No version changes detected (this might indicate an issue with changesets)"
+          else
+            echo "$VERSION_CHANGES"
+          fi
+          
+          # Clean up
+          git checkout -
+          git branch -D "$TEMP_BRANCH"
+          
           echo ""
           echo "✅ Dry run completed successfully"
