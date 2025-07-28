@@ -47,9 +47,7 @@ jobs:
         run: pnpm install
 
       - name: Run format check
-        # The --unsafe flag is required in CI to bypass interactive prompts
-        # that would otherwise cause the command to hang in automated environments
-        run: pnpm format --unsafe
+        run: pnpm format
 
   test:
     runs-on: ubuntu-latest
@@ -57,7 +55,7 @@ jobs:
     needs: quality
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

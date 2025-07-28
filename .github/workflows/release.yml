@@ -54,9 +54,7 @@ jobs:
         run: pnpm install
 
       - name: Run format check
-        # The --unsafe flag is required in CI to bypass interactive prompts
-        # that would otherwise cause the command to hang in automated environments
-        run: pnpm format --unsafe
+        run: pnpm format
 
   release:
     name: Release
@@ -112,15 +110,16 @@ jobs:
       - name: Verify build outputs
         run: |
           echo "Checking build outputs..."
+          # Check all packages for dist directories
           MISSING_BUILDS=""
-          
-          if [ ! -d "packages/react/dist" ]; then
-            MISSING_BUILDS="$MISSING_BUILDS react"
-          fi
-          
-          if [ ! -d "packages/angular/dist" ]; then
-            MISSING_BUILDS="$MISSING_BUILDS angular"
-          fi
+          for PKG_DIR in packages/*; do
+            if [ -d "$PKG_DIR" ] && [ -f "$PKG_DIR/package.json" ]; then
+              PKG_NAME=$(basename "$PKG_DIR")
+              if [ ! -d "$PKG_DIR/dist" ]; then
+                MISSING_BUILDS="$MISSING_BUILDS $PKG_NAME"
+              fi
+            fi
+          done
           
           if [ -n "$MISSING_BUILDS" ]; then
             echo "❌ Build outputs missing for: $MISSING_BUILDS"
@@ -175,6 +174,10 @@ jobs:
           done
 
           echo "📦 Version changes that would be applied:"
+          # Configure git user for changeset version command
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
           # Save current HEAD reference before making changes
           ORIGINAL_HEAD=$(git rev-parse HEAD)
           # Create a temporary branch for dry run with unique name
@@ -189,7 +192,12 @@ jobs:
           
           echo ""
           echo "🔍 Package version changes:"
-          git diff "$ORIGINAL_HEAD" -- '**/package.json' | grep -E "^[+-]\s*\"version\"" || true
+          VERSION_CHANGES=$(git diff "$ORIGINAL_HEAD" -- '**/package.json' | grep -E "^[+-]\s*\"version\"" || true)
+          if [ -z "$VERSION_CHANGES" ]; then
+            echo "  No version changes detected (this might indicate an issue with changesets)"
+          else
+            echo "$VERSION_CHANGES"
+          fi
           
           # Clean up
           git checkout -
