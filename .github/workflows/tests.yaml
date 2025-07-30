@@ -122,7 +122,7 @@ jobs:
               fi
             fi
           done
-          
+
           if [ -n "$MISSING_BUILDS" ]; then
             echo "❌ Build outputs not found for: $MISSING_BUILDS"
             exit 1
@@ -132,3 +132,53 @@ jobs:
       # Run tests with emulator for changed packages
       - name: Run tests with emulator
         run: pnpm test:emulator
+
+  test-firebase12:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: quality
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Firebase CLI
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 10
+          retry_wait_seconds: 60
+          max_attempts: 3
+          command: npm i -g firebase-tools@14
+
+      # Build packages before testing
+      - name: Build packages
+        run: pnpm turbo build
+
+      # Run tests with Firebase 12
+      - name: Run tests with Firebase 12
+        run: pnpm test:firebase12
