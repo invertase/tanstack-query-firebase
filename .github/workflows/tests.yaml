@@ -66,6 +66,11 @@ jobs:
           max_attempts: 3
           command: npm i -g firebase-tools@14
 
+      - name: Regenerate DataConnect connector with Firebase 12
+        run: |
+          cd dataconnect
+          firebase dataconnect:sdk:generate
+
       # Determine which packages have changed
       - name: Determine changed packages
         id: changes
@@ -132,6 +137,11 @@ jobs:
           retry_wait_seconds: 60
           max_attempts: 3
           command: npm i -g firebase-tools@14
+
+      - name: Regenerate DataConnect connector with Firebase 12
+        run: |
+          cd dataconnect
+          firebase dataconnect:sdk:generate
 
       # Build packages before testing
       - name: Build packages
