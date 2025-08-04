@@ -38,7 +38,6 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@dataconnect/default-connector": "workspace:*",
     "@dataconnect/default-connector-v11": "workspace:*",
     "@dataconnect/default-connector-v12": "workspace:*",
     "@testing-library/react": "^16.0.1",

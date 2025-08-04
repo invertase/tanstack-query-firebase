@@ -1,4 +1,4 @@
-import { connectorConfig } from "@dataconnect/default-connector";
+import { connectorConfig } from "@dataconnect/default-connector-v12";
 import { getApps, initializeApp } from "firebase/app";
 import {
   connectDataConnectEmulator,

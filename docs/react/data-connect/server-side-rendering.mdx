@@ -18,7 +18,7 @@ The following example demonstrates how to do this with the `DataConnectQueryClie
 ```tsx
 import type { InferGetStaticPropsType } from "next";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { listMoviesRef } from "@dataconnect/default-connector";
+import { listMoviesRef } from "@dataconnect/your-connector";
 import { DataConnectQueryClient } from "@tanstack-query-firebase/react/data-connect";
 
 export async function getStaticProps() {
@@ -74,7 +74,7 @@ If you are oping into using React Server Components, you can similarly use the `
 
 ```tsx
 import { Movies } from "@/examples/data-connect";
-import { listMoviesRef } from "@dataconnect/default-connector";
+import { listMoviesRef } from "@dataconnect/your-connector";
 import { DataConnectQueryClient } from "@tanstack-query-firebase/react/data-connect";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 

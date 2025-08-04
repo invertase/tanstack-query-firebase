@@ -9,7 +9,7 @@ To query data from Firebase Data Connect, you can use the `useDataConnectQuery` 
 
 ```tsx
 import { useDataConnectQuery } from "@tanstack-query-firebase/react/data-connect";
-import { listMoviesRef } from "@dataconnect/default-connector";
+import { listMoviesRef } from "@dataconnect/your-connector";
 
 function Component() {
   const { data, isPending, isSuccess, isError, error } = useDataConnectQuery(

@@ -1,4 +1,4 @@
-import { listMoviesRef } from "@dataconnect/default-connector";
+import { listMoviesRef } from "@dataconnect/default-connector-v12";
 import {
   dehydrate,
   HydrationBoundary,
