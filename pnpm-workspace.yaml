@@ -2,3 +2,9 @@ packages:
   - 'examples/*'
   - 'packages/*'
   - 'dataconnect-sdk/js/*'
+
+catalogs:
+  firebase11:
+    firebase: ^11.3.0
+  firebase12:
+    firebase: ^12.0.0

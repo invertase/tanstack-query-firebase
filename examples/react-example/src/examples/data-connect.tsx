@@ -1,6 +1,9 @@
 "use client";
 
-import { createMovieRef, listMoviesRef } from "@dataconnect/default-connector";
+import {
+  createMovieRef,
+  listMoviesRef,
+} from "@dataconnect/default-connector-v12";
 import {
   useDataConnectMutation,
   useDataConnectQuery,

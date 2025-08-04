@@ -1,5 +1,5 @@
 # Generated TypeScript README
-This README will guide you through the process of using the generated JavaScript SDK package for the connector `default`. It will also provide examples on how to use your generated SDK to call your Data Connect queries and mutations.
+This README will guide you through the process of using the generated JavaScript SDK package for the connector `default-connector-v12`. It will also provide examples on how to use your generated SDK to call your Data Connect queries and mutations.
 
 ***NOTE:** This README is generated alongside the generated SDK. If you make changes to this file, they will be overwritten when the SDK is regenerated.*
 
@@ -19,15 +19,15 @@ This README will guide you through the process of using the generated JavaScript
   - [*DeleteMeta*](#deletemeta)
 
 # Accessing the connector
-A connector is a collection of Queries and Mutations. One SDK is generated for each connector - this SDK is generated for the connector `default`. You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
+A connector is a collection of Queries and Mutations. One SDK is generated for each connector - this SDK is generated for the connector `default-connector-v12`. You can find more information about connectors in the [Data Connect documentation](https://firebase.google.com/docs/data-connect#how-does).
 
-You can use this generated SDK by importing from the package `@dataconnect/default-connector` as shown below. Both CommonJS and ESM imports are supported.
+You can use this generated SDK by importing from the package `@dataconnect/default-connector-v12` as shown below. Both CommonJS and ESM imports are supported.
 
 You can also follow the instructions from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#set-client).
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig } from '@dataconnect/default-connector';
+import { connectorConfig } from '@dataconnect/default-connector-v12';
 
 const dataConnect = getDataConnect(connectorConfig);
 ```
@@ -40,7 +40,7 @@ You can also follow the emulator instructions from the [Data Connect documentati
 
 ```typescript
 import { connectDataConnectEmulator, getDataConnect } from 'firebase/data-connect';
-import { connectorConfig } from '@dataconnect/default-connector';
+import { connectorConfig } from '@dataconnect/default-connector-v12';
 
 const dataConnect = getDataConnect(connectorConfig);
 connectDataConnectEmulator(dataConnect, 'localhost', 9399);
@@ -61,10 +61,10 @@ The following is true for both the action shortcut function and the `QueryRef` f
 - If the Query accepts arguments, both the action shortcut function and the `QueryRef` function accept a single argument: an object that contains all the required variables (and the optional variables) for the Query
 - Both functions can be called with or without passing in a `DataConnect` instance as an argument. If no `DataConnect` argument is passed in, then the generated SDK will call `getDataConnect(connectorConfig)` behind the scenes for you.
 
-Below are examples of how to use the `default` connector's generated functions to execute each query. You can also follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#using-queries).
+Below are examples of how to use the `default-connector-v12` connector's generated functions to execute each query. You can also follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#using-queries).
 
 ## ListMovies
-You can execute the `ListMovies` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+You can execute the `ListMovies` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector-v12/index.d.ts](./index.d.ts):
 ```typescript
 listMovies(): QueryPromise<ListMoviesData, undefined>;
 
@@ -97,7 +97,7 @@ The `ListMovies` query has no variables.
 ### Return Type
 Recall that executing the `ListMovies` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `ListMoviesData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `ListMoviesData`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface ListMoviesData {
   movies: ({
@@ -112,7 +112,7 @@ export interface ListMoviesData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, listMovies } from '@dataconnect/default-connector';
+import { connectorConfig, listMovies } from '@dataconnect/default-connector-v12';
 
 
 // Call the `listMovies()` function to execute the query.
@@ -136,7 +136,7 @@ listMovies().then((response) => {
 
 ```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, listMoviesRef } from '@dataconnect/default-connector';
+import { connectorConfig, listMoviesRef } from '@dataconnect/default-connector-v12';
 
 
 // Call the `listMoviesRef()` function to get a reference to the query.
@@ -160,7 +160,7 @@ executeQuery(ref).then((response) => {
 ```
 
 ## GetMovieById
-You can execute the `GetMovieById` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+You can execute the `GetMovieById` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector-v12/index.d.ts](./index.d.ts):
 ```typescript
 getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
 
@@ -189,7 +189,7 @@ console.log(name);
 ```
 
 ### Variables
-The `GetMovieById` query requires an argument of type `GetMovieByIdVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `GetMovieById` query requires an argument of type `GetMovieByIdVariables`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 
 ```typescript
 export interface GetMovieByIdVariables {
@@ -199,7 +199,7 @@ export interface GetMovieByIdVariables {
 ### Return Type
 Recall that executing the `GetMovieById` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `GetMovieByIdData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `GetMovieByIdData`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface GetMovieByIdData {
   movie?: {
@@ -214,7 +214,7 @@ export interface GetMovieByIdData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, getMovieById, GetMovieByIdVariables } from '@dataconnect/default-connector';
+import { connectorConfig, getMovieById, GetMovieByIdVariables } from '@dataconnect/default-connector-v12';
 
 // The `GetMovieById` query requires an argument of type `GetMovieByIdVariables`:
 const getMovieByIdVars: GetMovieByIdVariables = {
@@ -244,7 +244,7 @@ getMovieById(getMovieByIdVars).then((response) => {
 
 ```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, getMovieByIdRef, GetMovieByIdVariables } from '@dataconnect/default-connector';
+import { connectorConfig, getMovieByIdRef, GetMovieByIdVariables } from '@dataconnect/default-connector-v12';
 
 // The `GetMovieById` query requires an argument of type `GetMovieByIdVariables`:
 const getMovieByIdVars: GetMovieByIdVariables = {
@@ -274,7 +274,7 @@ executeQuery(ref).then((response) => {
 ```
 
 ## GetMeta
-You can execute the `GetMeta` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+You can execute the `GetMeta` query using the following action shortcut function, or by calling `executeQuery()` after calling the following `QueryRef` function, both of which are defined in [default-connector-v12/index.d.ts](./index.d.ts):
 ```typescript
 getMeta(): QueryPromise<GetMetaData, undefined>;
 
@@ -307,7 +307,7 @@ The `GetMeta` query has no variables.
 ### Return Type
 Recall that executing the `GetMeta` query returns a `QueryPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `GetMetaData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `GetMetaData`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface GetMetaData {
   ref: ({
@@ -319,7 +319,7 @@ export interface GetMetaData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, getMeta } from '@dataconnect/default-connector';
+import { connectorConfig, getMeta } from '@dataconnect/default-connector-v12';
 
 
 // Call the `getMeta()` function to execute the query.
@@ -343,7 +343,7 @@ getMeta().then((response) => {
 
 ```typescript
 import { getDataConnect, executeQuery } from 'firebase/data-connect';
-import { connectorConfig, getMetaRef } from '@dataconnect/default-connector';
+import { connectorConfig, getMetaRef } from '@dataconnect/default-connector-v12';
 
 
 // Call the `getMetaRef()` function to get a reference to the query.
@@ -379,10 +379,10 @@ The following is true for both the action shortcut function and the `MutationRef
 - If the Mutation accepts arguments, both the action shortcut function and the `MutationRef` function accept a single argument: an object that contains all the required variables (and the optional variables) for the Mutation
 - Both functions can be called with or without passing in a `DataConnect` instance as an argument. If no `DataConnect` argument is passed in, then the generated SDK will call `getDataConnect(connectorConfig)` behind the scenes for you.
 
-Below are examples of how to use the `default` connector's generated functions to execute each mutation. You can also follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#using-mutations).
+Below are examples of how to use the `default-connector-v12` connector's generated functions to execute each mutation. You can also follow the examples from the [Data Connect documentation](https://firebase.google.com/docs/data-connect/web-sdk#using-mutations).
 
 ## CreateMovie
-You can execute the `CreateMovie` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+You can execute the `CreateMovie` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector-v12/index.d.ts](./index.d.ts):
 ```typescript
 createMovie(vars: CreateMovieVariables): MutationPromise<CreateMovieData, CreateMovieVariables>;
 
@@ -411,7 +411,7 @@ console.log(name);
 ```
 
 ### Variables
-The `CreateMovie` mutation requires an argument of type `CreateMovieVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `CreateMovie` mutation requires an argument of type `CreateMovieVariables`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 
 ```typescript
 export interface CreateMovieVariables {
@@ -423,7 +423,7 @@ export interface CreateMovieVariables {
 ### Return Type
 Recall that executing the `CreateMovie` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `CreateMovieData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `CreateMovieData`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface CreateMovieData {
   movie_insert: Movie_Key;
@@ -433,7 +433,7 @@ export interface CreateMovieData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, createMovie, CreateMovieVariables } from '@dataconnect/default-connector';
+import { connectorConfig, createMovie, CreateMovieVariables } from '@dataconnect/default-connector-v12';
 
 // The `CreateMovie` mutation requires an argument of type `CreateMovieVariables`:
 const createMovieVars: CreateMovieVariables = {
@@ -465,7 +465,7 @@ createMovie(createMovieVars).then((response) => {
 
 ```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
-import { connectorConfig, createMovieRef, CreateMovieVariables } from '@dataconnect/default-connector';
+import { connectorConfig, createMovieRef, CreateMovieVariables } from '@dataconnect/default-connector-v12';
 
 // The `CreateMovie` mutation requires an argument of type `CreateMovieVariables`:
 const createMovieVars: CreateMovieVariables = {
@@ -497,7 +497,7 @@ executeMutation(ref).then((response) => {
 ```
 
 ## UpsertMovie
-You can execute the `UpsertMovie` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+You can execute the `UpsertMovie` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector-v12/index.d.ts](./index.d.ts):
 ```typescript
 upsertMovie(vars: UpsertMovieVariables): MutationPromise<UpsertMovieData, UpsertMovieVariables>;
 
@@ -526,7 +526,7 @@ console.log(name);
 ```
 
 ### Variables
-The `UpsertMovie` mutation requires an argument of type `UpsertMovieVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `UpsertMovie` mutation requires an argument of type `UpsertMovieVariables`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 
 ```typescript
 export interface UpsertMovieVariables {
@@ -538,7 +538,7 @@ export interface UpsertMovieVariables {
 ### Return Type
 Recall that executing the `UpsertMovie` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `UpsertMovieData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `UpsertMovieData`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface UpsertMovieData {
   movie_upsert: Movie_Key;
@@ -548,7 +548,7 @@ export interface UpsertMovieData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, upsertMovie, UpsertMovieVariables } from '@dataconnect/default-connector';
+import { connectorConfig, upsertMovie, UpsertMovieVariables } from '@dataconnect/default-connector-v12';
 
 // The `UpsertMovie` mutation requires an argument of type `UpsertMovieVariables`:
 const upsertMovieVars: UpsertMovieVariables = {
@@ -580,7 +580,7 @@ upsertMovie(upsertMovieVars).then((response) => {
 
 ```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
-import { connectorConfig, upsertMovieRef, UpsertMovieVariables } from '@dataconnect/default-connector';
+import { connectorConfig, upsertMovieRef, UpsertMovieVariables } from '@dataconnect/default-connector-v12';
 
 // The `UpsertMovie` mutation requires an argument of type `UpsertMovieVariables`:
 const upsertMovieVars: UpsertMovieVariables = {
@@ -612,7 +612,7 @@ executeMutation(ref).then((response) => {
 ```
 
 ## DeleteMovie
-You can execute the `DeleteMovie` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+You can execute the `DeleteMovie` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector-v12/index.d.ts](./index.d.ts):
 ```typescript
 deleteMovie(vars: DeleteMovieVariables): MutationPromise<DeleteMovieData, DeleteMovieVariables>;
 
@@ -641,7 +641,7 @@ console.log(name);
 ```
 
 ### Variables
-The `DeleteMovie` mutation requires an argument of type `DeleteMovieVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `DeleteMovie` mutation requires an argument of type `DeleteMovieVariables`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 
 ```typescript
 export interface DeleteMovieVariables {
@@ -651,7 +651,7 @@ export interface DeleteMovieVariables {
 ### Return Type
 Recall that executing the `DeleteMovie` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `DeleteMovieData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `DeleteMovieData`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface DeleteMovieData {
   movie_delete?: Movie_Key | null;
@@ -661,7 +661,7 @@ export interface DeleteMovieData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, deleteMovie, DeleteMovieVariables } from '@dataconnect/default-connector';
+import { connectorConfig, deleteMovie, DeleteMovieVariables } from '@dataconnect/default-connector-v12';
 
 // The `DeleteMovie` mutation requires an argument of type `DeleteMovieVariables`:
 const deleteMovieVars: DeleteMovieVariables = {
@@ -691,7 +691,7 @@ deleteMovie(deleteMovieVars).then((response) => {
 
 ```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
-import { connectorConfig, deleteMovieRef, DeleteMovieVariables } from '@dataconnect/default-connector';
+import { connectorConfig, deleteMovieRef, DeleteMovieVariables } from '@dataconnect/default-connector-v12';
 
 // The `DeleteMovie` mutation requires an argument of type `DeleteMovieVariables`:
 const deleteMovieVars: DeleteMovieVariables = {
@@ -721,7 +721,7 @@ executeMutation(ref).then((response) => {
 ```
 
 ## AddMeta
-You can execute the `AddMeta` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+You can execute the `AddMeta` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector-v12/index.d.ts](./index.d.ts):
 ```typescript
 addMeta(): MutationPromise<AddMetaData, undefined>;
 
@@ -754,7 +754,7 @@ The `AddMeta` mutation has no variables.
 ### Return Type
 Recall that executing the `AddMeta` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `AddMetaData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `AddMetaData`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface AddMetaData {
   ref: Meta_Key;
@@ -764,7 +764,7 @@ export interface AddMetaData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, addMeta } from '@dataconnect/default-connector';
+import { connectorConfig, addMeta } from '@dataconnect/default-connector-v12';
 
 
 // Call the `addMeta()` function to execute the mutation.
@@ -788,7 +788,7 @@ addMeta().then((response) => {
 
 ```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
-import { connectorConfig, addMetaRef } from '@dataconnect/default-connector';
+import { connectorConfig, addMetaRef } from '@dataconnect/default-connector-v12';
 
 
 // Call the `addMetaRef()` function to get a reference to the mutation.
@@ -812,7 +812,7 @@ executeMutation(ref).then((response) => {
 ```
 
 ## DeleteMeta
-You can execute the `DeleteMeta` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector/index.d.ts](./index.d.ts):
+You can execute the `DeleteMeta` mutation using the following action shortcut function, or by calling `executeMutation()` after calling the following `MutationRef` function, both of which are defined in [default-connector-v12/index.d.ts](./index.d.ts):
 ```typescript
 deleteMeta(vars: DeleteMetaVariables): MutationPromise<DeleteMetaData, DeleteMetaVariables>;
 
@@ -841,7 +841,7 @@ console.log(name);
 ```
 
 ### Variables
-The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 
 ```typescript
 export interface DeleteMetaVariables {
@@ -851,7 +851,7 @@ export interface DeleteMetaVariables {
 ### Return Type
 Recall that executing the `DeleteMeta` mutation returns a `MutationPromise` that resolves to an object with a `data` property.
 
-The `data` property is an object of type `DeleteMetaData`, which is defined in [default-connector/index.d.ts](./index.d.ts). It has the following fields:
+The `data` property is an object of type `DeleteMetaData`, which is defined in [default-connector-v12/index.d.ts](./index.d.ts). It has the following fields:
 ```typescript
 export interface DeleteMetaData {
   ref?: Meta_Key | null;
@@ -861,7 +861,7 @@ export interface DeleteMetaData {
 
 ```typescript
 import { getDataConnect } from 'firebase/data-connect';
-import { connectorConfig, deleteMeta, DeleteMetaVariables } from '@dataconnect/default-connector';
+import { connectorConfig, deleteMeta, DeleteMetaVariables } from '@dataconnect/default-connector-v12';
 
 // The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`:
 const deleteMetaVars: DeleteMetaVariables = {
@@ -891,7 +891,7 @@ deleteMeta(deleteMetaVars).then((response) => {
 
 ```typescript
 import { getDataConnect, executeMutation } from 'firebase/data-connect';
-import { connectorConfig, deleteMetaRef, DeleteMetaVariables } from '@dataconnect/default-connector';
+import { connectorConfig, deleteMetaRef, DeleteMetaVariables } from '@dataconnect/default-connector-v12';
 
 // The `DeleteMeta` mutation requires an argument of type `DeleteMetaVariables`:
 const deleteMetaVars: DeleteMetaVariables = {

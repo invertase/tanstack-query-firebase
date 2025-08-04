@@ -30,6 +30,21 @@ pnpm emulator
 
 ## Development Tools
 
+### Firebase Multi-Version Support
+
+This monorepo supports multiple Firebase versions simultaneously:
+- The React package supports both Firebase 11 and 12
+- The Angular package is locked to Firebase 11 (due to @angular/fire compatibility)
+
+To handle type differences between Firebase versions, we use separate Data Connect connectors:
+- `connector-v11`: Used for Firebase 11 compatibility
+- `connector-v12`: Used for Firebase 12 compatibility
+
+The connectors generate identical functionality but with version-specific types. This approach ensures:
+- Type safety at compile time
+- No runtime version detection needed
+- Clean separation of version-specific code
+
 ### Turborepo
 
 This project uses Turborepo for managing the monorepo. Key commands:

@@ -13,7 +13,8 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && changeset publish",
-    "build": "turbo build"
+    "build": "turbo build",
+    "generate:connectors": "./scripts/generate-connectors.sh"
   },
   "devDependencies": {
     "@angular/core": "^19.1.8",
