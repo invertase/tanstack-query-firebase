@@ -9,7 +9,11 @@ export default defineConfig({
       "~/testing-utils": path.resolve(__dirname, "../../vitest/utils"),
       "@/dataconnect/default-connector": path.resolve(
         __dirname,
-        "../../dataconnect-sdk/js/default-connector",
+        "../../dataconnect-sdk/js/default-connector-v11",
+      ),
+      "@dataconnect/default-connector-v11": path.resolve(
+        __dirname,
+        "../../dataconnect-sdk/js/default-connector-v11",
       ),
     },
   },

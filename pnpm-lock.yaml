@@ -4,6 +4,12 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  firebase11:
+    firebase:
+      specifier: ^11.3.0
+      version: 11.3.1
+
 importers:
 
   .:
@@ -59,6 +65,18 @@ importers:
         version: 2.1.9(@types/node@20.17.19)(happy-dom@15.11.7)
 
   dataconnect-sdk/js/default-connector:
+    dependencies:
+      firebase:
+        specifier: ^10.14.0 || ^11.3.0
+        version: 11.3.1
+
+  dataconnect-sdk/js/default-connector-v11:
+    dependencies:
+      firebase:
+        specifier: ^10.14.0 || ^11.3.0
+        version: 11.3.1
+
+  dataconnect-sdk/js/default-connector-v12:
     dependencies:
       firebase:
         specifier: ^10.14.0 || ^11.3.0
@@ -140,15 +158,18 @@ importers:
       '@angular/animations':
         specifier: ^19.0.0
         version: 19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))
-      '@dataconnect/default-connector':
+      '@dataconnect/default-connector-v11':
         specifier: workspace:*
-        version: link:../../dataconnect-sdk/js/default-connector
+        version: link:../../dataconnect-sdk/js/default-connector-v11
       '@testing-library/angular':
         specifier: ^17.3.5
         version: 17.3.6(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.8(@angular/animations@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/router@19.1.8(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.8(@angular/animations@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))(@testing-library/dom@10.4.0)
       '@testing-library/dom':
         specifier: ^10.4.0
         version: 10.4.0
+      firebase:
+        specifier: catalog:firebase11
+        version: 11.3.1
       tsup:
         specifier: ^8.4.0
         version: 8.4.0(jiti@1.21.7)(postcss@8.5.3)(typescript@5.7.3)(yaml@2.7.0)
@@ -159,12 +180,18 @@ importers:
         specifier: ^5
         version: 5.66.9(react@19.0.0)
       firebase:
-        specifier: ^11.3.0
+        specifier: ^11.3.0 || ^12.0.0
         version: 11.3.1
     devDependencies:
       '@dataconnect/default-connector':
         specifier: workspace:*
         version: link:../../dataconnect-sdk/js/default-connector
+      '@dataconnect/default-connector-v11':
+        specifier: workspace:*
+        version: link:../../dataconnect-sdk/js/default-connector-v11
+      '@dataconnect/default-connector-v12':
+        specifier: workspace:*
+        version: link:../../dataconnect-sdk/js/default-connector-v12
       '@testing-library/react':
         specifier: ^16.0.1
         version: 16.2.0(@testing-library/dom@10.4.0)(@types/react-dom@19.0.4(@types/react@19.0.10))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)

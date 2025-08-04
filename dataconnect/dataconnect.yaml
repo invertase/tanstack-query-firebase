@@ -9,4 +9,4 @@ schema:
       cloudSql:
         instanceId: "tanstack-query-firebase-fdc"
       # schemaValidation: "COMPATIBLE"
-connectorDirs: ["./connector"]
+connectorDirs: ["./connector", "./connector-v11", "./connector-v12"]

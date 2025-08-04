@@ -1,7 +1,7 @@
 const { queryRef, executeQuery, mutationRef, executeMutation, validateArgs } = require('firebase/data-connect');
 
 const connectorConfig = {
-  connector: 'default',
+  connector: 'default-connector-v11',
   service: 'tanstack-query-firebase',
   location: 'us-central1'
 };

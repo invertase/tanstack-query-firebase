@@ -39,12 +39,19 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@dataconnect/default-connector": "workspace:*",
+    "@dataconnect/default-connector-v11": "workspace:*",
+    "@dataconnect/default-connector-v12": "workspace:*",
     "@testing-library/react": "^16.0.1",
     "@types/react": "^19.0.1",
     "react": "^19.0.0"
   },
   "peerDependencies": {
     "@tanstack/react-query": "^5",
-    "firebase": "^11.3.0"
+    "firebase": "^11.3.0 || ^12.0.0"
+  },
+  "peerDependenciesMeta": {
+    "firebase": {
+      "optional": false
+    }
   }
 }
