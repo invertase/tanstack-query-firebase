@@ -45,6 +45,6 @@
   },
   "peerDependencies": {
     "@tanstack/react-query": "^5",
-    "firebase": "^11.3.0"
+    "firebase": "^12.0.0"
   }
 }
