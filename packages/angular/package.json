@@ -32,7 +32,8 @@
     "@angular/animations": "^19.0.0",
     "@testing-library/angular": "^17.3.5",
     "@testing-library/dom": "^10.4.0",
-    "tsup": "^8.4.0"
+    "tsup": "^8.4.0",
+    "firebase": "^11.3.0"
   },
   "peerDependencies": {
     "@tanstack/angular-query-experimental": "5.66.4",
