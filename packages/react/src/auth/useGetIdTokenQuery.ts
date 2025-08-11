@@ -3,7 +3,7 @@ import { type AuthError, getIdToken, type User } from "firebase/auth";
 
 type AuthUseQueryOptions<TData = unknown, TError = Error> = Omit<
   UseQueryOptions<TData, TError>,
-  "queryKey" | "queryFn"
+  "queryFn" | "queryKey"
 > & {
   auth?: {
     forceRefresh?: boolean;
@@ -63,6 +63,7 @@ export function useGetIdTokenQuery(
       : Promise.reject(new Error(NO_USER_ERROR_MESSAGE));
 
   return useQuery<string, AuthError>({
+    ...queryOptions,
     queryKey: user
       ? [...QUERY_KEY_PREFIX, user.uid, forceRefresh]
       : QUERY_KEY_PREFIX,
@@ -70,6 +71,5 @@ export function useGetIdTokenQuery(
     staleTime: forceRefresh ? 0 : STALE_TIME,
     gcTime: GC_TIME,
     enabled: !!user && (options?.enabled ?? true),
-    ...queryOptions,
   });
 }

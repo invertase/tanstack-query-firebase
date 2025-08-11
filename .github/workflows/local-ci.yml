@@ -1,17 +1,7 @@
-name: Tests
+name: Local CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-# Cancel in-progress runs when a new run is queued on the same branch
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  workflow_dispatch:
 
 jobs:
   quality:
@@ -53,9 +43,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: quality
-    strategy:
-      matrix:
-        node-version: [20, 22]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -63,7 +50,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "20"
           registry-url: "https://registry.npmjs.org"
 
       - name: Enable Corepack
@@ -99,17 +86,6 @@ jobs:
           retry_wait_seconds: 60
           max_attempts: 3
           command: npm i -g firebase-tools@14
-
-      # Determine which packages have changed
-      - name: Determine changed packages
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            react:
-              - 'packages/react/**'
-            angular:
-              - 'packages/angular/**'
 
       # Build packages before testing
       - name: Build packages

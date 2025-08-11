@@ -1,4 +1,5 @@
 packages:
   - 'examples/*'
+  - 'examples/react/*'
   - 'packages/*'
   - 'dataconnect-sdk/js/*'
