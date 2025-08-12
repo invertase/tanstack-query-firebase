@@ -93,6 +93,42 @@ export interface UpsertMovieVariables {
   imageUrl: string;
 }
 
+interface ListMoviesRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<ListMoviesData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<ListMoviesData, undefined>;
+  operationName: string;
+}
+export const listMoviesRef: ListMoviesRef;
+
+export function listMovies(): QueryPromise<ListMoviesData, undefined>;
+export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData, undefined>;
+
+interface GetMovieByIdRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect, vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
+  operationName: string;
+}
+export const getMovieByIdRef: GetMovieByIdRef;
+
+export function getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
+export function getMovieById(dc: DataConnect, vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
+
+interface GetMetaRef {
+  /* Allow users to create refs without passing in DataConnect */
+  (): QueryRef<GetMetaData, undefined>;
+  /* Allow users to pass in custom DataConnect instances */
+  (dc: DataConnect): QueryRef<GetMetaData, undefined>;
+  operationName: string;
+}
+export const getMetaRef: GetMetaRef;
+
+export function getMeta(): QueryPromise<GetMetaData, undefined>;
+export function getMeta(dc: DataConnect): QueryPromise<GetMetaData, undefined>;
+
 interface CreateMovieRef {
   /* Allow users to create refs without passing in DataConnect */
   (vars: CreateMovieVariables): MutationRef<CreateMovieData, CreateMovieVariables>;
@@ -152,40 +188,4 @@ export const deleteMetaRef: DeleteMetaRef;
 
 export function deleteMeta(vars: DeleteMetaVariables): MutationPromise<DeleteMetaData, DeleteMetaVariables>;
 export function deleteMeta(dc: DataConnect, vars: DeleteMetaVariables): MutationPromise<DeleteMetaData, DeleteMetaVariables>;
-
-interface ListMoviesRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<ListMoviesData, undefined>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<ListMoviesData, undefined>;
-  operationName: string;
-}
-export const listMoviesRef: ListMoviesRef;
-
-export function listMovies(): QueryPromise<ListMoviesData, undefined>;
-export function listMovies(dc: DataConnect): QueryPromise<ListMoviesData, undefined>;
-
-interface GetMovieByIdRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect, vars: GetMovieByIdVariables): QueryRef<GetMovieByIdData, GetMovieByIdVariables>;
-  operationName: string;
-}
-export const getMovieByIdRef: GetMovieByIdRef;
-
-export function getMovieById(vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
-export function getMovieById(dc: DataConnect, vars: GetMovieByIdVariables): QueryPromise<GetMovieByIdData, GetMovieByIdVariables>;
-
-interface GetMetaRef {
-  /* Allow users to create refs without passing in DataConnect */
-  (): QueryRef<GetMetaData, undefined>;
-  /* Allow users to pass in custom DataConnect instances */
-  (dc: DataConnect): QueryRef<GetMetaData, undefined>;
-  operationName: string;
-}
-export const getMetaRef: GetMetaRef;
-
-export function getMeta(): QueryPromise<GetMetaData, undefined>;
-export function getMeta(dc: DataConnect): QueryPromise<GetMetaData, undefined>;
 

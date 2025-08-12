@@ -1,4 +1,5 @@
 import { type UseQueryOptions, useQuery } from "@tanstack/react-query";
+import { FirebaseError } from "firebase/app";
 import { type AuthError, getIdToken, type User } from "firebase/auth";
 
 type AuthUseQueryOptions<TData = unknown, TError = Error> = Omit<
@@ -64,7 +65,9 @@ export function useGetIdTokenQuery(
   const queryFn = () =>
     user
       ? getIdToken(user, forceRefresh)
-      : Promise.reject(new Error(NO_USER_ERROR_MESSAGE));
+      : Promise.reject(
+          new FirebaseError("auth/no-user", NO_USER_ERROR_MESSAGE),
+        );
 
   return useQuery<string, AuthError>({
     ...queryOptions,
