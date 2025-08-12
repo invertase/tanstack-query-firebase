@@ -88,14 +88,17 @@ function SecureComponent({ user }) {
 
 ```jsx
 import { useGetIdTokenQuery } from "@tanstack-query-firebase/react/auth";
+import { useEffect } from "react";
 
 function ApiComponent({ user }) {
-  const { data: token } = useGetIdTokenQuery(user, {
-    onSuccess: (token) => {
+  const { data: token } = useGetIdTokenQuery(user);
+
+  useEffect(() => {
+    if (token) {
       // Set token for API calls
       api.setAuthToken(token);
-    },
-  });
+    }
+  }, [token]);
 
   return <div>API ready with token</div>;
 }
@@ -181,3 +184,4 @@ function ErrorHandling({ user }) {
 - ID tokens are cached to avoid unnecessary Firebase calls
 - Use `forceRefresh: true` when you need a fresh token (e.g., for sensitive operations)
 - The hook respects TanStack Query's `enabled` option for advanced use cases
+- For side effects when tokens change, use `useEffect` instead of the deprecated `onSuccess` callback

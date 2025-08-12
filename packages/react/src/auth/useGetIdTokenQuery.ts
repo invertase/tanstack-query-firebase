@@ -39,11 +39,15 @@ const NO_USER_ERROR_MESSAGE =
  * // With additional query options
  * const { data: token, refetch } = useGetIdTokenQuery(user, {
  *   enabled: !!user,
- *   onSuccess: (token) => {
+ * });
+ *
+ * // Handle side effects with useEffect
+ * useEffect(() => {
+ *   if (token) {
  *     // Use token for API calls
  *     api.setAuthToken(token);
  *   }
- * });
+ * }, [token]);
  *
  * // Manually refresh token
  * const { refetch } = useGetIdTokenQuery(user);
