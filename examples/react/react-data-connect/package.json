@@ -4,14 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "cd ../../ && firebase emulators:exec 'cd examples/react-example && next build'",
+    "build": "npx next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.55.4",
-    "@tanstack-query-firebase/react": "link:../../packages/react/dist",
-    "@dataconnect/default-connector": "link:../../dataconnect-sdk/js/default-connector",
+    "@tanstack-query-firebase/react": "workspace:*",
+    "@dataconnect/default-connector": "workspace:*",
     "firebase": "^11.3.0",
     "next": "15.1.0",
     "react": "^19.0.0",

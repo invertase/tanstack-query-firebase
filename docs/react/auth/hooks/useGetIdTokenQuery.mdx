@@ -1,0 +1,187 @@
+---
+title: useGetIdTokenQuery
+---
+
+Retrieve Firebase ID tokens for authenticated users. This hook is useful for making authenticated API calls or accessing protected resources that require Firebase ID tokens.
+
+## Usage
+
+```jsx
+import { useGetIdTokenQuery } from "@tanstack-query-firebase/react/auth";
+
+function Component({ user }) {
+  const { data: token, isLoading, error } = useGetIdTokenQuery(user);
+
+  if (isLoading) return <div>Loading token...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
+  return <div>Token: {token}</div>;
+}
+```
+
+## API Reference
+
+### Parameters
+
+- `user` - The Firebase User object (or null)
+- `options` - Optional query configuration
+
+### Options
+
+The hook accepts standard TanStack Query options plus Firebase-specific auth options:
+
+```ts
+type AuthUseQueryOptions = {
+  auth?: {
+    forceRefresh?: boolean; // Force refresh the token instead of using cached
+  };
+  // ... all standard TanStack Query options
+};
+```
+
+### Returns
+
+Returns a TanStack Query result object with the following properties:
+
+- `data` - The ID token string (or undefined if not loaded)
+- `isLoading` - Boolean indicating if the query is loading
+- `isError` - Boolean indicating if an error occurred
+- `error` - Error object if the query failed
+- `refetch` - Function to manually refetch the token
+
+## Examples
+
+### Basic Usage
+
+```jsx
+import { useGetIdTokenQuery } from "@tanstack-query-firebase/react/auth";
+
+function UserProfile({ user }) {
+  const { data: token, isLoading } = useGetIdTokenQuery(user);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  return (
+    <div>
+      <h1>User Profile</h1>
+      <p>Token: {token}</p>
+    </div>
+  );
+}
+```
+
+### Force Refresh Token
+
+```jsx
+import { useGetIdTokenQuery } from "@tanstack-query-firebase/react/auth";
+
+function SecureComponent({ user }) {
+  const { data: token } = useGetIdTokenQuery(user, {
+    auth: { forceRefresh: true },
+  });
+
+  return <div>Fresh token: {token}</div>;
+}
+```
+
+### With API Integration
+
+```jsx
+import { useGetIdTokenQuery } from "@tanstack-query-firebase/react/auth";
+import { useEffect } from "react";
+
+function ApiComponent({ user }) {
+  const { data: token } = useGetIdTokenQuery(user);
+
+  useEffect(() => {
+    if (token) {
+      // Set token for API calls
+      api.setAuthToken(token);
+    }
+  }, [token]);
+
+  return <div>API ready with token</div>;
+}
+```
+
+### Manual Token Refresh
+
+```jsx
+import { useGetIdTokenQuery } from "@tanstack-query-firebase/react/auth";
+
+function TokenManager({ user }) {
+  const { data: token, refetch, isFetching } = useGetIdTokenQuery(user);
+
+  const handleRefresh = () => {
+    refetch();
+  };
+
+  return (
+    <div>
+      <p>Current token: {token}</p>
+      <button onClick={handleRefresh} disabled={isFetching}>
+        {isFetching ? "Refreshing..." : "Refresh Token"}
+      </button>
+    </div>
+  );
+}
+```
+
+### Conditional Token Fetching
+
+```jsx
+import { useGetIdTokenQuery } from "@tanstack-query-firebase/react/auth";
+
+function ConditionalComponent({ user, needsToken }) {
+  const { data: token } = useGetIdTokenQuery(user, {
+    enabled: !!user && needsToken,
+  });
+
+  if (!needsToken) return <div>No token needed</div>;
+
+  return <div>Token: {token}</div>;
+}
+```
+
+## Caching Behavior
+
+The hook implements intelligent caching:
+
+- **Stale Time**: 55 minutes (Firebase tokens expire after 1 hour)
+- **Garbage Collection**: 60 minutes
+- **Query Key**: `["auth", "idToken", user.uid, forceRefresh]`
+
+When `forceRefresh: true` is used, the stale time is set to 0, ensuring a fresh token is always fetched.
+
+## Error Handling
+
+The hook will throw an error if:
+
+- No Firebase user is provided
+- The user is not authenticated
+- Firebase authentication fails
+
+```jsx
+function ErrorHandling({ user }) {
+  const { error, isError } = useGetIdTokenQuery(user);
+
+  if (isError) {
+    return (
+      <div>
+        <h2>Authentication Error</h2>
+        <p>{error.message}</p>
+      </div>
+    );
+  }
+
+  return <div>Authenticated successfully</div>;
+}
+```
+
+## Notes
+
+- The hook automatically disables when `user` is `null`
+- ID tokens are cached to avoid unnecessary Firebase calls
+- Use `forceRefresh: true` when you need a fresh token (e.g., for sensitive operations)
+- The hook respects TanStack Query's `enabled` option for advanced use cases
+- For side effects when tokens change, use `useEffect` instead of the deprecated `onSuccess` callback
