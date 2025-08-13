@@ -27,13 +27,13 @@ describe("useGetIdTokenQuery", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     const { user } = userCredential;
 
     const { result } = renderHook(
       () => useGetIdTokenQuery(user, { auth: { forceRefresh: true } }),
-      { wrapper },
+      { wrapper }
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -46,13 +46,13 @@ describe("useGetIdTokenQuery", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     const { user } = userCredential;
 
     const { result } = renderHook(
       () => useGetIdTokenQuery(user, { auth: { forceRefresh: false } }),
-      { wrapper },
+      { wrapper }
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -61,11 +61,11 @@ describe("useGetIdTokenQuery", () => {
     expect(result.current.data?.length).toBeGreaterThan(0);
   });
 
-  test("can refetch to force refresh token", async () => {
+  test("can be refetched to get a token again", async () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     const { user } = userCredential;
 
@@ -83,11 +83,11 @@ describe("useGetIdTokenQuery", () => {
     expect(result.current.data?.length).toBeGreaterThan(0);
   });
 
-  test("retrieves cached token by default", async () => {
+  test("successfully retrieves an ID token with default options", async () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     const { user } = userCredential;
 
@@ -103,13 +103,13 @@ describe("useGetIdTokenQuery", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password,
+      password
     );
     const { user } = userCredential;
 
     const { result } = renderHook(
       () => useGetIdTokenQuery(user, { enabled: false }),
-      { wrapper },
+      { wrapper }
     );
 
     // Should not fetch when disabled

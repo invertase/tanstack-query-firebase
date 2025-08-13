@@ -50,9 +50,16 @@ const NO_USER_ERROR_MESSAGE =
  *   }
  * }, [token]);
  *
- * // Manually refresh token
+ * // Manually re-fetch token (respects the initial forceRefresh option)
  * const { refetch } = useGetIdTokenQuery(user);
- * const handleForceRefresh = () => refetch();
+ * const handleRefetch = () => refetch();
+ *
+ * // For actual force refresh, use a separate query with forceRefresh: true
+ * const { data: freshToken, refetch: refetchFresh } = useGetIdTokenQuery(user, {
+ *   auth: { forceRefresh: true },
+ *   enabled: false, // Manual trigger only
+ * });
+ * const handleForceRefresh = () => refetchFresh();
  */
 export function useGetIdTokenQuery(
   user: User | null,
