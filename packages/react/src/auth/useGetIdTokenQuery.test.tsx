@@ -27,13 +27,13 @@ describe("useGetIdTokenQuery", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const { user } = userCredential;
 
     const { result } = renderHook(
       () => useGetIdTokenQuery(user, { auth: { forceRefresh: true } }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -46,13 +46,13 @@ describe("useGetIdTokenQuery", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const { user } = userCredential;
 
     const { result } = renderHook(
       () => useGetIdTokenQuery(user, { auth: { forceRefresh: false } }),
-      { wrapper }
+      { wrapper },
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
@@ -65,7 +65,7 @@ describe("useGetIdTokenQuery", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const { user } = userCredential;
 
@@ -87,7 +87,7 @@ describe("useGetIdTokenQuery", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const { user } = userCredential;
 
@@ -103,13 +103,13 @@ describe("useGetIdTokenQuery", () => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
-      password
+      password,
     );
     const { user } = userCredential;
 
     const { result } = renderHook(
       () => useGetIdTokenQuery(user, { enabled: false }),
-      { wrapper }
+      { wrapper },
     );
 
     // Should not fetch when disabled
