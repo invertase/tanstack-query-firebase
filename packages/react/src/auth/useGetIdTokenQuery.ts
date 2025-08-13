@@ -81,6 +81,6 @@ export function useGetIdTokenQuery(
     queryFn,
     staleTime: forceRefresh ? 0 : STALE_TIME,
     gcTime: GC_TIME,
-    enabled: !!user && (options?.enabled ?? true),
+    enabled: !!user && options?.enabled !== false,
   });
 }
