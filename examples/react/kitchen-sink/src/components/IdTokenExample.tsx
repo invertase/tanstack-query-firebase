@@ -9,7 +9,7 @@ export function IdTokenExample() {
   const [refreshCount, setRefreshCount] = useState(0);
   const [previousToken, setPreviousToken] = useState<string | null>(null);
   const [lastForceRefreshTime, setLastForceRefreshTime] = useState<Date | null>(
-    null,
+    null
   );
 
   // Listen for auth state changes
@@ -44,7 +44,7 @@ export function IdTokenExample() {
     if (token) {
       console.log(
         "Token retrieved successfully:",
-        `${token.substring(0, 20)}...`,
+        `${token.substring(0, 20)}...`
       );
 
       // Check if token changed
@@ -237,7 +237,7 @@ export function IdTokenExample() {
                       const result = [];
                       const maxLength = Math.max(
                         token.length,
-                        freshToken.length,
+                        freshToken.length
                       );
 
                       for (let i = 0; i < maxLength; i++) {
@@ -252,13 +252,13 @@ export function IdTokenExample() {
                               className="bg-yellow-300 text-red-600 font-bold"
                             >
                               {freshToken[i] || "∅"}
-                            </span>,
+                            </span>
                           );
                         } else {
                           result.push(
                             <span key={i} className="text-gray-600">
                               {token[i]}
-                            </span>,
+                            </span>
                           );
                         }
                       }
