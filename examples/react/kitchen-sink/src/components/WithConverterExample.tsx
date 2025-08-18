@@ -35,7 +35,10 @@ export function WithConverterExample() {
     collection(firestore, "products").withConverter(productConverter),
   );
 
-  const { data, isLoading, isError, error } = useCollectionQuery(ref, {
+  const { data, isLoading, isError, error } = useCollectionQuery<
+    Product,
+    DocumentData
+  >(ref, {
     queryKey: ["products"],
   });
 

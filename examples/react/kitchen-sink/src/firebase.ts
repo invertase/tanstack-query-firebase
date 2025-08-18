@@ -4,7 +4,7 @@ import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 
 if (getApps().length === 0) {
   initializeApp({
-    projectId: "example",
+    projectId: "test-project",
     apiKey: "demo-api-key", // Required for Firebase to initialize
   });
 

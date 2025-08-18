@@ -1,3 +1,4 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   useAddDocumentMutation,
   useCollectionQuery,
@@ -8,6 +9,7 @@ import {
   doc,
   getFirestore,
   query,
+  Timestamp,
   where,
 } from "firebase/firestore";
 import { useState } from "react";
@@ -17,7 +19,7 @@ interface Task {
   title: string;
   completed: boolean;
   priority: "low" | "medium" | "high";
-  createdAt: Date;
+  createdAt: Timestamp | Date;
 }
 
 export function CollectionQueryExample() {
@@ -26,6 +28,7 @@ export function CollectionQueryExample() {
     useState<Task["priority"]>("medium");
   const [filterCompleted, setFilterCompleted] = useState<boolean | null>(null);
 
+  const queryClient = useQueryClient();
   const firestore = getFirestore();
   const tasksCollection = collection(firestore, "tasks");
 
@@ -45,8 +48,13 @@ export function CollectionQueryExample() {
     queryKey: ["tasks", filterCompleted],
   });
 
-  // Add task mutation
-  const addTaskMutation = useAddDocumentMutation(tasksCollection);
+  // Add task mutation with query invalidation
+  const addTaskMutation = useAddDocumentMutation(tasksCollection, {
+    onSuccess: () => {
+      // Invalidate all task queries after successful add
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
 
   const handleAddTask = async () => {
     if (!newTaskTitle.trim()) return;
@@ -76,10 +84,21 @@ export function CollectionQueryExample() {
     console.log(`Would toggle task ${taskId} to ${!currentCompleted}`);
   };
 
-  const handleDeleteTask = async (taskId: string) => {
-    const taskRef = doc(firestore, "tasks", taskId);
-    try {
+  // Use a mutation for delete with dynamic document reference TODO: why doesn't the library support dynamic document reference?
+  const deleteTaskMutation = useMutation({
+    mutationFn: async (taskId: string) => {
+      const taskRef = doc(firestore, "tasks", taskId);
       await deleteDoc(taskRef);
+    },
+    onSuccess: () => {
+      // Invalidate all task queries after successful delete
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+
+  const handleDeleteTask = async (taskId: string) => {
+    try {
+      await deleteTaskMutation.mutateAsync(taskId);
     } catch (error) {
       console.error("Failed to delete task:", error);
     }
@@ -252,7 +271,12 @@ export function CollectionQueryExample() {
                       {task.title}
                     </h4>
                     <p className="text-sm text-gray-500">
-                      Created: {task.createdAt.toLocaleDateString()}
+                      Created:{" "}
+                      {task.createdAt instanceof Timestamp
+                        ? task.createdAt.toDate().toLocaleDateString()
+                        : task.createdAt instanceof Date
+                          ? task.createdAt.toLocaleDateString()
+                          : "Unknown date"}
                     </p>
                   </div>
                   <span
