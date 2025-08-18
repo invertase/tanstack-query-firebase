@@ -5,6 +5,7 @@ import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { CollectionQueryExample } from "./components/CollectionQueryExample";
 import { IdTokenExample } from "./components/IdTokenExample";
 import { NestedCollectionsExample } from "./components/NestedCollectionsExample";
+import { WithConverterExample } from "./components/WithConverterExample";
 
 import "./firebase";
 
@@ -37,6 +38,10 @@ function App() {
                 path="/nested-collections"
                 element={<NestedCollectionsExample />}
               />
+              <Route
+                path="/typescript-safety"
+                element={<WithConverterExample />}
+              />
             </Routes>
           </div>
         </div>
@@ -49,35 +54,63 @@ function App() {
 function Navigation() {
   const location = useLocation();
 
-  const navItems = [
-    { path: "/", label: "Home" },
-    { path: "/auth/id-token", label: "ID Token Query" },
-    { path: "/firestore/collection-query", label: "Collection Query" },
-  ];
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <nav className="bg-white shadow-sm border-b">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-8">
-            <h1 className="text-xl font-bold text-gray-900">
-              TanStack Query Firebase
-            </h1>
-            <div className="flex space-x-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    location.pathname === item.path
-                      ? "bg-blue-100 text-blue-700"
-                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
+            <Link
+              to="/"
+              className={`text-lg font-semibold ${
+                isActive("/") ? "text-blue-600" : "text-gray-900"
+              }`}
+            >
+              TanStack Query Firebase Examples
+            </Link>
+          </div>
+          <div className="flex items-center space-x-6">
+            <Link
+              to="/auth/id-token"
+              className={`text-sm font-medium ${
+                isActive("/auth/id-token")
+                  ? "text-blue-600"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Auth: ID Token
+            </Link>
+            <Link
+              to="/firestore/collection-query"
+              className={`text-sm font-medium ${
+                isActive("/firestore/collection-query")
+                  ? "text-blue-600"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Firestore: Collection Query
+            </Link>
+            <Link
+              to="/nested-collections"
+              className={`text-sm font-medium ${
+                isActive("/nested-collections")
+                  ? "text-blue-600"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              Nested Collections
+            </Link>
+            <Link
+              to="/typescript-safety"
+              className={`text-sm font-medium ${
+                isActive("/typescript-safety")
+                  ? "text-blue-600"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              TypeScript Safety
+            </Link>
           </div>
         </div>
       </div>
@@ -88,48 +121,58 @@ function Navigation() {
 function Home() {
   return (
     <div className="text-center">
-      <h1 className="text-4xl font-bold text-gray-900 mb-4">
+      <h1 className="text-4xl font-bold text-gray-900 mb-6">
         TanStack Query Firebase Examples
       </h1>
       <p className="text-xl text-gray-600 mb-8">
-        Explore different Firebase hooks and patterns with TanStack Query
+        Explore different patterns and use cases for Firebase with TanStack
+        Query
       </p>
-
-      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            Authentication
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Link
+          to="/auth/id-token"
+          className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+        >
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            Auth: ID Token
           </h2>
-          <p className="text-gray-600 mb-4">
-            Examples of Firebase Authentication hooks including ID token
-            management.
+          <p className="text-gray-600 text-sm">
+            Get and refresh Firebase ID tokens with proper caching
           </p>
-          <Link
-            to="/auth/id-token"
-            className="inline-block bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-          >
-            View ID Token Example
-          </Link>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Firestore</h2>
-          <p className="text-gray-600 mb-4">
-            Examples of Firestore hooks for querying collections and documents.
+        </Link>
+        <Link
+          to="/firestore/collection-query"
+          className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+        >
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            Firestore: Collection Query
+          </h2>
+          <p className="text-gray-600 text-sm">
+            Query Firestore collections with filtering and mutations
           </p>
-          <Link
-            to="/firestore/collection-query"
-            className="inline-block bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
-          >
-            View Collection Query Example
-          </Link>
-        </div>
-      </div>
-
-      <div className="mt-12 text-center">
-        <p className="text-gray-500">
-          Built with Vite, TanStack Query, React Router, and Firebase
-        </p>
+        </Link>
+        <Link
+          to="/nested-collections"
+          className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+        >
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            Nested Collections
+          </h2>
+          <p className="text-gray-600 text-sm">
+            Handle nested Firestore collections with real-time updates
+          </p>
+        </Link>
+        <Link
+          to="/typescript-safety"
+          className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
+        >
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">
+            TypeScript Safety
+          </h2>
+          <p className="text-gray-600 text-sm">
+            Resolve DocumentData vs custom interface type issues
+          </p>
+        </Link>
       </div>
     </div>
   );
