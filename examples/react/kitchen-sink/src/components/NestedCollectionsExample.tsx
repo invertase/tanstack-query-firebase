@@ -165,7 +165,7 @@ export function NestedCollectionsExample() {
 
       return { previousSnapshot };
     },
-    onError: (error, variables, context) => {
+    onError: (error, _variables, context) => {
       // Show user-friendly error message
       console.error("Failed to send message:", error);
       // Could show a toast notification here
@@ -207,7 +207,7 @@ export function NestedCollectionsExample() {
       const conversationRef = doc(firestore, "conversations", conversationId);
       return deleteDoc(conversationRef);
     },
-    onError: (error, conversationId) => {
+    onError: (error, _conversationId) => {
       console.error("Failed to delete conversation:", error);
       // Could show a toast notification here
     },
