@@ -1,5 +1,8 @@
 import {
-  addDoc,
+  useAddDocumentMutation,
+  useCollectionQuery,
+} from "@tanstack-query-firebase/react/firestore";
+import {
   collection,
   deleteDoc,
   doc,
@@ -8,11 +11,6 @@ import {
   where,
 } from "firebase/firestore";
 import { useState } from "react";
-import {
-  useCollectionQuery,
-  useAddDocumentMutation,
-  useDeleteDocumentMutation,
-} from "@tanstack-query-firebase/react/firestore";
 
 interface Task {
   id: string;
@@ -50,9 +48,6 @@ export function CollectionQueryExample() {
   // Add task mutation
   const addTaskMutation = useAddDocumentMutation(tasksCollection);
 
-  // Delete task mutation
-  const deleteTaskMutation = useDeleteDocumentMutation();
-
   const handleAddTask = async () => {
     if (!newTaskTitle.trim()) return;
 
@@ -74,9 +69,8 @@ export function CollectionQueryExample() {
 
   const handleToggleTask = async (
     taskId: string,
-    currentCompleted: boolean
+    currentCompleted: boolean,
   ) => {
-    const taskRef = doc(firestore, "tasks", taskId);
     // Note: In a real app, you'd use useUpdateDocumentMutation here
     // For simplicity, we're just showing the query functionality
     console.log(`Would toggle task ${taskId} to ${!currentCompleted}`);
@@ -85,7 +79,7 @@ export function CollectionQueryExample() {
   const handleDeleteTask = async (taskId: string) => {
     const taskRef = doc(firestore, "tasks", taskId);
     try {
-      await deleteTaskMutation.mutateAsync(taskRef);
+      await deleteDoc(taskRef);
     } catch (error) {
       console.error("Failed to delete task:", error);
     }
@@ -263,7 +257,7 @@ export function CollectionQueryExample() {
                   </div>
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(
-                      task.priority
+                      task.priority,
                     )}`}
                   >
                     {task.priority}
@@ -271,7 +265,6 @@ export function CollectionQueryExample() {
                 </div>
                 <button
                   onClick={() => handleDeleteTask(task.id)}
-                  disabled={deleteTaskMutation.isPending}
                   className="ml-4 px-3 py-1 text-red-600 hover:bg-red-50 rounded-md text-sm font-medium"
                 >
                   Delete
@@ -298,8 +291,8 @@ export function CollectionQueryExample() {
             {filterCompleted === null
               ? "All"
               : filterCompleted
-              ? "Completed"
-              : "Pending"}
+                ? "Completed"
+                : "Pending"}
           </p>
           <p>
             <strong>Status:</strong>{" "}

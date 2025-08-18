@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
-import { Routes, Route, Link, useLocation } from "react-router-dom";
-import { IdTokenExample } from "./components/IdTokenExample";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 import { CollectionQueryExample } from "./components/CollectionQueryExample";
+import { IdTokenExample } from "./components/IdTokenExample";
+import { NestedCollectionsExample } from "./components/NestedCollectionsExample";
 
 import "./firebase";
 
@@ -16,7 +17,7 @@ function App() {
             staleTime: 60 * 1000,
           },
         },
-      })
+      }),
   );
 
   return (
@@ -31,6 +32,10 @@ function App() {
               <Route
                 path="/firestore/collection-query"
                 element={<CollectionQueryExample />}
+              />
+              <Route
+                path="/nested-collections"
+                element={<NestedCollectionsExample />}
               />
             </Routes>
           </div>
