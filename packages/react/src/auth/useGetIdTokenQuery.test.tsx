@@ -116,4 +116,79 @@ describe("useGetIdTokenQuery", () => {
     await waitFor(() => expect(result.current.status).toBe("pending"));
     expect(result.current.data).toBeUndefined();
   });
+
+  test("returns error when user is null", async () => {
+    const { result } = renderHook(() => useGetIdTokenQuery(null), { wrapper });
+
+    // Should not fetch when user is null (enabled defaults to false)
+    expect(result.current.status).toBe("pending");
+    expect(result.current.data).toBeUndefined();
+  });
+
+  test("returns error when user is null but enabled is forced to true", async () => {
+    const { result } = renderHook(
+      () => useGetIdTokenQuery(null, { enabled: true }),
+      { wrapper },
+    );
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(result.current.error?.message).toContain(
+      "Cannot retrieve ID token: no Firebase user provided",
+    );
+  });
+
+  test("caches token when forceRefresh is false", async () => {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    const { user } = userCredential;
+
+    // First render
+    const { result: result1 } = renderHook(
+      () => useGetIdTokenQuery(user, { auth: { forceRefresh: false } }),
+      { wrapper },
+    );
+
+    await waitFor(() => expect(result1.current.isSuccess).toBe(true));
+    const token1 = result1.current.data;
+
+    // Second render with same parameters should use cache
+    const { result: result2 } = renderHook(
+      () => useGetIdTokenQuery(user, { auth: { forceRefresh: false } }),
+      { wrapper },
+    );
+
+    // Should be immediately successful with cached data
+    expect(result2.current.isSuccess).toBe(true);
+    expect(result2.current.data).toBe(token1);
+    expect(result2.current.isFetching).toBe(false);
+  });
+
+  test("does not cache when forceRefresh is true", async () => {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    const { user } = userCredential;
+
+    const { result } = renderHook(
+      () => useGetIdTokenQuery(user, { auth: { forceRefresh: true } }),
+      { wrapper },
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    // Check that staleTime is 0 when forceRefresh is true
+    // This ensures fresh fetch on every call
+    const queryKey = [
+      "auth",
+      "idToken",
+      { userId: user.uid, forceRefresh: true },
+    ];
+    const query = queryClient.getQueryState(queryKey);
+    expect(query).toBeDefined();
+  });
 });

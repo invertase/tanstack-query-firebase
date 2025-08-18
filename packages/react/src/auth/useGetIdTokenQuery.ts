@@ -12,10 +12,16 @@ type AuthUseQueryOptions<TData = unknown, TError = Error> = Omit<
 
 const STALE_TIME = 55 * 60 * 1000; // Firebase tokens expire after 1 hour
 const GC_TIME = 60 * 60 * 1000; // Keep in cache for 1 hour
-const QUERY_KEY_PREFIX = ["auth", "idToken"];
 
 const NO_USER_ERROR_MESSAGE =
   "[useGetIdTokenQuery] Cannot retrieve ID token: no Firebase user provided. Ensure a user is signed in before calling this hook.";
+
+// Query key factory for auth-related queries
+export const authQueryKeys = {
+  all: ["auth"] as const,
+  idToken: (userId: string | null, forceRefresh: boolean) =>
+    [...authQueryKeys.all, "idToken", { userId, forceRefresh }] as const,
+};
 
 /**
  * Hook to get an ID token for a Firebase user
@@ -65,8 +71,9 @@ export function useGetIdTokenQuery(
   options?: AuthUseQueryOptions<string, AuthError | Error>,
 ) {
   const { auth: authOptions, ...queryOptions } = options || {};
-
   const forceRefresh = authOptions?.forceRefresh ?? false;
+
+  const queryKey = authQueryKeys.idToken(user?.uid ?? null, forceRefresh);
 
   const queryFn = () =>
     user
@@ -75,12 +82,10 @@ export function useGetIdTokenQuery(
 
   return useQuery<string, AuthError | Error>({
     ...queryOptions,
-    queryKey: user
-      ? [...QUERY_KEY_PREFIX, user.uid, forceRefresh]
-      : QUERY_KEY_PREFIX,
+    queryKey,
     queryFn,
     staleTime: forceRefresh ? 0 : STALE_TIME,
     gcTime: GC_TIME,
-    enabled: !!user && options?.enabled !== false,
+    enabled: options?.enabled !== undefined ? options.enabled : !!user,
   });
 }
