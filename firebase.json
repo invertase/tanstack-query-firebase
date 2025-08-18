@@ -12,6 +12,9 @@
     "database": {
       "port": 9000
     },
+    "dataconnect": {
+      "port": 9399
+    },
     "ui": {
       "enabled": true
     }

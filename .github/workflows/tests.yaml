@@ -92,13 +92,21 @@ jobs:
           sudo apt-get install -y openjdk-17-jdk
           java -version
 
+      - name: Cache Firebase emulators
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/firebase/emulators
+          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('.github/workflows/tests.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-firebase-emulators-
+
       - name: Install Firebase CLI
         uses: nick-invision/retry@v3
         with:
           timeout_minutes: 10
           retry_wait_seconds: 60
           max_attempts: 3
-          command: npm i -g firebase-tools@14
+          command: npm i -g firebase-tools@latest
 
       # Determine which packages have changed
       - name: Determine changed packages
