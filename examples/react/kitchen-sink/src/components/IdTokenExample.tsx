@@ -129,7 +129,7 @@ export function IdTokenExample() {
           ) : (
             <div>
               <div className="space-y-3">
-                <p className="text-sm text-gray-600 font-mono text-xs">
+                <p className="text-sm text-gray-600 font-mono">
                   Token hash: {token ? `${btoa(token).slice(0, 16)}...` : ""}
                 </p>
                 {lastRefreshTime && (
@@ -170,7 +170,7 @@ export function IdTokenExample() {
             <p className="text-gray-600">Loading fresh token...</p>
           ) : freshToken ? (
             <div className="space-y-3">
-              <p className="text-sm text-gray-600 font-mono text-xs">
+              <p className="text-sm text-gray-600 font-mono">
                 Token hash:{" "}
                 {freshToken ? `${btoa(freshToken).slice(0, 16)}...` : ""}
               </p>

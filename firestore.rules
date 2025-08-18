@@ -7,6 +7,28 @@ service cloud.firestore {
       allow create: if true;
       allow get: if true;
     }
+    
+    match /products/{document=**} {
+      allow read: if true;
+      allow write: if true;
+      allow create: if true;
+      allow get: if true;
+    }
+    
+    match /conversations/{document=**} {
+      allow read: if true;
+      allow write: if true;
+      allow create: if true;
+      allow get: if true;
+    }
+    
+    match /tasks/{document=**} {
+      allow read: if true;
+      allow write: if true;
+      allow create: if true;
+      allow get: if true;
+    }
+    
     // match /noread/{document=**} {
     //   allow read: if false;
     // }

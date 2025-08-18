@@ -1,11 +1,11 @@
 {
-  "name": "useGetIdTokenQuery",
+  "name": "firebase-examples",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:emulator": "cd ../../../ && firebase emulators:exec --project test-project 'cd examples/react/useGetIdTokenQuery && vite'",
+    "dev:emulator": "cd ../../../ && firebase emulators:exec --project test-project 'cd examples/react/firebase-examples && vite'",
     "build": "npx vite build",
     "preview": "vite preview"
   },
@@ -15,7 +15,8 @@
     "@tanstack/react-query-devtools": "^5.84.2",
     "firebase": "^11.3.1",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
     "@types/react": "^19.1.9",
