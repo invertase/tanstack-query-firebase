@@ -9,6 +9,9 @@ import { Movies } from "@/examples/data-connect";
 
 import "@/firebase";
 
+// Force dynamic rendering to avoid build-time Firebase calls
+export const dynamic = "force-dynamic";
+
 export default async function PostsPage() {
   const queryClient = new QueryClient();
   const result = await executeQuery(listMoviesRef());
