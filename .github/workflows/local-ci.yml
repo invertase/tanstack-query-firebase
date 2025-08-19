@@ -87,6 +87,10 @@ jobs:
           max_attempts: 3
           command: npm i -g firebase-tools@14
 
+      # ✅ Ensure Data Connect SDKs are generated before emulator tests
+      - name: Generate Data Connect SDKs
+        run: firebase dataconnect:sdk:generate
+
       # Build packages before testing
       - name: Build packages
         run: pnpm turbo build
@@ -94,7 +98,6 @@ jobs:
       # Verify build outputs
       - name: Verify build outputs
         run: |
-          # Check all packages for dist directories
           MISSING_BUILDS=""
           for PKG_DIR in packages/*; do
             if [ -d "$PKG_DIR" ] && [ -f "$PKG_DIR/package.json" ]; then

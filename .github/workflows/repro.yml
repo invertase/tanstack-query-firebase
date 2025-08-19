@@ -1,0 +1,48 @@
+name: Repro
+
+on:
+  workflow_dispatch:
+
+jobs:
+  repro:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Firebase CLI
+        run: npm i -g firebase-tools@latest
+
+      - name: Create minimal firebase.json (dataconnect only)
+        run: |
+          cat > firebase.json <<'JSON'
+          {
+            "emulators": {
+              "dataconnect": { "port": 9155 }
+            }
+          }
+          JSON
+          cat firebase.json
+
+      - name: Repro — start Data Connect emulator
+        run: |
+          set -euxo pipefail
+          firebase --version
+          firebase emulators:exec \
+            --project demo-test-project \
+            --only dataconnect \
+            --debug \
+            "node -e \"setTimeout(()=>{}, 15000)\""

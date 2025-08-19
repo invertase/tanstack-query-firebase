@@ -13,7 +13,8 @@
       "port": 9000
     },
     "dataconnect": {
-      "port": 9399
+      "port": 9399,
+      "host": "127.0.0.1"
     },
     "ui": {
       "enabled": true
