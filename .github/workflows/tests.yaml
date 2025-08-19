@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   quality:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -50,7 +50,7 @@ jobs:
         run: pnpm format
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 30
     needs: quality
     strategy:
@@ -88,8 +88,8 @@ jobs:
 
       - name: Install Java
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-17-jdk
+          brew install openjdk@17
+          sudo ln -sfn /usr/local/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
           java -version
 
       - name: Cache Firebase emulators
@@ -142,6 +142,10 @@ jobs:
             exit 1
           fi
           echo "✅ All build outputs verified"
+
+      # ✅ Generate Data Connect SDK before running emulators
+      - name: Generate Data Connect SDKs
+        run: firebase dataconnect:sdk:generate
 
       # Run tests with all emulators (auth, firestore, and data-connect)
       - name: Run tests with emulator
