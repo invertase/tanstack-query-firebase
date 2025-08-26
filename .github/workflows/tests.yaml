@@ -143,6 +143,10 @@ jobs:
           fi
           echo "✅ All build outputs verified"
 
+      # ✅ Generate Data Connect SDK before running emulators
+      - name: Generate Data Connect SDKs
+        run: firebase dataconnect:sdk:generate
+
       # Run tests with all emulators (auth, firestore, and data-connect)
       - name: Run tests with emulator
         run: pnpm test:emulator
