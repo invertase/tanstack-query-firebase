@@ -1,0 +1,87 @@
+name: Test React Package with Firebase v12
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'packages/react/**'
+      - 'dataconnect-sdk/**'
+      - '.github/workflows/test-react-firebase-v12.yml'
+
+jobs:
+  test-react-v12:
+    name: React Package - Firebase v12
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Java
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk
+          java -version
+
+      - name: Install Firebase CLI
+        uses: nick-invision/retry@v3
+        with:
+          timeout_minutes: 10
+          retry_wait_seconds: 60
+          max_attempts: 3
+          command: npm i -g firebase-tools@latest
+
+      - name: Update to Firebase v12
+        run: |
+          # Update root devDependencies to Firebase v12
+          pnpm add -Dw firebase@^12.1.0
+          
+      - name: Update Data Connect SDK for Firebase v12
+        run: |
+          # Manually update the generated SDK to support Firebase v12
+          # This is temporary until Firebase CLI officially supports v12
+          cd dataconnect-sdk/js/default-connector
+          # Update the peer dependency to include v12
+          npm pkg set 'peerDependencies.firebase=^12.1.0'
+          cd ../../..
+          
+      - name: Reinstall dependencies with v12
+        run: |
+          # Install with no-frozen-lockfile to allow dependency changes
+          pnpm install --no-frozen-lockfile
+          # Force React package to use Firebase v12
+          cd packages/react
+          pnpm add -D firebase@^12.1.0
+          cd ../..
+
+      - name: Verify Firebase v12 is installed
+        run: |
+          cd packages/react
+          pnpm ls firebase | grep -E "firebase.*12\." || (echo "Firebase v12 not found!" && exit 1)
+          
+      - name: Build React package
+        run: |
+          cd packages/react
+          pnpm build
+
+      - name: Run React package tests with emulator
+        run: |
+          # Run only React package tests with emulator
+          firebase emulators:exec --project test-project "cd packages/react && pnpm test:ci"
+        env:
+          CI: true
+
