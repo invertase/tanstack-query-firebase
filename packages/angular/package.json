@@ -24,7 +24,15 @@
       "default": "./data-connect/index.js"
     }
   },
-  "author": "",
+  "author": {
+    "name": "Invertase",
+    "email": "oss@invertase.io",
+    "url": "https://github.com/invertase/tanstack-query-firebase"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/invertase/tanstack-query-firebase"
+  },
   "license": "Apache-2.0",
   "devDependencies": {
     "@dataconnect/default-connector": "workspace:*",
