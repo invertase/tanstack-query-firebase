@@ -58,17 +58,11 @@ importers:
         specifier: ^2.0.5
         version: 2.1.9(@types/node@20.17.19)(happy-dom@15.11.7)
 
-  dataconnect-sdk/js/default-connector:
-    dependencies:
-      firebase:
-        specifier: ^10.14.0 || ^11.3.0
-        version: 11.3.1
-
   examples/react/react-data-connect:
     dependencies:
       '@dataconnect/default-connector':
-        specifier: workspace:*
-        version: link:../../../dataconnect-sdk/js/default-connector
+        specifier: file:../../../dataconnect-sdk/js/default-connector
+        version: file:dataconnect-sdk/js/default-connector(firebase@11.3.1)
       '@tanstack-query-firebase/react':
         specifier: workspace:*
         version: link:../../../packages/react
@@ -187,8 +181,8 @@ importers:
         specifier: ^19.0.0
         version: 19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))
       '@dataconnect/default-connector':
-        specifier: workspace:*
-        version: link:../../dataconnect-sdk/js/default-connector
+        specifier: file:../../dataconnect-sdk/js/default-connector
+        version: file:dataconnect-sdk/js/default-connector(firebase@11.3.1)
       '@testing-library/angular':
         specifier: ^17.3.5
         version: 17.3.6(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.8(@angular/animations@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/router@19.1.8(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.1.8(@angular/animations@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.1.8(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.1.8(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1))(@testing-library/dom@10.4.0)
@@ -209,8 +203,8 @@ importers:
         version: 11.3.1
     devDependencies:
       '@dataconnect/default-connector':
-        specifier: workspace:*
-        version: link:../../dataconnect-sdk/js/default-connector
+        specifier: file:../../dataconnect-sdk/js/default-connector
+        version: file:dataconnect-sdk/js/default-connector(firebase@11.3.1)
       '@testing-library/react':
         specifier: ^16.0.1
         version: 16.2.0(@testing-library/dom@10.4.0)(@types/react-dom@19.1.7(@types/react@19.1.9))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
@@ -586,6 +580,12 @@ packages:
 
   '@changesets/write@0.4.0':
     resolution: {integrity: sha512-CdTLvIOPiCNuH71pyDu3rA+Q0n65cmAbXnwWH84rKGiFumFzkmHNT8KHTMEchcxN+Kl8I54xGUhJ7l3E7X396Q==}
+
+  '@dataconnect/default-connector@file:dataconnect-sdk/js/default-connector':
+    resolution: {directory: dataconnect-sdk/js/default-connector, type: directory}
+    engines: {node: ' >=18.0'}
+    peerDependencies:
+      firebase: ^10.14.0 || ^11.3.0
 
   '@emnapi/core@1.4.5':
     resolution: {integrity: sha512-XsLw1dEOpkSX/WucdqUhPWP7hDxSvZiY+fsUC14h+FtQ2Ifni4znbBt8punRX+Uj2JG/uDb8nEHVKvrVlvdZ5Q==}
@@ -4602,6 +4602,10 @@ snapshots:
       fs-extra: 7.0.1
       human-id: 4.1.1
       prettier: 2.8.8
+
+  '@dataconnect/default-connector@file:dataconnect-sdk/js/default-connector(firebase@11.3.1)':
+    dependencies:
+      firebase: 11.3.1
 
   '@emnapi/core@1.4.5':
     dependencies:

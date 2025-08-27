@@ -35,7 +35,7 @@
   },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@dataconnect/default-connector": "workspace:*",
+    "@dataconnect/default-connector": "file:../../dataconnect-sdk/js/default-connector",
     "@analogjs/vite-plugin-angular": "^1.13.0",
     "@angular/animations": "^19.0.0",
     "@testing-library/angular": "^17.3.5",
