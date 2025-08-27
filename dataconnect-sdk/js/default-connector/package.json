@@ -1,7 +1,6 @@
 {
   "name": "@dataconnect/default-connector",
   "version": "1.0.0",
-  "private": true,
   "author": "Firebase <firebase-support@google.com> (https://firebase.google.com/)",
   "description": "Generated SDK For default",
   "license": "Apache-2.0",
