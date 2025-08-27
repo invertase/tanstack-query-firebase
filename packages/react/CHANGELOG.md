@@ -1,5 +1,11 @@
 # @tanstack-query-firebase/react
 
+## 2.1.1
+
+### Patch Changes
+
+- c966946: chore: add repository fields to package.json
+
 ## 2.1.0
 
 ### Minor Changes
