@@ -1,8 +1,5 @@
 import { provideHttpClient } from "@angular/common/http";
-import {
-  inject,
-  provideZonelessChangeDetection,
-} from "@angular/core";
+import { inject, provideZonelessChangeDetection } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import {
