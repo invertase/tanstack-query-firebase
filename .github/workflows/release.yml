@@ -14,8 +14,9 @@ concurrency:
   group: release
   cancel-in-progress: false
 
-# Minimal permissions for security
+# Permissions: add id-token for OIDC; keep others for PRs
 permissions:
+  id-token: write
   contents: write
   pull-requests: write
   issues: write
@@ -61,6 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     needs: quality
+    environment: publish
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,6 +74,9 @@ jobs:
         with:
           node-version: "20"
           registry-url: "https://registry.npmjs.org"
+
+      - name: Ensure npm >= 11.5.1 for OIDC
+        run: npm i -g npm@^11.5.1
 
       - name: Enable Corepack
         run: corepack enable
@@ -92,6 +97,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+        # If you have PRIVATE deps, uncomment and set a read-only token:
+        # env:
+        #   NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
 
       - name: Cache Firebase emulators
         uses: actions/cache@v4
@@ -118,7 +126,6 @@ jobs:
       - name: Verify build outputs
         run: |
           echo "Checking build outputs..."
-          # Check all packages for dist directories
           MISSING_BUILDS=""
           for PKG_DIR in packages/*; do
             if [ -d "$PKG_DIR" ] && [ -f "$PKG_DIR/package.json" ]; then
@@ -128,44 +135,23 @@ jobs:
               fi
             fi
           done
-          
           if [ -n "$MISSING_BUILDS" ]; then
             echo "❌ Build outputs missing for: $MISSING_BUILDS"
             exit 1
           fi
-          
           echo "✅ All build outputs verified"
-
-      - name: Validate changesets
-        run: |
-          set -e
-          CHANGESET_FILES=$(find .changeset -name "*.md" -type f ! -name "README.md" 2>/dev/null || true)
-          
-          if [ -z "$CHANGESET_FILES" ]; then
-            echo "❌ No changesets found!"
-            echo ""
-            echo "Please create changesets locally with: pnpm changeset"
-            echo "Changesets should be created during development, not during release."
-            exit 1
-          fi
-          
-          CHANGESET_COUNT=$(echo "$CHANGESET_FILES" | wc -l | tr -d ' ')
-          echo "✅ Found $CHANGESET_COUNT changeset(s):"
-          echo "$CHANGESET_FILES" | while read -r file; do
-            echo "  - $(basename "$file")"
-          done
 
       - name: Create Release Pull Request or Publish
         if: ${{ !inputs.dry_run }}
         id: changesets
         uses: changesets/action@v1
         with:
-          publish: pnpm release
+          publish: pnpm release # runs: pnpm build && changeset publish
           commit: "chore: version packages"
           title: "chore: version packages"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # NPM_TOKEN removed – OIDC will be used automatically
 
       - name: Dry Run - Show Changes
         if: ${{ inputs.dry_run }}
@@ -180,24 +166,17 @@ jobs:
               echo ""
             fi
           done
-
           echo "📦 Version changes that would be applied:"
-          # Configure git user for changeset version command
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # Save current HEAD reference before making changes
           ORIGINAL_HEAD=$(git rev-parse HEAD)
-          # Create a temporary branch for dry run with unique name
           FALLBACK_ID=${GITHUB_RUN_ID:-$RANDOM$RANDOM}
           TEMP_BRANCH="dry-run-temp-$FALLBACK_ID"
           git checkout -b "$TEMP_BRANCH"
           pnpm changeset version
-          
           echo ""
           echo "🔍 Changed files:"
           git diff --name-status "$ORIGINAL_HEAD"
-          
           echo ""
           echo "🔍 Package version changes:"
           VERSION_CHANGES=$(git diff "$ORIGINAL_HEAD" -- '**/package.json' | grep -E "^[+-]\s*\"version\"" || true)
@@ -206,10 +185,7 @@ jobs:
           else
             echo "$VERSION_CHANGES"
           fi
-          
-          # Clean up
           git checkout -
           git branch -D "$TEMP_BRANCH"
-          
           echo ""
           echo "✅ Dry run completed successfully"

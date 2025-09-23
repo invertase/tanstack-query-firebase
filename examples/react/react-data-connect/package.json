@@ -1,5 +1,5 @@
 {
-  "name": "react-example",
+  "name": "example-react-data-connect",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "@tanstack/react-query": "^5.55.4",
     "@tanstack-query-firebase/react": "workspace:*",
-    "@dataconnect/default-connector": "workspace:*",
+    "@dataconnect/default-connector": "file:../../../dataconnect-sdk/js/default-connector",
     "firebase": "^11.3.0",
     "next": "15.1.0",
     "react": "^19.0.0",

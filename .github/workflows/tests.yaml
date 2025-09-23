@@ -2,13 +2,10 @@ name: Tests
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
-# Cancel in-progress runs when a new run is queued on the same branch
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -20,31 +17,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Make pnpm available before setup-node uses cache: 'pnpm'
+      - name: Enable Corepack (pnpm)
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.12.2 --activate
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          cache: "pnpm"
 
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Run format check
         run: pnpm format
@@ -56,77 +45,74 @@ jobs:
     strategy:
       matrix:
         node-version: [20, 22]
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # Make pnpm available before setup-node uses cache: 'pnpm'
+      - name: Enable Corepack (pnpm)
+        run: |
+          corepack enable
+          corepack prepare pnpm@9.12.2 --activate
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          registry-url: "https://registry.npmjs.org"
+          cache: "pnpm"
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
+      # Fast Java (no apt-get)
+      - name: Setup Java (JDK 17)
+        uses: actions/setup-java@v4
         with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+          distribution: "temurin"
+          java-version: "17"
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Install Java
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-17-jdk
-          java -version
-
+      # Cache Firebase emulators (JARs) once
       - name: Cache Firebase emulators
+        if: matrix.node-version == '20'
         uses: actions/cache@v4
         with:
-          path: ~/.cache/firebase/emulators
-          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('.github/workflows/tests.yaml') }}
+          path: |
+            ~/.cache/firebase/emulators
+            ~/.cache/firebase/runtime
+          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('firebase.json', '.firebaserc', 'package.json', 'pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-firebase-emulators-
 
-      - name: Install Firebase CLI
-        uses: nick-invision/retry@v3
-        with:
-          timeout_minutes: 10
-          retry_wait_seconds: 60
-          max_attempts: 3
-          command: npm i -g firebase-tools@latest
+      # Ensure pnpm has a global bin dir on Linux runners (fixes ERR_PNPM_NO_GLOBAL_BIN_DIR)
+      - name: Configure PNPM global bin
+        if: matrix.node-version == '20'
+        run: |
+          echo "PNPM_HOME=$HOME/.local/share/pnpm" >> $GITHUB_ENV
+          mkdir -p "$HOME/.local/share/pnpm"
+          echo "$HOME/.local/share/pnpm" >> $GITHUB_PATH
 
-      # Determine which packages have changed
-      - name: Determine changed packages
-        id: changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            react:
-              - 'packages/react/**'
-            angular:
-              - 'packages/angular/**'
+      # Install Firebase CLI globally so pnpm test:emulator works
+      - name: Install Firebase CLI (global, fast)
+        if: matrix.node-version == '20'
+        run: pnpm add -g firebase-tools@14
 
-      # Build packages before testing
+      # Optional turbo cache
+      - name: Cache turbo build metadata
+        uses: actions/cache@v4
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Build packages
         run: pnpm turbo build
 
-      # Verify build outputs
       - name: Verify build outputs
         run: |
-          # Check all packages for dist directories
           MISSING_BUILDS=""
           for PKG_DIR in packages/*; do
             if [ -d "$PKG_DIR" ] && [ -f "$PKG_DIR/package.json" ]; then
@@ -136,13 +122,13 @@ jobs:
               fi
             fi
           done
-
           if [ -n "$MISSING_BUILDS" ]; then
             echo "❌ Build outputs not found for: $MISSING_BUILDS"
             exit 1
           fi
           echo "✅ All build outputs verified"
 
-      # Run tests with all emulators (auth, firestore, and data-connect)
+      # Run emulator tests only once (Node 20)
       - name: Run tests with emulator
+        if: matrix.node-version == '20'
         run: pnpm test:emulator

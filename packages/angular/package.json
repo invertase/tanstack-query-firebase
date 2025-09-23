@@ -1,6 +1,6 @@
 {
   "name": "@tanstack-query-firebase/angular",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "TanStack Query bindings for Firebase and Angular",
   "type": "module",
   "scripts": {
@@ -24,10 +24,18 @@
       "default": "./data-connect/index.js"
     }
   },
-  "author": "",
+  "author": {
+    "name": "Invertase",
+    "email": "oss@invertase.io",
+    "url": "https://github.com/invertase/tanstack-query-firebase"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/invertase/tanstack-query-firebase"
+  },
   "license": "Apache-2.0",
   "devDependencies": {
-    "@dataconnect/default-connector": "workspace:*",
+    "@dataconnect/default-connector": "file:../../dataconnect-sdk/js/default-connector",
     "@testing-library/angular": "^18.0.0",
     "@testing-library/dom": "^10.4.0",
     "tsup": "^8.4.0"
