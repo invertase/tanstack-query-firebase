@@ -1,5 +1,5 @@
 import { provideHttpClient } from "@angular/common/http";
-import { provideExperimentalZonelessChangeDetection } from "@angular/core";
+import { provideZonelessChangeDetection } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import {
@@ -44,7 +44,7 @@ describe("injectDataConnectMutation", () => {
     invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(), // Required as angularfire's ZoneScheduler breaks tests.
+        provideZonelessChangeDetection(), // Required as angularfire's ZoneScheduler breaks tests.
         provideFirebaseApp(() => initializeApp({ projectId: "p" })),
         provideDataConnect(() => {
           const dc = getDataConnect(connectorConfig);
