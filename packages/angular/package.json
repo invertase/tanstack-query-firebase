@@ -28,17 +28,15 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@dataconnect/default-connector": "workspace:*",
-    "@analogjs/vite-plugin-angular": "^1.13.0",
-    "@angular/animations": "^19.0.0",
-    "@testing-library/angular": "^17.3.5",
+    "@testing-library/angular": "^18.0.0",
     "@testing-library/dom": "^10.4.0",
     "tsup": "^8.4.0"
   },
   "peerDependencies": {
-    "@tanstack/angular-query-experimental": "5.66.4",
-    "@angular/core": "^19.0.0",
-    "@angular/fire": "^19.0.0",
-    "@angular/common": "^19.0.0",
-    "@angular/platform-browser-dynamic": "^19.0.0"
+    "@angular/common": "^20.0.0 || ^19.0.0",
+    "@angular/core": "^20.0.0 || ^19.0.0",
+    "@angular/fire": "^20.0.0 || ^19.0.0",
+    "@angular/platform-browser-dynamic": "^20.0.0 || ^19.0.0",
+    "@tanstack/angular-query-experimental": "^5.66.4"
   }
 }
