@@ -61,19 +61,20 @@ export function injectDataConnectQuery<Data, Variables>(
     Partial<QueryResult<Data, Variables>> | undefined
   >(undefined);
   const finalInjector = injector || inject(EnvironmentInjector);
-  const optionsSignal = computed(() =>
-    typeof queryRefOrOptionsFn === "function"
-      ? queryRefOrOptionsFn()
-      : undefined,
-  );
-  const queryRefSignal = computed(() =>
-    typeof queryRefOrOptionsFn === "function"
-      ? queryRefOrOptionsFn().queryFn()
-      : queryRefOrOptionsFn,
-  );
-  const varsSignal = computed(() =>
-      queryRefSignal().variables,
-  );
+  const derivedOptions = computed(() => {
+    if (typeof queryRefOrOptionsFn === "function") {
+      const options = queryRefOrOptionsFn();
+      const queryRef = options.queryFn();
+      return { options, queryRef };
+    }
+    return {
+      options: undefined,
+      queryRef: queryRefOrOptionsFn as QueryRef<Data, Variables>,
+    };
+  });
+  const queryRefSignal = computed(() => derivedOptions().queryRef);
+  const optionsSignal = computed(() => derivedOptions().options);
+  const varsSignal = computed(() => derivedOptions().queryRef.variables);
 
   async function queryFn() {
     const queryRef = queryRefSignal();
