@@ -1,4 +1,5 @@
 import {
+  computed,
   EnvironmentInjector,
   type Injector,
   inject,
@@ -60,36 +61,39 @@ export function injectDataConnectQuery<Data, Variables>(
     Partial<QueryResult<Data, Variables>> | undefined
   >(undefined);
   const finalInjector = injector || inject(EnvironmentInjector);
-  const queryKey = signal<QueryKey>([]);
+  const varsSignal = computed(() =>
+    typeof queryRefOrOptionsFn === "function"
+      ? queryRefOrOptionsFn().queryFn().variables
+      : queryRefOrOptionsFn.variables,
+  );
+  const queryRefSignal = computed(() =>
+    typeof queryRefOrOptionsFn === "function"
+      ? queryRefOrOptionsFn().queryFn()
+      : queryRefOrOptionsFn,
+  );
+  const optionsSignal = computed(() =>
+    typeof queryRefOrOptionsFn === "function"
+      ? queryRefOrOptionsFn()
+      : undefined,
+  );
 
-  function fdcOptionsFn() {
-    const passedInOptions =
-      typeof queryRefOrOptionsFn === "function"
-        ? queryRefOrOptionsFn()
-        : undefined;
-
-    const modifiedFn = async (): Promise<Data> => {
-      const ref: QueryRef<Data, Variables> =
-        passedInOptions?.queryFn() ||
-        (queryRefOrOptionsFn as QueryRef<Data, Variables>);
-      dataConnectResult.set({ ref });
-      // @ts-expect-error function is hidden under `DataConnect`.
-      ref.dataConnect._setCallerSdkType(_callerSdkType);
-      queryKey.set([ref.name, ref.variables]);
-      const response = await executeQuery(ref);
-      dataConnectResult.set(response);
-      return response.data;
-    };
-    return {
-      queryKey: queryKey(),
-      ...passedInOptions,
-      queryFn: modifiedFn,
-    };
+  async function queryFn() {
+    const queryRef = queryRefSignal();
+    // @ts-expect-error function is hidden under `DataConnect`.
+    queryRef.dataConnect._setCallerSdkType(_callerSdkType);
+    const response = await executeQuery(queryRef);
+    dataConnectResult.set(response);
+    return response.data;
   }
-
-  const originalResult = injectQuery(fdcOptionsFn, finalInjector);
+  const injectQueryResult = injectQuery(() => {
+    return {
+      queryKey: [queryRefSignal().name, varsSignal()],
+      ...optionsSignal(),
+      queryFn: queryFn,
+    };
+  }, finalInjector);
   return {
-    ...originalResult,
+    ...injectQueryResult,
     dataConnectResult,
   };
 }
