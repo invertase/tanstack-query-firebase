@@ -496,7 +496,7 @@ packages:
     resolution: {directory: dataconnect-sdk/js/default-connector, type: directory}
     engines: {node: ' >=18.0'}
     peerDependencies:
-      firebase: ^10.14.0 || ^11.3.0
+      firebase: ^10.14.0 || ^11.3.0 || ^12.0.0
 
   '@emnapi/core@1.5.0':
     resolution: {integrity: sha512-sbP8GzB1WDzacS8fgNPpHlp6C9VZe+SJP3F90W9rLemaQj2PzIuTEl1qDOYQf58YIpyjViI24y9aPWCjEzY2cg==}
