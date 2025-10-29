@@ -1,8 +1,5 @@
 import { provideHttpClient } from "@angular/common/http";
-import {
-  inject,
-  provideExperimentalZonelessChangeDetection,
-} from "@angular/core";
+import { inject, provideZonelessChangeDetection, signal } from "@angular/core";
 import { TestBed } from "@angular/core/testing";
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
 import {
@@ -35,7 +32,7 @@ describe("injectDataConnectQuery", () => {
     queryClient.clear();
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(), // Required as angularfire's ZoneScheduler breaks tests.
+        provideZonelessChangeDetection(), // Required as angularfire's ZoneScheduler breaks tests.
         provideFirebaseApp(() => initializeApp({ projectId: "p" })),
         provideDataConnect(() => {
           const dc = getDataConnect(connectorConfig);
@@ -242,5 +239,37 @@ describe("injectDataConnectQuery", () => {
     // //   });
     // // })
     // expect(r).toBeDefined();
+  });
+  test("signal updates are received", async () => {
+    const movieData = {
+      title: "tanstack query firebase",
+      genre: "library",
+      imageUrl: "https://invertase.io/",
+    };
+    const createdMovie = await createMovie(movieData);
+
+    const movieId = createdMovie?.data?.movie_insert?.id;
+    const movieIdSignal = signal("");
+
+    const result = TestBed.runInInjectionContext(() =>
+      injectDataConnectQuery(() => ({
+        queryFn: () => getMovieByIdRef({ id: movieIdSignal() }),
+        retry: false,
+      })),
+    );
+
+    expect(result.isPending()).toBe(true);
+
+    await waitFor(() => expect(result.isPending()).toBe(false));
+    expect(result.isSuccess()).to.be.false;
+    expect(result.data()).toBeUndefined();
+    expect(result.error()).toBeDefined();
+
+    movieIdSignal.set(movieId);
+    await waitFor(() => expect(result.isSuccess()).toBe(true));
+    expect(result.data()!.movie).to.deep.equal({
+      id: movieId,
+      ...movieData,
+    });
   });
 });

@@ -16,10 +16,10 @@
     "build": "turbo build"
   },
   "devDependencies": {
-    "@angular/core": "^19.1.8",
+    "@angular/core": "^20.0.0",
     "@biomejs/biome": "2.1.1",
     "@changesets/cli": "^2.29.4",
-    "@tanstack/angular-query-experimental": "5.66.4",
+    "@tanstack/angular-query-experimental": "^5.66.4",
     "@tanstack/react-query": "^5.55.4",
     "@types/jsonwebtoken": "^9.0.7",
     "@vitest/coverage-istanbul": "^2.0.5",
@@ -33,6 +33,6 @@
     "vitest": "^2.0.5"
   },
   "dependencies": {
-    "@angular/fire": "^19.0.0"
+    "@angular/fire": "^20.0.0"
   }
 }
