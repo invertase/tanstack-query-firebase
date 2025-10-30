@@ -61,7 +61,7 @@ function MyApplication() {
   const docRef = doc(firestore, 'cities', 'SF');
 
   // Fetch the document using the useDocumentQuery hook
-  const query = useDocumentQuery(docRef);
+  const query = useDocumentQuery(docRef,{ queryKey: ['cities', 'SF'] });
 
   if (query.isLoading) {
     return <p>Loading data...</p>;
