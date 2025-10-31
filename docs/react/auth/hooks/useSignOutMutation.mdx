@@ -2,4 +2,88 @@
 title: useSignOutMutation
 ---
 
-This hook is implemented, but the documentation is a work in progress, check back soon.
+The `useSignOutMutation` hook is designed to handle user sign-out using Firebase Authentication. 
+It integrates Firebase's `signOut` method with TanStack Query’s mutation lifecycle for easy state management and error handling.
+
+## Features
+
+- **Firebase Authentication Integration**: Simplifies signing out users from Firebase Authentication using Firebase's `signOut` method.
+- **Built-in State Management**: Tracks the mutation lifecycle (`idle`, `loading`, `success`, `error`).
+- **Customizable Callbacks**: Supports `onSuccess`, `onError`, and other TanStack Query mutation options.
+- **Type-Safe Handling**: Ensures type safety with TanStack Query and Firebase types.
+
+## Installation
+
+Ensure you have the necessary Firebase, TanStack Query and TanStack Query Firebase packages installed:
+
+```bash
+npm install firebase @tanstack/react-query @tanstack-query-firebase/react
+```
+
+## Usage
+
+```jsx
+import { useSignOutMutation } from "./useSignOutMutation";
+
+function SignOutComponent() {
+  const { mutate, isPending, isSuccess, isError, error } = useSignOutMutation(auth);
+
+  const handleSignOut = () => {
+    mutate(); // Trigger the sign-out mutation
+  };
+
+  return (
+    <div>
+      {isPending && <p>Signing out...</p>}
+      {isSuccess && <p>Signed out successfully!</p>}
+      {isError && <p>Error: {error?.message}</p>}
+
+      <button onClick={handleSignOut} disabled={isPending}>
+        Sign Out
+      </button>
+    </div>
+  );
+}
+```
+
+## API Reference
+
+`useSignOutMutation(auth, options?)`
+
+### Parameters
+
+- `auth`: The Firebase `Auth` instance used to manage authentication.
+- `options` (optional):  
+  An object for customizing the mutation behavior. Accepts all options supported by TanStack Query's `useMutation`, such as:
+  - `onSuccess`: Callback fired when the mutation succeeds.
+  - `onError`: Callback fired when the mutation fails.
+  - `onSettled`: Callback fired after the mutation finishes, regardless of success or failure.
+
+For a full list of supported options, see the TanStack Query [useMutation documentation](https://tanstack.com/query/latest/docs/react/reference/useMutation)
+
+### Returns
+
+The hook returns the following properties, provided by TanStack Query's [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation):
+
+- `mutate({ email, password })`: Function to trigger the sign-in mutation with the provided email and password.
+
+```ts
+mutate(): void;
+```
+
+- `isPending`:
+  Boolean indicating if the mutation is in progress (alias for `isLoading`).
+
+- `isSuccess`:
+  Boolean indicating if the mutation has successfully completed.
+
+- `isError`:
+  Boolean indicating if the mutation has failed.
+
+- `error`:
+  The error object, if the mutation failed.
+
+- `data`:
+  The result of the mutation, which is typically `undefined` for sign-out operations.
+
+For a complete list of returned properties, see the official TanStack Query [useMutation](https://tanstack.com/query/latest/docs/react/reference/useMutation) documentation.
