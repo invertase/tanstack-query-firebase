@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:emulator": "cd ../../../ && firebase emulators:exec --project test-project 'cd examples/react/useGetIdTokenQuery && vite'",
+    "dev:emulator": "cd ../../../ && firebase emulators:exec --project demo-test-project 'cd examples/react/useGetIdTokenQuery && vite'",
     "build": "npx vite build",
     "preview": "vite preview"
   },
