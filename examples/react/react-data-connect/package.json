@@ -14,8 +14,8 @@
     "@dataconnect/default-connector": "file:../../../dataconnect-sdk/js/default-connector",
     "firebase": "^11.3.0",
     "next": "15.1.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
