@@ -1,5 +1,11 @@
 # @tanstack-query-firebase/react
 
+## 2.1.2
+
+### Patch Changes
+
+- fab612f: Updated dependencies to depend on react version 19.2.1
+
 ## 2.1.1
 
 ### Patch Changes

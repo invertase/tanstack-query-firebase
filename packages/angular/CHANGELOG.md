@@ -1,5 +1,11 @@
 # @tanstack-query-firebase/angular
 
+## 1.0.3
+
+### Patch Changes
+
+- ee67d1e: Fix issue where signal updates weren't getting picked up
+
 ## 1.0.2
 
 ### Patch Changes
