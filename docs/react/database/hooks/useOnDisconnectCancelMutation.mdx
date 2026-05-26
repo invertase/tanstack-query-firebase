@@ -1,0 +1,16 @@
+---
+title: useOnDisconnectCancelMutation
+---
+
+Cancel all pending on-disconnect operations at a location.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useOnDisconnectCancelMutation } from "@tanstack-query-firebase/react/database";
+
+const statusRef = ref(database, `users/${uid}/status`);
+const { mutate } = useOnDisconnectCancelMutation(statusRef);
+mutate();
+```

@@ -1,0 +1,16 @@
+---
+title: useSetPriorityMutation
+---
+
+Set the priority of a Realtime Database location.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useSetPriorityMutation } from "@tanstack-query-firebase/react/database";
+
+const taskRef = ref(database, "tasks/task-1");
+const { mutate } = useSetPriorityMutation(taskRef);
+mutate(1);
+```

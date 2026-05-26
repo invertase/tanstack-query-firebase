@@ -1,0 +1,16 @@
+---
+title: useOnDisconnectSetWithPriorityMutation
+---
+
+Queue a `setWithPriority` operation to run when the client disconnects.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useOnDisconnectSetWithPriorityMutation } from "@tanstack-query-firebase/react/database";
+
+const taskRef = ref(database, "tasks/task-1");
+const { mutate } = useOnDisconnectSetWithPriorityMutation(taskRef);
+mutate({ value: { title: "Cleanup" }, priority: 0 });
+```

@@ -1,0 +1,17 @@
+---
+title: useOnValueQuery
+---
+
+Subscribe to value events at a Realtime Database location.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useOnValueQuery } from "@tanstack-query-firebase/react/database";
+
+const userRef = ref(database, `users/${uid}`);
+const { data: snapshot } = useOnValueQuery(userRef, {
+  queryKey: ["database", "onValue", "users", uid],
+});
+```

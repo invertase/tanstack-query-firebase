@@ -1,0 +1,18 @@
+---
+title: useGetQuery
+---
+
+Read data once from a Realtime Database location.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useGetQuery } from "@tanstack-query-firebase/react/database";
+
+const userRef = ref(database, `users/${uid}`);
+const { data: snapshot, isLoading } = useGetQuery(userRef, {
+  queryKey: ["database", "users", uid],
+});
+const value = snapshot?.val();
+```
