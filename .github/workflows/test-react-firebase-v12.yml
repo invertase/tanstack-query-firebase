@@ -44,7 +44,7 @@ jobs:
           timeout_minutes: 10
           retry_wait_seconds: 60
           max_attempts: 3
-          command: npm i -g firebase-tools@latest
+          command: pnpm add -g firebase-tools@14
 
       - name: Update to Firebase v12
         run: |
