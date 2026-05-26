@@ -5,6 +5,11 @@ import {
   getDataConnect,
 } from "firebase/data-connect";
 import {
+  connectDatabaseEmulator,
+  type Database,
+  getDatabase,
+} from "firebase/database";
+import {
   connectFirestoreEmulator,
   type Firestore,
   getFirestore,
@@ -21,13 +26,16 @@ const firebaseTestingOptions = {
 let firebaseApp: FirebaseApp | undefined;
 let firestore: Firestore;
 let auth: Auth;
+let database: Database;
 
 if (!firebaseApp) {
   firebaseApp = initializeApp(firebaseTestingOptions);
   firestore = getFirestore(firebaseApp);
   auth = getAuth(firebaseApp);
+  database = getDatabase(firebaseApp);
 
   connectFirestoreEmulator(firestore, "localhost", 8080);
+  connectDatabaseEmulator(database, "localhost", 9000);
   connectAuthEmulator(auth, "http://localhost:9099");
   connectDataConnectEmulator(
     getDataConnect(connectorConfig),
@@ -46,6 +54,19 @@ async function wipeFirestore() {
 
   if (!response.ok) {
     throw new Error("Failed to wipe firestore");
+  }
+}
+
+async function wipeDatabase() {
+  const response = await fetch(
+    "http://localhost:9000/.json?ns=test-project-default-rtdb",
+    {
+      method: "DELETE",
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to wipe realtime database");
   }
 }
 
@@ -102,4 +123,6 @@ export {
   wipeAuth,
   firebaseApp,
   expectFirebaseError,
+  database,
+  wipeDatabase,
 };
