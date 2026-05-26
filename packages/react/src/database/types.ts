@@ -1,4 +1,7 @@
-import type { UseMutationOptions, UseQueryOptions } from "@tanstack/react-query";
+import type {
+  UseMutationOptions,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import type { ListenOptions } from "firebase/database";
 
 /**
@@ -9,10 +12,10 @@ import type { ListenOptions } from "firebase/database";
  * pass Firebase {@link https://firebase.google.com/docs/reference/js/database.listoptions | ListenOptions}
  * via `database` (e.g. `{ onlyOnce: true }`).
  */
-export type DatabaseUseQueryOptions<
-  TData = unknown,
-  TError = Error,
-> = Omit<UseQueryOptions<TData, TError>, "queryFn"> & {
+export type DatabaseUseQueryOptions<TData = unknown, TError = Error> = Omit<
+  UseQueryOptions<TData, TError>,
+  "queryFn"
+> & {
   database?: ListenOptions;
 };
 

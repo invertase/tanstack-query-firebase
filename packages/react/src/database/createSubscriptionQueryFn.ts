@@ -1,4 +1,7 @@
-import type { QueryFunction, QueryFunctionContext } from "@tanstack/react-query";
+import type {
+  QueryFunction,
+  QueryFunctionContext,
+} from "@tanstack/react-query";
 import type { Unsubscribe } from "firebase/database";
 
 type ListenerHandlers<TData> = {

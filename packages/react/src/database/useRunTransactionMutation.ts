@@ -8,9 +8,7 @@ import {
 } from "firebase/database";
 import type { DatabaseMutationOptions } from "./types";
 
-type TransactionUpdate = (
-  currentData: unknown,
-) => unknown;
+type TransactionUpdate = (currentData: unknown) => unknown;
 
 type RunTransactionMutationOptions = DatabaseMutationOptions<
   TransactionResult,

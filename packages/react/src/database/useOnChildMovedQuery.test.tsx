@@ -1,5 +1,12 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { child, orderByPriority, query, ref, set, setPriority } from "firebase/database";
+import {
+  child,
+  orderByPriority,
+  query,
+  ref,
+  set,
+  setPriority,
+} from "firebase/database";
 import { beforeEach, describe, expect, test } from "vitest";
 import { database, wipeDatabase } from "~/testing-utils";
 import { queryClient, wrapper } from "../../utils";

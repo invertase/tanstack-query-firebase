@@ -30,12 +30,7 @@ export function useDatabaseSubscriptionQuery(
     ...databaseSubscriptionQueryDefaults,
     ...queryOptions,
     queryFn: createDatabaseSubscriptionQueryFn((handlers) =>
-      subscribeToQuery(
-        query,
-        handlers.onNext,
-        handlers.onError,
-        listenOptions,
-      ),
+      subscribeToQuery(query, handlers.onNext, handlers.onError, listenOptions),
     ),
   });
 }

@@ -1,5 +1,9 @@
 import type { FirebaseError } from "firebase/app";
-import { type DataSnapshot, onChildRemoved, type Query } from "firebase/database";
+import {
+  type DataSnapshot,
+  onChildRemoved,
+  type Query,
+} from "firebase/database";
 import type { DatabaseUseQueryOptions } from "./types";
 import { useDatabaseSubscriptionQuery } from "./useDatabaseSubscriptionQuery";
 
