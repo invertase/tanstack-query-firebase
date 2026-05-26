@@ -18,6 +18,10 @@
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
+    "./analytics": {
+      "import": "./dist/analytics/index.js",
+      "types": "./dist/analytics/index.d.ts"
+    },
     "./auth": {
       "import": "./dist/auth/index.js",
       "types": "./dist/auth/index.d.ts"

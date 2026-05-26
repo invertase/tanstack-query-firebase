@@ -1,7 +1,7 @@
 import * as fs from "node:fs/promises";
 import { defineConfig } from "tsup";
 
-const supportedPackages = ["data-connect", "firestore", "auth"];
+const supportedPackages = ["analytics", "data-connect", "firestore", "auth"];
 export default defineConfig({
   entry: [`src/(${supportedPackages.join("|")})/index.ts`, "src/index.ts"],
   format: ["esm"],
