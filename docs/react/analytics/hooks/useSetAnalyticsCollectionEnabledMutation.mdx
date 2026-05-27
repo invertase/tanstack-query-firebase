@@ -1,0 +1,22 @@
+---
+title: useSetAnalyticsCollectionEnabledMutation
+---
+
+Enable or disable Google Analytics collection for an app on the current device.
+
+## Usage
+
+```tsx
+import { getAnalytics } from "firebase/analytics";
+import { useSetAnalyticsCollectionEnabledMutation } from "@tanstack-query-firebase/react/analytics";
+
+const analytics = getAnalytics(app);
+const { mutate: setCollectionEnabled } =
+  useSetAnalyticsCollectionEnabledMutation(analytics);
+
+// Opt user out of analytics collection
+setCollectionEnabled(false);
+
+// Re-enable after consent is granted
+setCollectionEnabled(true);
+```

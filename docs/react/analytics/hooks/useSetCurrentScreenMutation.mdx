@@ -1,0 +1,34 @@
+---
+title: useSetCurrentScreenMutation
+---
+
+Set the current screen name via gtag config.
+
+<Info>
+This hook wraps a deprecated Firebase API. Prefer [`useLogEventMutation`](/react/analytics/hooks/useLogEventMutation) with `eventName: "screen_view"` for new code.
+</Info>
+
+## Usage
+
+```tsx
+import { getAnalytics } from "firebase/analytics";
+import { useSetCurrentScreenMutation } from "@tanstack-query-firebase/react/analytics";
+
+const analytics = getAnalytics(app);
+const { mutate: setScreen } = useSetCurrentScreenMutation(analytics);
+
+setScreen({ screenName: "Home" });
+```
+
+## Recommended alternative
+
+```tsx
+import { useLogEventMutation } from "@tanstack-query-firebase/react/analytics";
+
+const { mutate: logAnalyticsEvent } = useLogEventMutation(analytics);
+
+logAnalyticsEvent({
+  eventName: "screen_view",
+  eventParams: { firebase_screen: "Home" },
+});
+```

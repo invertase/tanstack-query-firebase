@@ -1,0 +1,23 @@
+---
+title: useSetConsentMutation
+---
+
+Set end-user consent state for Google Analytics across all gtag references on the page.
+
+## Usage
+
+```tsx
+import { useSetConsentMutation } from "@tanstack-query-firebase/react/analytics";
+
+const { mutate: setAnalyticsConsent } = useSetConsentMutation();
+
+setAnalyticsConsent({
+  analytics_storage: "granted",
+  ad_storage: "denied",
+});
+```
+
+## Notes
+
+- Wraps Firebase [`setConsent`](https://firebase.google.com/docs/reference/js/analytics.md#setconsent).
+- This is a module-level API and does not require an `Analytics` instance.

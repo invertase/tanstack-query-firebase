@@ -1,0 +1,29 @@
+---
+title: useIsSupportedQuery
+---
+
+Check whether Firebase Analytics is supported in the current environment.
+
+## Usage
+
+```tsx
+import {
+  analyticsQueryKeys,
+  useIsSupportedQuery,
+} from "@tanstack-query-firebase/react/analytics";
+
+const { data: supported, isLoading } = useIsSupportedQuery({
+  queryKey: analyticsQueryKeys.isSupported(),
+  staleTime: Number.POSITIVE_INFINITY,
+});
+
+if (supported) {
+  // Safe to call getAnalytics()
+}
+```
+
+## Notes
+
+- Wraps Firebase [`isSupported`](https://firebase.google.com/docs/reference/js/analytics.md#issupported).
+- Does not accept an `Analytics` instance.
+- Requires a caller-provided `queryKey`.

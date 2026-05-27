@@ -1,0 +1,108 @@
+---
+title: Firebase Analytics
+---
+
+Firebase Analytics collects usage and behavior data for your app. These hooks wrap the Firebase Analytics web SDK with TanStack Query for reads and writes.
+
+Before using these hooks, ensure Analytics is enabled in your Firebase project and that the current environment supports it (Analytics is not available in all environments, such as some server-side contexts).
+
+## Setup
+
+```ts
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
+// Initialize your Firebase app
+initializeApp({ ... });
+
+// Get the Analytics instance (client-side only)
+const analytics = getAnalytics(app);
+```
+
+Use [`useIsSupportedQuery`](/react/analytics/hooks/useIsSupportedQuery) to check whether Analytics is supported before calling `getAnalytics()`.
+
+## Importing
+
+Hooks are exported from the `analytics` namespace:
+
+```ts
+import {
+  analyticsQueryKeys,
+  useLogEventMutation,
+} from "@tanstack-query-firebase/react/analytics";
+```
+
+Most hooks accept an `Analytics` instance from `getAnalytics()` or `initializeAnalytics()`. Module-level Firebase APIs (`setConsent`, `setDefaultEventParameters`) are exposed as mutations that do not require an `Analytics` instance.
+
+## Query keys
+
+Analytics query hooks require a caller-provided `queryKey` (same as Firestore). Use `analyticsQueryKeys` for consistent keys:
+
+```tsx
+import { analyticsQueryKeys, useIsSupportedQuery } from "@tanstack-query-firebase/react/analytics";
+
+const { data: supported } = useIsSupportedQuery({
+  queryKey: analyticsQueryKeys.isSupported(),
+  staleTime: Number.POSITIVE_INFINITY,
+});
+```
+
+## Logging events
+
+Use `useLogEventMutation` to send Google Analytics events. For screen tracking, prefer a `screen_view` event over the deprecated `useSetCurrentScreenMutation`:
+
+```tsx
+import { getAnalytics } from "firebase/analytics";
+import { useLogEventMutation } from "@tanstack-query-firebase/react/analytics";
+
+const analytics = getAnalytics(app);
+const { mutate: logAnalyticsEvent } = useLogEventMutation(analytics);
+
+logAnalyticsEvent({
+  eventName: "screen_view",
+  eventParams: {
+    firebase_screen: "Home",
+    firebase_screen_class: "HomeScreen",
+  },
+});
+```
+
+## User identity and properties
+
+Set the Analytics user ID and custom user properties with mutation hooks. Clear the user ID on sign-out by passing `null`:
+
+```tsx
+import { useSetUserIdMutation, useSetUserPropertiesMutation } from "@tanstack-query-firebase/react/analytics";
+
+const { mutate: setAnalyticsUserId } = useSetUserIdMutation(analytics);
+const { mutate: setAnalyticsUserProperties } = useSetUserPropertiesMutation(analytics);
+
+setAnalyticsUserId({ id: user.uid });
+setAnalyticsUserProperties({ properties: { plan: "premium" } });
+
+// On sign-out
+setAnalyticsUserId({ id: null });
+```
+
+## Consent and collection
+
+- [`useSetConsentMutation`](/react/analytics/hooks/useSetConsentMutation) — set consent state across all gtag references on the page
+- [`useSetAnalyticsCollectionEnabledMutation`](/react/analytics/hooks/useSetAnalyticsCollectionEnabledMutation) — enable or disable collection for the current device
+- [`useSetDefaultEventParametersMutation`](/react/analytics/hooks/useSetDefaultEventParametersMutation) — attach default parameters to every event on the page
+
+## Available hooks
+
+### Queries
+
+- [`useGetGoogleAnalyticsClientIdQuery`](/react/analytics/hooks/useGetGoogleAnalyticsClientIdQuery) — retrieve the Google Analytics client ID
+- [`useIsSupportedQuery`](/react/analytics/hooks/useIsSupportedQuery) — check whether Analytics is supported in the current environment
+
+### Mutations
+
+- [`useLogEventMutation`](/react/analytics/hooks/useLogEventMutation) — log a Google Analytics event
+- [`useSetAnalyticsCollectionEnabledMutation`](/react/analytics/hooks/useSetAnalyticsCollectionEnabledMutation) — enable or disable analytics collection
+- [`useSetConsentMutation`](/react/analytics/hooks/useSetConsentMutation) — set end-user consent settings
+- [`useSetCurrentScreenMutation`](/react/analytics/hooks/useSetCurrentScreenMutation) — set the current screen name (deprecated)
+- [`useSetDefaultEventParametersMutation`](/react/analytics/hooks/useSetDefaultEventParametersMutation) — set default event parameters
+- [`useSetUserIdMutation`](/react/analytics/hooks/useSetUserIdMutation) — set or clear the Analytics user ID
+- [`useSetUserPropertiesMutation`](/react/analytics/hooks/useSetUserPropertiesMutation) — set Analytics user properties
