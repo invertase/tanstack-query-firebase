@@ -1,0 +1,28 @@
+---
+title: useSetUserIdMutation
+---
+
+Set or clear the Google Analytics user ID for a Firebase Analytics instance.
+
+## Usage
+
+```tsx
+import { getAnalytics } from "firebase/analytics";
+import { useSetUserIdMutation } from "@tanstack-query-firebase/react/analytics";
+
+const analytics = getAnalytics(app);
+const { mutate: setAnalyticsUserId } = useSetUserIdMutation(analytics);
+
+setAnalyticsUserId({ id: user.uid });
+
+// Clear user ID on sign-out
+setAnalyticsUserId({ id: null });
+```
+
+## Global user ID
+
+Apply the user ID across all gtag properties on the page:
+
+```tsx
+setAnalyticsUserId({ id: user.uid, callOptions: { global: true } });
+```

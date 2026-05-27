@@ -1,0 +1,46 @@
+---
+title: useLogEventMutation
+---
+
+Log a Google Analytics event via Firebase Analytics.
+
+## Usage
+
+```tsx
+import { getAnalytics } from "firebase/analytics";
+import { useLogEventMutation } from "@tanstack-query-firebase/react/analytics";
+
+const analytics = getAnalytics(app);
+const { mutate: logAnalyticsEvent } = useLogEventMutation(analytics);
+
+logAnalyticsEvent({
+  eventName: "login",
+  eventParams: { method: "email" },
+});
+```
+
+## Screen tracking
+
+Prefer a `screen_view` event over the deprecated `useSetCurrentScreenMutation`:
+
+```tsx
+logAnalyticsEvent({
+  eventName: "screen_view",
+  eventParams: {
+    firebase_screen: "Home",
+    firebase_screen_class: "HomeScreen",
+  },
+});
+```
+
+## Global events
+
+Apply an event to all Google Analytics properties on the page with `callOptions.global`:
+
+```tsx
+logAnalyticsEvent({
+  eventName: "purchase",
+  eventParams: { transaction_id: "T123", value: 9.99, currency: "USD" },
+  callOptions: { global: true },
+});
+```

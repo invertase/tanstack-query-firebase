@@ -1,0 +1,30 @@
+---
+title: useGetGoogleAnalyticsClientIdQuery
+---
+
+Retrieve the Google Analytics client ID for a Firebase Analytics instance.
+
+## Usage
+
+```tsx
+import { getAnalytics } from "firebase/analytics";
+import {
+  analyticsQueryKeys,
+  useGetGoogleAnalyticsClientIdQuery,
+} from "@tanstack-query-firebase/react/analytics";
+
+const analytics = getAnalytics(app);
+
+const { data: clientId, isLoading } = useGetGoogleAnalyticsClientIdQuery(
+  analytics,
+  {
+    queryKey: analyticsQueryKeys.googleAnalyticsClientId(analytics.app.name),
+  },
+);
+```
+
+## Notes
+
+- Wraps Firebase [`getGoogleAnalyticsClientId`](https://firebase.google.com/docs/reference/js/analytics.md#getgoogleanalyticsclientid).
+- Requires a caller-provided `queryKey`.
+- Disable the query until Analytics is initialized with `enabled: !!analytics` if needed.

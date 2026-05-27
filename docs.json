@@ -80,6 +80,57 @@
     },
     {
       "tab": "react",
+      "group": "Analytics",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/react/analytics"
+        },
+        {
+          "group": "Hooks",
+          "pages": [
+            {
+              "href": "/react/analytics/hooks/useGetGoogleAnalyticsClientIdQuery",
+              "title": "useGetGoogleAnalyticsClientIdQuery"
+            },
+            {
+              "href": "/react/analytics/hooks/useIsSupportedQuery",
+              "title": "useIsSupportedQuery"
+            },
+            {
+              "href": "/react/analytics/hooks/useLogEventMutation",
+              "title": "useLogEventMutation"
+            },
+            {
+              "href": "/react/analytics/hooks/useSetAnalyticsCollectionEnabledMutation",
+              "title": "useSetAnalyticsCollectionEnabledMutation"
+            },
+            {
+              "href": "/react/analytics/hooks/useSetConsentMutation",
+              "title": "useSetConsentMutation"
+            },
+            {
+              "href": "/react/analytics/hooks/useSetCurrentScreenMutation",
+              "title": "useSetCurrentScreenMutation"
+            },
+            {
+              "href": "/react/analytics/hooks/useSetDefaultEventParametersMutation",
+              "title": "useSetDefaultEventParametersMutation"
+            },
+            {
+              "href": "/react/analytics/hooks/useSetUserIdMutation",
+              "title": "useSetUserIdMutation"
+            },
+            {
+              "href": "/react/analytics/hooks/useSetUserPropertiesMutation",
+              "title": "useSetUserPropertiesMutation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tab": "react",
       "group": "Authentication",
       "pages": [
         {

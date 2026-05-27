@@ -1,0 +1,22 @@
+---
+title: useSetDefaultEventParametersMutation
+---
+
+Set default event parameters applied to every Analytics event on the page.
+
+## Usage
+
+```tsx
+import { useSetDefaultEventParametersMutation } from "@tanstack-query-firebase/react/analytics";
+
+const { mutate: setDefaultParams } = useSetDefaultEventParametersMutation();
+
+setDefaultParams({ session_id: "abc123", debug_mode: true });
+setDefaultParams({ campaign: "spring_sale" });
+```
+
+## Notes
+
+- Wraps Firebase [`setDefaultEventParameters`](https://firebase.google.com/docs/reference/js/analytics.md#setdefaulteventparameters).
+- This is a module-level API and does not require an `Analytics` instance.
+- Parameters persist for subsequent automatic and manual events on the page.

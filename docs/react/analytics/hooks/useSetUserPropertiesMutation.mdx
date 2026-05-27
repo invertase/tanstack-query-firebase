@@ -1,0 +1,31 @@
+---
+title: useSetUserPropertiesMutation
+---
+
+Set Google Analytics user properties for a Firebase Analytics instance.
+
+## Usage
+
+```tsx
+import { getAnalytics } from "firebase/analytics";
+import { useSetUserPropertiesMutation } from "@tanstack-query-firebase/react/analytics";
+
+const analytics = getAnalytics(app);
+const { mutate: setAnalyticsUserProperties } =
+  useSetUserPropertiesMutation(analytics);
+
+setAnalyticsUserProperties({
+  properties: { plan: "premium", role: "admin" },
+});
+```
+
+## Global properties
+
+Apply properties across all gtag properties on the page:
+
+```tsx
+setAnalyticsUserProperties({
+  properties: { plan: "free" },
+  callOptions: { global: true },
+});
+```
