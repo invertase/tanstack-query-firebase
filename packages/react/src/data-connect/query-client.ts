@@ -28,7 +28,12 @@ export class DataConnectQueryClient extends QueryClient {
 
     if ("ref" in refOrResult) {
       queryRef = refOrResult.ref;
-      initialData = JSON.parse(JSON.stringify(refOrResult.data));
+      initialData = {
+        ...refOrResult.data,
+        ref: refOrResult.ref,
+        source: refOrResult.source,
+        fetchTime: refOrResult.fetchTime,
+      };
     } else {
       queryRef = refOrResult;
     }
@@ -43,8 +48,15 @@ export class DataConnectQueryClient extends QueryClient {
       queryFn: async () => {
         const response = await executeQuery(queryRef);
 
-        // Only serialize query data. Firebase v12 QueryRef objects are circular.
-        return JSON.parse(JSON.stringify(response.data));
+        const data = {
+          ...response.data,
+          ref: response.ref,
+          source: response.source,
+          fetchTime: response.fetchTime,
+        };
+
+        // Ensures no serialization issues with undefined values
+        return JSON.parse(JSON.stringify(data));
       },
     });
   }
