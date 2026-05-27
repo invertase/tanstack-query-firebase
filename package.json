@@ -4,9 +4,9 @@
   "packageManager": "pnpm@10.10.0",
   "scripts": {
     "test": "turbo test",
-    "test:emulator": "firebase emulators:exec --project test-project \"pnpm turbo test:ci\"",
+    "test:emulator": "firebase emulators:exec --project demo-test-project \"pnpm turbo test:ci\"",
     "serve:coverage": "npx serve coverage",
-    "emulator": "firebase emulators:start --project test-project",
+    "emulator": "firebase emulators:start --project demo-test-project",
     "emulator:kill": "lsof -t -i:4001 -i:8080 -i:9000 -i:9099 -i:9199 -i:8085 -i:9399 -i:9299 | xargs kill -9",
     "format": "biome check .",
     "format:fix": "biome check . --write",

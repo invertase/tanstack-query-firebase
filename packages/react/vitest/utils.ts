@@ -18,7 +18,7 @@ import { expect } from "vitest";
 import { connectorConfig } from "@/dataconnect/default-connector";
 
 const firebaseTestingOptions = {
-  projectId: "test-project",
+  projectId: "demo-test-project",
   apiKey: "test-api-key",
   authDomain: "test-auth-domain",
 };
@@ -46,7 +46,7 @@ if (!firebaseApp) {
 
 async function wipeFirestore() {
   const response = await fetch(
-    "http://localhost:8080/emulator/v1/projects/test-project/databases/(default)/documents",
+    "http://localhost:8080/emulator/v1/projects/demo-test-project/databases/(default)/documents",
     {
       method: "DELETE",
     },
@@ -72,7 +72,7 @@ async function wipeDatabase() {
 
 async function wipeAuth() {
   const response = await fetch(
-    "http://localhost:9099/emulator/v1/projects/test-project/accounts",
+    "http://localhost:9099/emulator/v1/projects/demo-test-project/accounts",
     {
       method: "DELETE",
     },
