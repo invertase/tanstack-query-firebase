@@ -1,0 +1,16 @@
+---
+title: useSetWithPriorityMutation
+---
+
+Write data and priority to a location in one operation.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useSetWithPriorityMutation } from "@tanstack-query-firebase/react/database";
+
+const taskRef = ref(database, "tasks/task-1");
+const { mutate } = useSetWithPriorityMutation(taskRef);
+mutate({ value: { title: "Ship docs" }, priority: 1 });
+```

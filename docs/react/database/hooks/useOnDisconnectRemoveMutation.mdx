@@ -1,0 +1,16 @@
+---
+title: useOnDisconnectRemoveMutation
+---
+
+Queue removal of data when the client disconnects.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useOnDisconnectRemoveMutation } from "@tanstack-query-firebase/react/database";
+
+const sessionRef = ref(database, `sessions/${sessionId}`);
+const { mutate } = useOnDisconnectRemoveMutation(sessionRef);
+mutate();
+```

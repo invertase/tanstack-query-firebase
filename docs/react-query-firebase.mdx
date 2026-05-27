@@ -39,16 +39,13 @@ although initially only React is supported.
 Altough still in development, the API is designed to work with the newer object-based API of TanStack Query,
 and also supports newer Firebase services such as Data Connect.
 
-### Realtime Subscription Issues
+### Realtime Subscription Hooks
 
-Firebase supports realtime event subscriptions for many of its services, such as Firestore, Realtime Database and
-Authentication.
+Firebase supports realtime event subscriptions for many of its services, such as Firestore, Realtime Database, and Authentication.
 
-The `react-query-firebase` package had a [limitation](https://github.com/invertase/tanstack-query-firebase/issues/25) whereby the hooks
-would not resubscribe whenever a component re-mounted.
+The `react-query-firebase` package had a [limitation](https://github.com/invertase/tanstack-query-firebase/issues/25) whereby the hooks would not resubscribe whenever a component re-mounted.
 
-The initial version of `tanstack-query-firebase` currently opts-out of any realtime subscription hooks. This issue will be re-addressed
-once the core API is stable supporting all Firebase services.
+TanStack Query Firebase now provides Realtime Database listener hooks (such as `useOnValueQuery` and the `useOnChild*` hooks) via `@tanstack-query-firebase/react/database`. Other services may add subscription hooks over time as the core API stabilizes.
 
 ## Migration Steps
 

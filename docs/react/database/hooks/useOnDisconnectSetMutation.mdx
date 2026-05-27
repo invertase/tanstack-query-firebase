@@ -1,0 +1,16 @@
+---
+title: useOnDisconnectSetMutation
+---
+
+Queue a `set` operation to run when the client disconnects.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useOnDisconnectSetMutation } from "@tanstack-query-firebase/react/database";
+
+const statusRef = ref(database, `users/${uid}/status`);
+const { mutate } = useOnDisconnectSetMutation(statusRef);
+mutate("offline");
+```

@@ -1,0 +1,16 @@
+---
+title: useUpdateMutation
+---
+
+Perform a multi-path update without replacing data at the parent reference.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useUpdateMutation } from "@tanstack-query-firebase/react/database";
+
+const rootRef = ref(database);
+const { mutate } = useUpdateMutation(rootRef);
+mutate({ "users/ada/score": 10, "users/ada/updatedAt": Date.now() });
+```

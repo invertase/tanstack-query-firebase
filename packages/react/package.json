@@ -33,6 +33,10 @@
     "./data-connect": {
       "import": "./dist/data-connect/index.js",
       "types": "./dist/data-connect/index.d.ts"
+    },
+    "./database": {
+      "import": "./dist/database/index.js",
+      "types": "./dist/database/index.d.ts"
     }
   },
   "author": {

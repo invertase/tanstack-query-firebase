@@ -1,0 +1,16 @@
+---
+title: usePushMutation
+---
+
+Append a child with an auto-generated key to a list.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { usePushMutation } from "@tanstack-query-firebase/react/database";
+
+const messagesRef = ref(database, "messages");
+const { mutate, data: newRef } = usePushMutation(messagesRef);
+mutate({ text: "Hello" });
+```
