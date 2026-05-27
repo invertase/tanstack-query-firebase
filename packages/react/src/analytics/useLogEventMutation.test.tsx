@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import type { Analytics } from "firebase/analytics";
-import type { FirebaseApp } from "firebase/app";
 import { logEvent } from "firebase/analytics";
+import type { FirebaseApp } from "firebase/app";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { queryClient, wrapper } from "../../utils";
 import { useLogEventMutation } from "./useLogEventMutation";
@@ -34,9 +34,14 @@ describe("useLogEventMutation", () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    expect(logEvent).toHaveBeenCalledWith(mockAnalytics, "login", {
-      method: "email",
-    }, undefined);
+    expect(logEvent).toHaveBeenCalledWith(
+      mockAnalytics,
+      "login",
+      {
+        method: "email",
+      },
+      undefined,
+    );
   });
 
   test("passes analytics call options", async () => {

@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import type { Analytics } from "firebase/analytics";
-import type { FirebaseApp } from "firebase/app";
 import { setCurrentScreen } from "firebase/analytics";
+import type { FirebaseApp } from "firebase/app";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { queryClient, wrapper } from "../../utils";
 import { useSetCurrentScreenMutation } from "./useSetCurrentScreenMutation";

@@ -55,8 +55,7 @@ describe("useSetDefaultEventParametersMutation", () => {
     const onSuccessMock = vi.fn();
 
     const { result } = renderHook(
-      () =>
-        useSetDefaultEventParametersMutation({ onSuccess: onSuccessMock }),
+      () => useSetDefaultEventParametersMutation({ onSuccess: onSuccessMock }),
       { wrapper },
     );
 

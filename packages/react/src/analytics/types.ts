@@ -1,4 +1,7 @@
-import type { UseMutationOptions, UseQueryOptions } from "@tanstack/react-query";
+import type {
+  UseMutationOptions,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import type {
   AnalyticsCallOptions,
   ConsentSettings,

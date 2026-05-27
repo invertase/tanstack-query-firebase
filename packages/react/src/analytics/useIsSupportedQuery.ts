@@ -29,7 +29,9 @@ import type { AnalyticsUseQueryOptions } from "./types";
  *   staleTime: Number.POSITIVE_INFINITY,
  * });
  */
-export function useIsSupportedQuery(options: AnalyticsUseQueryOptions<boolean>) {
+export function useIsSupportedQuery(
+  options: AnalyticsUseQueryOptions<boolean>,
+) {
   return useQuery<boolean>({
     ...options,
     queryFn: () => isSupported(),

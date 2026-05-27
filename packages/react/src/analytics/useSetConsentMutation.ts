@@ -1,9 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { setConsent } from "firebase/analytics";
-import type {
-  AnalyticsUseMutationOptions,
-  SetConsentVariables,
-} from "./types";
+import type { AnalyticsUseMutationOptions, SetConsentVariables } from "./types";
 
 /**
  * Hook to set end-user consent state for Google Analytics across all gtag references.

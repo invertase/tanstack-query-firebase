@@ -35,7 +35,11 @@ import type {
  */
 export function useSetUserPropertiesMutation(
   analytics: Analytics,
-  options?: AnalyticsUseMutationOptions<void, Error, SetUserPropertiesVariables>,
+  options?: AnalyticsUseMutationOptions<
+    void,
+    Error,
+    SetUserPropertiesVariables
+  >,
 ) {
   return useMutation<void, Error, SetUserPropertiesVariables>({
     ...options,
