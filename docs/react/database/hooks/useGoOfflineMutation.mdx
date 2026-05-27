@@ -1,0 +1,14 @@
+---
+title: useGoOfflineMutation
+---
+
+Disconnect the Realtime Database client from the server.
+
+## Usage
+
+```tsx
+import { useGoOfflineMutation } from "@tanstack-query-firebase/react/database";
+
+const { mutate } = useGoOfflineMutation(database);
+mutate();
+```

@@ -166,6 +166,101 @@
     },
     {
       "tab": "react",
+      "group": "Realtime Database",
+      "pages": [
+        {
+          "title": "Getting Started",
+          "href": "/react/database"
+        },
+        {
+          "group": "Hooks",
+          "pages": [
+            {
+              "href": "/react/database/hooks/useGetQuery",
+              "title": "useGetQuery"
+            },
+            {
+              "href": "/react/database/hooks/useGoOfflineMutation",
+              "title": "useGoOfflineMutation"
+            },
+            {
+              "href": "/react/database/hooks/useGoOnlineMutation",
+              "title": "useGoOnlineMutation"
+            },
+            {
+              "href": "/react/database/hooks/useOnChildAddedQuery",
+              "title": "useOnChildAddedQuery"
+            },
+            {
+              "href": "/react/database/hooks/useOnChildChangedQuery",
+              "title": "useOnChildChangedQuery"
+            },
+            {
+              "href": "/react/database/hooks/useOnChildMovedQuery",
+              "title": "useOnChildMovedQuery"
+            },
+            {
+              "href": "/react/database/hooks/useOnChildRemovedQuery",
+              "title": "useOnChildRemovedQuery"
+            },
+            {
+              "href": "/react/database/hooks/useOnDisconnectCancelMutation",
+              "title": "useOnDisconnectCancelMutation"
+            },
+            {
+              "href": "/react/database/hooks/useOnDisconnectRemoveMutation",
+              "title": "useOnDisconnectRemoveMutation"
+            },
+            {
+              "href": "/react/database/hooks/useOnDisconnectSetMutation",
+              "title": "useOnDisconnectSetMutation"
+            },
+            {
+              "href": "/react/database/hooks/useOnDisconnectSetWithPriorityMutation",
+              "title": "useOnDisconnectSetWithPriorityMutation"
+            },
+            {
+              "href": "/react/database/hooks/useOnDisconnectUpdateMutation",
+              "title": "useOnDisconnectUpdateMutation"
+            },
+            {
+              "href": "/react/database/hooks/useOnValueQuery",
+              "title": "useOnValueQuery"
+            },
+            {
+              "href": "/react/database/hooks/usePushMutation",
+              "title": "usePushMutation"
+            },
+            {
+              "href": "/react/database/hooks/useRemoveMutation",
+              "title": "useRemoveMutation"
+            },
+            {
+              "href": "/react/database/hooks/useRunTransactionMutation",
+              "title": "useRunTransactionMutation"
+            },
+            {
+              "href": "/react/database/hooks/useSetMutation",
+              "title": "useSetMutation"
+            },
+            {
+              "href": "/react/database/hooks/useSetPriorityMutation",
+              "title": "useSetPriorityMutation"
+            },
+            {
+              "href": "/react/database/hooks/useSetWithPriorityMutation",
+              "title": "useSetWithPriorityMutation"
+            },
+            {
+              "href": "/react/database/hooks/useUpdateMutation",
+              "title": "useUpdateMutation"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "tab": "react",
       "group": "Firestore",
       "pages": [
         {

@@ -1,0 +1,17 @@
+---
+title: useOnChildMovedQuery
+---
+
+Subscribe to `child_moved` events. Requires a query ordered with `orderByPriority()`.
+
+## Usage
+
+```tsx
+import { orderByPriority, query, ref } from "firebase/database";
+import { useOnChildMovedQuery } from "@tanstack-query-firebase/react/database";
+
+const tasksRef = query(ref(database, "tasks"), orderByPriority());
+const { data: snapshot } = useOnChildMovedQuery(tasksRef, {
+  queryKey: ["database", "childMoved", "tasks"],
+});
+```

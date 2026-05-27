@@ -1,0 +1,138 @@
+---
+title: Firebase Realtime Database
+---
+
+Firebase Realtime Database is a cloud-hosted NoSQL database that lets you store and sync data between your users in realtime.
+
+Before using these hooks, ensure your Firebase project has Realtime Database enabled and your app is initialized with a `Database` instance.
+
+## Setup
+
+```ts
+import { initializeApp } from "firebase/app";
+import { getDatabase } from "firebase/database";
+
+// Initialize your Firebase app
+initializeApp({ ... });
+
+// Get the Realtime Database instance
+const database = getDatabase(app);
+```
+
+## Importing
+
+Hooks are exported from the `database` namespace:
+
+```ts
+import { useOnValueQuery } from "@tanstack-query-firebase/react/database";
+```
+
+Hooks accept `DatabaseReference` / `Query` values from `ref()` / `query()` and the `Database` instance from `getDatabase()` (obtained at app init, not wrapped by these hooks).
+
+## One-time reads
+
+Use `useGetQuery` when you need a single read without a realtime listener:
+
+```tsx
+import { ref } from "firebase/database";
+import { useGetQuery } from "@tanstack-query-firebase/react/database";
+
+function UserProfile({ uid }: { uid: string }) {
+  const userRef = ref(database, `users/${uid}`);
+  const { data: snapshot, isLoading, isError, error } = useGetQuery(userRef, {
+    queryKey: ["database", "users", uid],
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
+
+  return <p>{snapshot?.val()?.name}</p>;
+}
+```
+
+## Realtime listeners
+
+Use listener hooks such as `useOnValueQuery` and the `useOnChild*` hooks to subscribe to Realtime Database events. The first snapshot resolves the query; later snapshots update the TanStack Query cache.
+
+```tsx
+import { ref } from "firebase/database";
+import { useOnValueQuery } from "@tanstack-query-firebase/react/database";
+
+function LiveScoreboard({ gameId }: { gameId: string }) {
+  const scoreRef = ref(database, `games/${gameId}/score`);
+  const { data: snapshot } = useOnValueQuery(scoreRef, {
+    queryKey: ["database", "onValue", "games", gameId, "score"],
+  });
+
+  return <p>Score: {snapshot?.val() ?? 0}</p>;
+}
+```
+
+Pass Firebase [`ListenOptions`](https://firebase.google.com/docs/reference/js/database.listoptions) via the `database` option (for example `{ onlyOnce: true }`):
+
+```tsx
+useOnValueQuery(scoreRef, {
+  queryKey: ["database", "onValue", "games", gameId, "score"],
+  database: { onlyOnce: true },
+});
+```
+
+<Info>
+Components sharing the same `queryKey` share one TanStack Query cache entry. Use a stable, unique `queryKey` per path to avoid duplicate Firebase listeners.
+</Info>
+
+## Mutations
+
+Write hooks follow the same pattern as other TanStack Query Firebase modules. Pass a `DatabaseReference` when creating the hook, then call `mutate` with the payload:
+
+```tsx
+import { ref } from "firebase/database";
+import { useSetMutation } from "@tanstack-query-firebase/react/database";
+
+function UpdateUser({ uid }: { uid: string }) {
+  const userRef = ref(database, `users/${uid}`);
+  const { mutate, isPending } = useSetMutation(userRef);
+
+  return (
+    <button
+      disabled={isPending}
+      onClick={() => mutate({ name: "Ada", score: 1 })}
+    >
+      Save
+    </button>
+  );
+}
+```
+
+## Connection and on-disconnect hooks
+
+- `useGoOnlineMutation` / `useGoOfflineMutation` accept a `Database` instance to control client connectivity.
+- `useOnDisconnect*` hooks queue writes that run when the client disconnects from the Realtime Database server.
+
+## Available hooks
+
+### Queries
+
+- [`useGetQuery`](/react/database/hooks/useGetQuery) — one-time read via `get`
+- [`useOnValueQuery`](/react/database/hooks/useOnValueQuery) — subscribe to value changes
+- [`useOnChildAddedQuery`](/react/database/hooks/useOnChildAddedQuery) — subscribe to `child_added`
+- [`useOnChildChangedQuery`](/react/database/hooks/useOnChildChangedQuery) — subscribe to `child_changed`
+- [`useOnChildMovedQuery`](/react/database/hooks/useOnChildMovedQuery) — subscribe to `child_moved`
+- [`useOnChildRemovedQuery`](/react/database/hooks/useOnChildRemovedQuery) — subscribe to `child_removed`
+
+### Mutations
+
+- [`useSetMutation`](/react/database/hooks/useSetMutation) — replace data at a location
+- [`useUpdateMutation`](/react/database/hooks/useUpdateMutation) — multi-path update
+- [`useRemoveMutation`](/react/database/hooks/useRemoveMutation) — delete data
+- [`usePushMutation`](/react/database/hooks/usePushMutation) — append with an auto-generated key
+- [`useRunTransactionMutation`](/react/database/hooks/useRunTransactionMutation) — atomic read-modify-write
+- [`useSetPriorityMutation`](/react/database/hooks/useSetPriorityMutation) — set node priority
+- [`useSetWithPriorityMutation`](/react/database/hooks/useSetWithPriorityMutation) — write value and priority together
+- [`useGoOnlineMutation`](/react/database/hooks/useGoOnlineMutation) — reconnect to the server
+- [`useGoOfflineMutation`](/react/database/hooks/useGoOfflineMutation) — disconnect from the server
+- [`useOnDisconnectSetMutation`](/react/database/hooks/useOnDisconnectSetMutation) — queue a disconnect `set`
+- [`useOnDisconnectUpdateMutation`](/react/database/hooks/useOnDisconnectUpdateMutation) — queue a disconnect `update`
+- [`useOnDisconnectRemoveMutation`](/react/database/hooks/useOnDisconnectRemoveMutation) — queue a disconnect `remove`
+- [`useOnDisconnectCancelMutation`](/react/database/hooks/useOnDisconnectCancelMutation) — cancel queued disconnect operations
+- [`useOnDisconnectSetWithPriorityMutation`](/react/database/hooks/useOnDisconnectSetWithPriorityMutation) — queue a disconnect `setWithPriority`

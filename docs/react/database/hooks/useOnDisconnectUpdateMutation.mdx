@@ -1,0 +1,16 @@
+---
+title: useOnDisconnectUpdateMutation
+---
+
+Queue a multi-path `update` to run when the client disconnects.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useOnDisconnectUpdateMutation } from "@tanstack-query-firebase/react/database";
+
+const userRef = ref(database, `users/${uid}`);
+const { mutate } = useOnDisconnectUpdateMutation(userRef);
+mutate({ status: "offline", lastSeen: Date.now() });
+```

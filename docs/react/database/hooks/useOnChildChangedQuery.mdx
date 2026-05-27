@@ -1,0 +1,17 @@
+---
+title: useOnChildChangedQuery
+---
+
+Subscribe to `child_changed` events on a Realtime Database query.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useOnChildChangedQuery } from "@tanstack-query-firebase/react/database";
+
+const messagesRef = ref(database, "messages");
+const { data: snapshot } = useOnChildChangedQuery(messagesRef, {
+  queryKey: ["database", "childChanged", "messages"],
+});
+```

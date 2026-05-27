@@ -1,0 +1,19 @@
+---
+title: useRunTransactionMutation
+---
+
+Run an atomic read-modify-write transaction on a location.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useRunTransactionMutation } from "@tanstack-query-firebase/react/database";
+
+const counterRef = ref(database, "counters/views");
+const { mutate } = useRunTransactionMutation(counterRef, (current) => {
+  const count = (current as number | null) ?? 0;
+  return count + 1;
+});
+mutate();
+```

@@ -1,0 +1,16 @@
+---
+title: useSetMutation
+---
+
+Write data to a location, replacing any existing data.
+
+## Usage
+
+```tsx
+import { ref } from "firebase/database";
+import { useSetMutation } from "@tanstack-query-firebase/react/database";
+
+const userRef = ref(database, `users/${uid}`);
+const { mutate } = useSetMutation(userRef);
+mutate({ name: "Ada", score: 1 });
+```
